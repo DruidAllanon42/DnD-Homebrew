@@ -18,6 +18,9 @@
 	- Original Shaman class: Michael Wolf
 	- Original transcription for MPMB: Derek, Fourleafclov, and MorePurpleMoreBetter
 	- This supplement (additional subclasses): DruidAllanon42
+
+	Original Shaman link:
+	https://www.dmsguild.com/product/170851/Shaman-Class-5e
 */
 
 var iFileName = "Shaman - Speakers Supplemental [by DruidAllanon42].js";
@@ -31,13 +34,28 @@ SourceList["DA42:SS"] = {
 	url : "https://github.com/DruidAllanon42",
 	date : "2026/01/10"
 };
+
 // ---- Hook: add new Speakers to the existing Shaman class (if present) ----
 if (ClassList["shaman"] && ClassList["shaman"].subclasses && ClassList["shaman"].subclasses[1]) {
 	var shamanSubs = ClassList["shaman"].subclasses[1];
+
 	if (shamanSubs.indexOf("shaman-speaker of the veil") === -1) shamanSubs.push("shaman-speaker of the veil");
-	// Add future speakers here as you create them:
-	// if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
+	if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
+	if (shamanSubs.indexOf("shaman-speaker of threads") === -1) shamanSubs.push("shaman-speaker of threads");
+	if (shamanSubs.indexOf("shaman-speaker of thorns") === -1) shamanSubs.push("shaman-speaker of thorns");
+	if (shamanSubs.indexOf("shaman-speaker of seasons") === -1) shamanSubs.push("shaman-speaker of seasons");
+	if (shamanSubs.indexOf("shaman-speaker of glamour") === -1) shamanSubs.push("shaman-speaker of glamour");
+	if (shamanSubs.indexOf("shaman-speaker of masks") === -1) shamanSubs.push("shaman-speaker of masks");
+	if (shamanSubs.indexOf("shaman-speaker of venom") === -1) shamanSubs.push("shaman-speaker of venom");
+	if (shamanSubs.indexOf("shaman-speaker of roots") === -1) shamanSubs.push("shaman-speaker of roots");
+	if (shamanSubs.indexOf("shaman-speaker of the wild hunt") === -1) shamanSubs.push("shaman-speaker of the wild hunt");
+	if (shamanSubs.indexOf("shaman-speaker of hearth") === -1) shamanSubs.push("shaman-speaker of hearth");
 }
+
+/* =======================================================================================
+   SPEAKER SUBCLASSES
+   ======================================================================================= */
+
 // ============================================================================
 // Speaker of the Veil (Shamanic Calling)
 // Author: DruidAllanon42
@@ -59,7 +77,6 @@ ClassSubList["shaman-speaker of the veil"] = {
 
 	features : {
 
-		// 1st-level feature
 		"subclassfeature1" : {
 			name : "Blessings of the Veil",
 			source : ["DA42:SS", 1],
@@ -82,7 +99,6 @@ ClassSubList["shaman-speaker of the veil"] = {
 			}]
 		},
 
-		// 1st-level feature (secondary)
 		"subclassfeature1.1" : {
 			name : "Veilspeaker",
 			source : ["DA42:SS", 1],
@@ -95,7 +111,6 @@ ClassSubList["shaman-speaker of the veil"] = {
 			action : [["action", ""]]
 		},
 
-		// 6th-level feature
 		"subclassfeature6" : {
 			name : "Step Beyond",
 			source : ["DA42:SS", 1],
@@ -111,7 +126,6 @@ ClassSubList["shaman-speaker of the veil"] = {
 			action : [["reaction", ""]]
 		},
 
-		// 10th-level feature
 		"subclassfeature10" : {
 			name : "Half-Seen, Half-Remembered",
 			source : ["DA42:SS", 1],
@@ -121,12 +135,9 @@ ClassSubList["shaman-speaker of the veil"] = {
 				"Invisible and ethereal creatures within 30 ft can't gain advantage on attack rolls against me",
 				"I can perceive the presence (but not exact location) of incorporeal creatures within 30 ft"
 			]),
-			savetxt : {
-				adv_vs : ["being frightened", "being charmed"]
-			}
+			savetxt : { adv_vs : ["being frightened", "being charmed"] }
 		},
 
-		// 14th-level feature
 		"subclassfeature14" : {
 			name : "Bearer of the Crossing",
 			source : ["DA42:SS", 1],
@@ -144,7 +155,6 @@ ClassSubList["shaman-speaker of the veil"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
 
 // ============================================================================
 // Speaker of Mist (Shamanic Calling)
@@ -156,110 +166,6 @@ ClassSubList["shaman-speaker of mist"] = {
 	subname : "Speaker of Mist",
 	source : ["DA42:SS", 2],
 
-	// Calling Spells (always prepared)
-	// Theme: concealment, misdirection, slipping away, fog-as-spirit
-	spellcastingExtra : [
-		"fog cloud", "disguise self",
-		"misty step", "pass without trace",
-		"gaseous form", "major image",
-		"greater invisibility", "hallucinatory terrain",
-		"mislead", "seeming"
-	],
-
-	features : {
-
-		// 1st-level feature
-		"subclassfeature1" : {
-			name : "Blessings of Mist",
-			source : ["DA42:SS", 2],
-			minlevel : 1,
-
-			skills : ["Stealth"],
-			skillstxt : "\n\n" + toUni("Blessings of Mist") + ": Stealth.",
-
-			description : desc([
-				"I learn the Minor Illusion, Fog Cloud, and Message cantrips as shaman cantrips",
-				"I gain proficiency in Stealth"
-			]),
-
-			// NOTE: "fog cloud" is a 1st-level spell, not a cantrip.
-			// If you'd rather keep this strict to cantrips only, swap Fog Cloud here for "gust" or "shape water".
-			// MPMB will accept it as a bonus spell known; however, for consistency with other Speakers,
-			// we will instead grant 3 cantrips below (Minor Illusion, Message, Prestidigitation).
-			spellcastingBonus : [{
-				name : "Blessings of Mist",
-				spells : ["minor illusion", "message", "prestidigitation"],
-				selection : ["minor illusion", "message", "prestidigitation"],
-				times : 3
-			}]
-		},
-
-		// 1st-level feature (secondary)
-		"subclassfeature1.1" : {
-			name : "Mistspeaker",
-			source : ["DA42:SS", 2],
-			minlevel : 1,
-			description : desc([
-				"As an action, I commune with mist, fog, or low cloud within 30 ft (or I exhale a thin veil of mist as part of this action)",
-				"I may ask the mist three questions about what moved through it nearby within the last hour (DM adjudicates)",
-				"The mist answers in impressions: silhouettes, direction, speed, and mood rather than exact detail",
-				"Once I speak with mist in a specific 1-mile area, I can't do so again there for 24 hours"
-			]),
-			action : [["action", ""]]
-		},
-
-		// 6th-level feature
-		"subclassfeature6" : {
-			name : "Vanish Into Haze",
-			source : ["DA42:SS", 2],
-			minlevel : 6,
-			description : desc([
-				"As a reaction when I'm targeted by an attack or when I fail a Dex saving throw, I blur into mist",
-				"I become lightly obscured until the start of my next turn and can move up to 10 ft without provoking opportunity attacks",
-				"If the triggering effect was an attack roll, the attacker has disadvantage on that roll"
-			]),
-			usages : 1,
-			recovery : "short rest",
-			action : [["reaction", ""]]
-		},
-
-		// 10th-level feature
-		"subclassfeature10" : {
-			name : "Unfindable Shape",
-			source : ["DA42:SS", 2],
-			minlevel : 10,
-			description : desc([
-				"I have resistance to cold damage",
-				"I have advantage on Stealth checks while lightly obscured, and I can attempt to hide when only lightly obscured",
-				"Creatures don't gain advantage on attack rolls against me solely because they are unseen"
-			]),
-			dmgres : ["Cold"],
-			skillstxt : "\n\n" + toUni("Unfindable Shape") + ": Adv. on Stealth checks while lightly obscured; can Hide while only lightly obscured."
-		},
-
-		// 14th-level feature
-		"subclassfeature14" : {
-			name : "Mistwalk",
-			source : ["DA42:SS", 2],
-			minlevel : 14,
-			description : desc([
-				"Once per long rest, as an action, I become a drifting mist for 1 minute (no concentration)",
-				"During this time I have a flying speed equal to my walking speed and can move through spaces as narrow as 1 inch",
-				"I can move through creatures and objects as difficult terrain; if I end inside an object, I'm shunted to the nearest empty space",
-				"While Mistwa
-
-if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
-// ============================================================================
-// Speaker of Mist (Shamanic Calling)
-// Author: DruidAllanon42
-// ============================================================================
-
-ClassSubList["shaman-speaker of mist"] = {
-	regExpSearch : /^(?=.*speaker)(?=.*mist).*$/i,
-	subname : "Speaker of Mist",
-	source : ["DA42:SS", 2],
-
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"fog cloud", "disguise self",
 		"misty step", "pass without trace",
@@ -347,7 +253,7 @@ ClassSubList["shaman-speaker of mist"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of threads") === -1) shamanSubs.push("shaman-speaker of threads");
+
 // ============================================================================
 // Speaker of Threads (Shamanic Calling)
 // Author: DruidAllanon42
@@ -358,7 +264,6 @@ ClassSubList["shaman-speaker of threads"] = {
 	subname : "Speaker of Threads",
 	source : ["DA42:SS", 3],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"bane", "feather fall",
 		"hold person", "silence",
@@ -379,7 +284,6 @@ ClassSubList["shaman-speaker of threads"] = {
 				"I gain proficiency in Insight or Perception (choose one)"
 			]),
 
-			// MPMB can't force a choose-one skill cleanly with a popup here, so we use text prompt.
 			skillstxt : "\n\n" + toUni("Blessings of Threads") + ": Choose one from Insight or Perception.",
 
 			spellcastingBonus : [{
@@ -443,7 +347,7 @@ ClassSubList["shaman-speaker of threads"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of thorns") === -1) shamanSubs.push("shaman-speaker of thorns");
+
 // ============================================================================
 // Speaker of Thorns (Shamanic Calling)
 // Author: DruidAllanon42
@@ -454,7 +358,6 @@ ClassSubList["shaman-speaker of thorns"] = {
 	subname : "Speaker of Thorns",
 	source : ["DA42:SS", 4],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"entangle", "sanctuary",
 		"spike growth", "warding bond",
@@ -542,7 +445,7 @@ ClassSubList["shaman-speaker of thorns"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of seasons") === -1) shamanSubs.push("shaman-speaker of seasons");
+
 // ============================================================================
 // Speaker of Seasons (Shamanic Calling)
 // Author: DruidAllanon42
@@ -553,7 +456,6 @@ ClassSubList["shaman-speaker of seasons"] = {
 	subname : "Speaker of Seasons",
 	source : ["DA42:SS", 5],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"faerie fire", "absorb elements",
 		"moonbeam", "enhance ability",
@@ -564,7 +466,6 @@ ClassSubList["shaman-speaker of seasons"] = {
 
 	features : {
 
-		// Level 1: choose Seasonal Aspect (grants cantrips + sets the baseline text)
 		"subclassfeature1" : {
 			name : "Blessings of Seasons",
 			source : ["DA42:SS", 5],
@@ -635,7 +536,6 @@ ClassSubList["shaman-speaker of seasons"] = {
 			}
 		},
 
-		// Level 6
 		"subclassfeature6" : {
 			name : "Turning of the Wheel",
 			source : ["DA42:SS", 5],
@@ -653,7 +553,6 @@ ClassSubList["shaman-speaker of seasons"] = {
 			action : [["bonus action", ""]]
 		},
 
-		// Level 10
 		"subclassfeature10" : {
 			name : "Court of Seasons",
 			source : ["DA42:SS", 5],
@@ -667,7 +566,6 @@ ClassSubList["shaman-speaker of seasons"] = {
 			])
 		},
 
-		// Level 14
 		"subclassfeature14" : {
 			name : "Sovereign Cycle",
 			source : ["DA42:SS", 5],
@@ -683,7 +581,7 @@ ClassSubList["shaman-speaker of seasons"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of glamour") === -1) shamanSubs.push("shaman-speaker of glamour");
+
 // ============================================================================
 // Speaker of Glamour (Shamanic Calling)
 // Author: DruidAllanon42
@@ -694,7 +592,6 @@ ClassSubList["shaman-speaker of glamour"] = {
 	subname : "Speaker of Glamour",
 	source : ["DA42:SS", 6],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"charm person", "faerie fire",
 		"enthrall", "calm emotions",
@@ -705,19 +602,15 @@ ClassSubList["shaman-speaker of glamour"] = {
 
 	features : {
 
-		// Level 1
 		"subclassfeature1" : {
 			name : "Blessings of Glamour",
 			source : ["DA42:SS", 6],
 			minlevel : 1,
-
 			description : desc([
 				"I learn the Friends, Thaumaturgy, and Minor Illusion cantrips as shaman cantrips",
 				"I gain proficiency in Performance or Persuasion (choose one)"
 			]),
-
 			skillstxt : "\n\n" + toUni("Blessings of Glamour") + ": Choose one from Performance or Persuasion.",
-
 			spellcastingBonus : [{
 				name : "Blessings of Glamour",
 				spells : ["friends", "thaumaturgy", "minor illusion"],
@@ -726,28 +619,23 @@ ClassSubList["shaman-speaker of glamour"] = {
 			}]
 		},
 
-		// Level 1.1
 		"subclassfeature1.1" : {
 			name : "Glamourspeaker",
 			source : ["DA42:SS", 6],
 			minlevel : 1,
-
 			description : desc([
 				"As a bonus action, I heighten my presence toward one creature within 30 ft that can see and hear me",
 				"Until the end of my next turn, that creature has disadvantage on the next Wis save it makes against a charm or fear effect I cause"
 			]),
-
 			usages : "Cha mod",
 			recovery : "long rest",
 			action : [["bonus action", ""]]
 		},
 
-		// Level 6
 		"subclassfeature6" : {
 			name : "Borrowed Radiance",
 			source : ["DA42:SS", 6],
 			minlevel : 6,
-
 			description : desc([
 				"When a creature within 30 ft fails a save against being charmed or frightened by me, I gain a benefit",
 				"I choose either temp HP equal to my Cha mod + proficiency bonus, or advantage on my next attack roll or ability check",
@@ -755,251 +643,35 @@ ClassSubList["shaman-speaker of glamour"] = {
 			])
 		},
 
-		// Level 10
 		"subclassfeature10" : {
 			name : "Courtly Presence",
 			source : ["DA42:SS", 6],
 			minlevel : 10,
-
 			description : desc([
 				"I have advantage on saving throws against being charmed or frightened",
 				"When a creature attempts to charm or frighten me and fails, I may use my reaction",
 				"That creature must succeed on a Wis save or be charmed by me until the end of its next turn"
 			]),
-
 			action : [["reaction", ""]]
 		},
 
-		// Level 14
 		"subclassfeature14" : {
 			name : "Sovereign Allure",
 			source : ["DA42:SS", 6],
 			minlevel : 14,
-
 			description : desc([
 				"Once per long rest, as an action, I emanate an aura of undeniable presence for 1 minute",
 				"Hostile creatures within 20 ft have disadvantage on saves against being charmed or frightened by me",
 				"The first time a creature becomes charmed or frightened by me during this aura, it is incapacitated until the end of its next turn",
 				"Creatures that succeed on a save against this aura are immune to it for 24 hours"
 			]),
-
 			usages : 1,
 			recovery : "long rest",
 			action : [["action", ""]]
 		}
 	}
 };
-// ============================================================================
-// Speaker of Glamour (Shamanic Calling)
-// Author: DruidAllanon42
-// ============================================================================
 
-ClassSubList["shaman-speaker of glamour"] = {
-	regExpSearch : /^(?=.*speaker)(?=.*glamour).*$/i,
-	subname : "Speaker of Glamour",
-	source : ["DA42:SS", 6],
-
-	// Calling Spells (always prepared)
-	spellcastingExtra : [
-		"charm person", "faerie fire",
-		"enthrall", "calm emotions",
-		"hypnotic pattern", "tongues",
-		"compulsion", "charm monster",
-		"modify memory", "seeming"
-	],
-
-	features : {
-
-		// Level 1
-		"subclassfeature1" : {
-			name : "Blessings of Glamour",
-			source : ["DA42:SS", 6],
-			minlevel : 1,
-
-			description : desc([
-				"I learn the Friends, Thaumaturgy, and Minor Illusion cantrips as shaman cantrips",
-				"I gain proficiency in Performance or Persuasion (choose one)"
-			]),
-
-			skillstxt : "\n\n" + toUni("Blessings of Glamour") + ": Choose one from Performance or Persuasion.",
-
-			spellcastingBonus : [{
-				name : "Blessings of Glamour",
-				spells : ["friends", "thaumaturgy", "minor illusion"],
-				selection : ["friends", "thaumaturgy", "minor illusion"],
-				times : 3
-			}]
-		},
-
-		// Level 1.1
-		"subclassfeature1.1" : {
-			name : "Glamourspeaker",
-			source : ["DA42:SS", 6],
-			minlevel : 1,
-
-			description : desc([
-				"As a bonus action, I heighten my presence toward one creature within 30 ft that can see and hear me",
-				"Until the end of my next turn, that creature has disadvantage on the next Wis save it makes against a charm or fear effect I cause"
-			]),
-
-			usages : "Cha mod",
-			recovery : "long rest",
-			action : [["bonus action", ""]]
-		},
-
-		// Level 6
-		"subclassfeature6" : {
-			name : "Borrowed Radiance",
-			source : ["DA42:SS", 6],
-			minlevel : 6,
-
-			description : desc([
-				"When a creature within 30 ft fails a save against being charmed or frightened by me, I gain a benefit",
-				"I choose either temp HP equal to my Cha mod + proficiency bonus, or advantage on my next attack roll or ability check",
-				"I can gain this benefit once per turn"
-			])
-		},
-
-		// Level 10
-		"subclassfeature10" : {
-			name : "Courtly Presence",
-			source : ["DA42:SS", 6],
-			minlevel : 10,
-
-			description : desc([
-				"I have advantage on saving throws against being charmed or frightened",
-				"When a creature attempts to charm or frighten me and fails, I may use my reaction",
-				"That creature must succeed on a Wis save or be charmed by me until the end of its next turn"
-			]),
-
-			action : [["reaction", ""]]
-		},
-
-		// Level 14
-		"subclassfeature14" : {
-			name : "Sovereign Allure",
-			source : ["DA42:SS", 6],
-			minlevel : 14,
-
-			description : desc([
-				"Once per long rest, as an action, I emanate an aura of undeniable presence for 1 minute",
-				"Hostile creatures within 20 ft have disadvantage on saves against being charmed or frightened by me",
-				"The first time a creature becomes charmed or frightened by me during this aura, it is incapacitated until the end of its next turn",
-				"Creatures that succeed on a save against this aura are immune to it for 24 hours"
-			]),
-
-			usages : 1,
-			recovery : "long rest",
-			action : [["action", ""]]
-		}
-	}
-};
-// ============================================================================
-// Speaker of Glamour (Shamanic Calling)
-// Author: DruidAllanon42
-// ============================================================================
-
-ClassSubList["shaman-speaker of glamour"] = {
-	regExpSearch : /^(?=.*speaker)(?=.*glamour).*$/i,
-	subname : "Speaker of Glamour",
-	source : ["DA42:SS", 6],
-
-	// Calling Spells (always prepared)
-	spellcastingExtra : [
-		"charm person", "faerie fire",
-		"enthrall", "calm emotions",
-		"hypnotic pattern", "tongues",
-		"compulsion", "charm monster",
-		"modify memory", "seeming"
-	],
-
-	features : {
-
-		// Level 1
-		"subclassfeature1" : {
-			name : "Blessings of Glamour",
-			source : ["DA42:SS", 6],
-			minlevel : 1,
-
-			description : desc([
-				"I learn the Friends, Thaumaturgy, and Minor Illusion cantrips as shaman cantrips",
-				"I gain proficiency in Performance or Persuasion (choose one)"
-			]),
-
-			skillstxt : "\n\n" + toUni("Blessings of Glamour") + ": Choose one from Performance or Persuasion.",
-
-			spellcastingBonus : [{
-				name : "Blessings of Glamour",
-				spells : ["friends", "thaumaturgy", "minor illusion"],
-				selection : ["friends", "thaumaturgy", "minor illusion"],
-				times : 3
-			}]
-		},
-
-		// Level 1.1
-		"subclassfeature1.1" : {
-			name : "Glamourspeaker",
-			source : ["DA42:SS", 6],
-			minlevel : 1,
-
-			description : desc([
-				"As a bonus action, I heighten my presence toward one creature within 30 ft that can see and hear me",
-				"Until the end of my next turn, that creature has disadvantage on the next Wis save it makes against a charm or fear effect I cause"
-			]),
-
-			usages : "Cha mod",
-			recovery : "long rest",
-			action : [["bonus action", ""]]
-		},
-
-		// Level 6
-		"subclassfeature6" : {
-			name : "Borrowed Radiance",
-			source : ["DA42:SS", 6],
-			minlevel : 6,
-
-			description : desc([
-				"When a creature within 30 ft fails a save against being charmed or frightened by me, I gain a benefit",
-				"I choose either temp HP equal to my Cha mod + proficiency bonus, or advantage on my next attack roll or ability check",
-				"I can gain this benefit once per turn"
-			])
-		},
-
-		// Level 10
-		"subclassfeature10" : {
-			name : "Courtly Presence",
-			source : ["DA42:SS", 6],
-			minlevel : 10,
-
-			description : desc([
-				"I have advantage on saving throws against being charmed or frightened",
-				"When a creature attempts to charm or frighten me and fails, I may use my reaction",
-				"That creature must succeed on a Wis save or be charmed by me until the end of its next turn"
-			]),
-
-			action : [["reaction", ""]]
-		},
-
-		// Level 14
-		"subclassfeature14" : {
-			name : "Sovereign Allure",
-			source : ["DA42:SS", 6],
-			minlevel : 14,
-
-			description : desc([
-				"Once per long rest, as an action, I emanate an aura of undeniable presence for 1 minute",
-				"Hostile creatures within 20 ft have disadvantage on saves against being charmed or frightened by me",
-				"The first time a creature becomes charmed or frightened by me during this aura, it is incapacitated until the end of its next turn",
-				"Creatures that succeed on a save against this aura are immune to it for 24 hours"
-			]),
-
-			usages : 1,
-			recovery : "long rest",
-			action : [["action", ""]]
-		}
-	}
-};
-if (shamanSubs.indexOf("shaman-speaker of masks") === -1) shamanSubs.push("shaman-speaker of masks");
 // ============================================================================
 // Speaker of Masks (Shamanic Calling)
 // Author: DruidAllanon42
@@ -1010,7 +682,6 @@ ClassSubList["shaman-speaker of masks"] = {
 	subname : "Speaker of Masks",
 	source : ["DA42:SS", 7],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"disguise self", "silent image",
 		"alter self", "pass without trace",
@@ -1021,7 +692,6 @@ ClassSubList["shaman-speaker of masks"] = {
 
 	features : {
 
-		// Level 1
 		"subclassfeature1" : {
 			name : "Blessings of Masks",
 			source : ["DA42:SS", 7],
@@ -1033,8 +703,6 @@ ClassSubList["shaman-speaker of masks"] = {
 			]),
 			skills : ["Deception"],
 			skillstxt : "\n\n" + toUni("Blessings of Masks") + ": Deception, and choose one from Performance or Stealth.",
-
-			// At-will Friends + Message
 			spellcastingBonus : [{
 				name : "Blessings of Masks (at will)",
 				spells : ["friends", "message"],
@@ -1049,7 +717,6 @@ ClassSubList["shaman-speaker of masks"] = {
 			}]
 		},
 
-		// Level 1.1
 		"subclassfeature1.1" : {
 			name : "Maskspeaker",
 			source : ["DA42:SS", 7],
@@ -1064,7 +731,6 @@ ClassSubList["shaman-speaker of masks"] = {
 			action : [["action", " (attune: 10 min)"]]
 		},
 
-		// Level 6
 		"subclassfeature6" : {
 			name : "Courtly Poison",
 			source : ["DA42:SS", 7],
@@ -1076,7 +742,6 @@ ClassSubList["shaman-speaker of masks"] = {
 			])
 		},
 
-		// Level 10
 		"subclassfeature10" : {
 			name : "Stolen Bearing",
 			source : ["DA42:SS", 7],
@@ -1091,7 +756,6 @@ ClassSubList["shaman-speaker of masks"] = {
 			action : [["reaction", ""]]
 		},
 
-		// Level 14
 		"subclassfeature14" : {
 			name : "Shattered Masquerade",
 			source : ["DA42:SS", 7],
@@ -1108,14 +772,17 @@ ClassSubList["shaman-speaker of masks"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of venom") === -1) shamanSubs.push("shaman-speaker of venom");
-// ===========================================================================
-// Speaker of Venom
-// ===========================================================================
+
+// ============================================================================
+// Speaker of Venom (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
 ClassSubList["shaman-speaker of venom"] = {
 	regExpSearch : /^(?=.*speaker)(?=.*venom|poison).*$/i,
 	subname : "Speaker of Venom",
 	source : ["DA42:SS", 9],
+
 	spellcastingExtra : [
 		"ray of sickness", "detect poison and disease",
 		"protection from poison", "suggestion",
@@ -1123,6 +790,7 @@ ClassSubList["shaman-speaker of venom"] = {
 		"blight", "greater invisibility",
 		"cloudkill", "dominate person"
 	],
+
 	features : {
 		"subclassfeature1" : {
 			name : "Blessings of Venom",
@@ -1143,6 +811,7 @@ ClassSubList["shaman-speaker of venom"] = {
 				times : 3
 			}]
 		},
+
 		"subclassfeature1.1" : {
 			name : "Venomspeaker",
 			source : ["DA42:SS", 9],
@@ -1155,6 +824,7 @@ ClassSubList["shaman-speaker of venom"] = {
 			recovery : "short rest",
 			action : [["action", ""]]
 		},
+
 		"subclassfeature6" : {
 			name : "Measured Dose",
 			source : ["DA42:SS", 9],
@@ -1167,6 +837,7 @@ ClassSubList["shaman-speaker of venom"] = {
 			usages : "Proficiency bonus per ",
 			recovery : "short rest"
 		},
+
 		"subclassfeature10" : {
 			name : "Antidote Rite",
 			source : ["DA42:SS", 9],
@@ -1179,6 +850,7 @@ ClassSubList["shaman-speaker of venom"] = {
 			recovery : "long rest",
 			action : [["action", ""]]
 		},
+
 		"subclassfeature14" : {
 			name : "Court of Serpents",
 			source : ["DA42:SS", 9],
@@ -1197,11 +869,9 @@ ClassSubList["shaman-speaker of venom"] = {
 	}
 };
 
-if (shamanSubs.indexOf("shaman-speaker of roots") === -1) shamanSubs.push("shaman-speaker of roots");
 // ============================================================================
 // Speaker of Roots (Shamanic Calling)
 // Author: DruidAllanon42
-// Source: DA42:SS
 // ============================================================================
 
 ClassSubList["shaman-speaker of roots"] = {
@@ -1209,7 +879,6 @@ ClassSubList["shaman-speaker of roots"] = {
 	subname : "Speaker of Roots",
 	source : ["DA42:SS", 10],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"entangle", "goodberry",
 		"barkskin", "pass without trace",
@@ -1220,7 +889,6 @@ ClassSubList["shaman-speaker of roots"] = {
 
 	features : {
 
-		// Level 1
 		"subclassfeature1" : {
 			name : "Blessings of Roots",
 			source : ["DA42:SS", 10],
@@ -1240,7 +908,6 @@ ClassSubList["shaman-speaker of roots"] = {
 			}]
 		},
 
-		// Level 1.1
 		"subclassfeature1.1" : {
 			name : "Rootspeaker",
 			source : ["DA42:SS", 10],
@@ -1255,7 +922,6 @@ ClassSubList["shaman-speaker of roots"] = {
 			action : [["action", ""]]
 		},
 
-		// Level 6
 		"subclassfeature6" : {
 			name : "Rootbound Step",
 			source : ["DA42:SS", 10],
@@ -1270,7 +936,6 @@ ClassSubList["shaman-speaker of roots"] = {
 			action : [["reaction", ""]]
 		},
 
-		// Level 10
 		"subclassfeature10" : {
 			name : "Living Lattice",
 			source : ["DA42:SS", 10],
@@ -1285,7 +950,6 @@ ClassSubList["shaman-speaker of roots"] = {
 			savetxt : { adv_vs : ["being poisoned"] }
 		},
 
-		// Level 14
 		"subclassfeature14" : {
 			name : "Worldroot Passage",
 			source : ["DA42:SS", 10],
@@ -1302,11 +966,10 @@ ClassSubList["shaman-speaker of roots"] = {
 		}
 	}
 };
-if (shamanSubs.indexOf("shaman-speaker of the wild hunt") === -1) {shamanSubs.push("shaman-speaker of the wild hunt");
+
 // ============================================================================
 // Speaker of the Wild Hunt (Shamanic Calling)
 // Author: DruidAllanon42
-// Source: DA42:SS
 // ============================================================================
 
 ClassSubList["shaman-speaker of the wild hunt"] = {
@@ -1314,7 +977,6 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 	subname : "Speaker of the Wild Hunt",
 	source : ["DA42:SS", 11],
 
-	// Calling Spells (always prepared)
 	spellcastingExtra : [
 		"hunter's mark", "longstrider",
 		"pass without trace", "hold person",
@@ -1325,7 +987,6 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 
 	features : {
 
-		// Level 1
 		"subclassfeature1" : {
 			name : "Blessings of the Hunt",
 			source : ["DA42:SS", 11],
@@ -1346,7 +1007,6 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 			speed : { allModes : "+10" }
 		},
 
-		// Level 1.1
 		"subclassfeature1.1" : {
 			name : "Huntspeaker",
 			source : ["DA42:SS", 11],
@@ -1362,7 +1022,6 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 			action : [["bonus action", " (name Quarry)"]]
 		},
 
-		// Level 6
 		"subclassfeature6" : {
 			name : "Relentless Advance",
 			source : ["DA42:SS", 11],
@@ -1377,7 +1036,6 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 			action : [["reaction", " (Quarry moves)"]]
 		},
 
-		// Level 10
 		"subclassfeature10" : {
 			name : "Terror of the Chase",
 			source : ["DA42:SS", 11],
@@ -1389,7 +1047,6 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 			])
 		},
 
-		// Level 14
 		"subclassfeature14" : {
 			name : "The Wild Hunt Rides",
 			source : ["DA42:SS", 11],
@@ -1408,3 +1065,108 @@ ClassSubList["shaman-speaker of the wild hunt"] = {
 		}
 	}
 };
+
+// ============================================================================
+// Speaker of Hearth (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of hearth"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*hearth).*$/i,
+	subname : "Speaker of Hearth",
+	source : ["DA42:SS", 12],
+
+	spellcastingExtra : [
+		"goodberry", "sanctuary",
+		"aid", "calm emotions",
+		"beacon of hope", "leomund's tiny hut",
+		"aura of life", "private sanctum",
+		"greater restoration", "hallow"
+	],
+
+	features : {
+
+		"subclassfeature1" : {
+			name : "Blessings of the Hearth",
+			source : ["DA42:SS", 12],
+			minlevel : 1,
+			description : desc([
+				"I learn Spare the Dying, Guidance, and Thaumaturgy as shaman cantrips",
+				"I gain proficiency in Medicine and Persuasion",
+				"As an action, I can create a small harmless flame (like a candle ember)",
+				"While I'm conscious, allies within 5 ft of me have advantage on saves vs being frightened"
+			]),
+			skills : ["Medicine", "Persuasion"],
+			spellcastingBonus : [{
+				name : "Blessings of the Hearth",
+				spells : ["spare the dying", "guidance", "thaumaturgy"],
+				selection : ["spare the dying", "guidance", "thaumaturgy"],
+				times : 3
+			}],
+			action : [["action", " (small harmless flame)"]],
+			savetxt : { text : ["Allies within 5 ft: Adv. on saves vs frightened (while I'm conscious)"] }
+		},
+
+		"subclassfeature1.1" : {
+			name : "Hearthspeaker",
+			source : ["DA42:SS", 12],
+			minlevel : 1,
+			description : desc([
+				"As an action while within a dwelling, campsite, or willing resting place, I can ask Hearth-spirits three questions",
+				"Questions can concern recent violence, who rested safely, whether the place feels welcoming/strained/violated, or how to restore it",
+				"Once used, I can't use this again until I finish a short or long rest"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["action", ""]]
+		},
+
+		"subclassfeature6" : {
+			name : "Shared Warmth",
+			source : ["DA42:SS", 12],
+			minlevel : 6,
+			description : desc([
+				"Once per short rest as a bonus action, I choose a number of creatures within 30 ft up to my Cha modifier (min 1)",
+				"Each gains temporary HP equal to my shaman level for 1 minute",
+				"While a creature has these temp HP, it has advantage on saves vs being charmed or frightened"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["bonus action", ""]]
+		},
+
+		"subclassfeature10" : {
+			name : "Circle of Shelter",
+			source : ["DA42:SS", 12],
+			minlevel : 10,
+			description : desc([
+				"Once per long rest as an action, I create a Hearth Circle centered on me (15-ft radius) for 1 minute (no concentration)",
+				"Allies inside have resistance to cold and fire damage",
+				"At the start of an ally's turn inside, if it has less than half its HP max, it regains HP equal to my Cha modifier",
+				"Hostiles have disadvantage on ability checks made to intimidate or frighten creatures inside"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]],
+			dmgres : ["Cold", "Fire"]
+		},
+
+		"subclassfeature14" : {
+			name : "The Hearth Endures",
+			source : ["DA42:SS", 12],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest as a reaction, when I or an ally within 30 ft would drop to 0 HP, it instead drops to 1 HP",
+				"It then regains HP equal to my Cha modifier + my shaman level and may stand up if prone",
+				"Until the end of its next turn, it is immune to being frightened",
+				"Until the end of its next turn, it has advantage on its next attack roll, ability check, or saving throw"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["reaction", " (prevent 0 HP)"]],
+			savetxt : { text : ["The Hearth Endures target: Immune to frightened until end of its next turn"] }
+		}
+	}
+};
+
+// End of Shaman - Speakers Supplemental

@@ -1108,3 +1108,303 @@ ClassSubList["shaman-speaker of masks"] = {
 		}
 	}
 };
+if (shamanSubs.indexOf("shaman-speaker of venom") === -1) shamanSubs.push("shaman-speaker of venom");
+// ===========================================================================
+// Speaker of Venom
+// ===========================================================================
+ClassSubList["shaman-speaker of venom"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*venom|poison).*$/i,
+	subname : "Speaker of Venom",
+	source : ["DA42:SS", 9],
+	spellcastingExtra : [
+		"ray of sickness", "detect poison and disease",
+		"protection from poison", "suggestion",
+		"stinking cloud", "bestow curse",
+		"blight", "greater invisibility",
+		"cloudkill", "dominate person"
+	],
+	features : {
+		"subclassfeature1" : {
+			name : "Blessings of Venom",
+			source : ["DA42:SS", 9],
+			minlevel : 1,
+			description : desc([
+				"I learn the Poison Spray, Druidcraft, and Minor Illusion cantrips as shaman cantrips",
+				"I gain proficiency with the poisoner's kit",
+				"I gain proficiency in Deception or Medicine (choose one)",
+				"I have advantage on ability checks to identify poisons and detect tainted food or drink"
+			]),
+			toolProfs : [["Poisoner's kit", true]],
+			skillstxt : "\n\n" + toUni("Blessings of Venom") + ": Choose one from Deception or Medicine.",
+			spellcastingBonus : [{
+				name : "Blessings of Venom",
+				spells : ["poison spray", "druidcraft", "minor illusion"],
+				selection : ["poison spray", "druidcraft", "minor illusion"],
+				times : 3
+			}]
+		},
+		"subclassfeature1.1" : {
+			name : "Venomspeaker",
+			source : ["DA42:SS", 9],
+			minlevel : 1,
+			description : desc([
+				"As an action, I touch a poison/venom/toxic plant or tainted food/drink and ask three questions",
+				"It answers in impressions (urgency/hunger/patience/rage), not exact words"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["action", ""]]
+		},
+		"subclassfeature6" : {
+			name : "Measured Dose",
+			source : ["DA42:SS", 9],
+			minlevel : 6,
+			description : desc([
+				"Once per turn when I deal damage with a shaman spell or feature, I impose one Dose until start of my next turn",
+				"Bitter Breath: target speed -10 ft; Numbing Veins: target can't take reactions; Blurred Tongue: dis. on next ability check",
+				"A creature can be affected by only one Dose at a time"
+			]),
+			usages : "Proficiency bonus per ",
+			recovery : "short rest"
+		},
+		"subclassfeature10" : {
+			name : "Antidote Rite",
+			source : ["DA42:SS", 9],
+			minlevel : 10,
+			description : desc([
+				"As an action, I can spend 1 spirit point to end poisoned, paralyzed, or blinded on a creature I touch",
+				"Alternatively, I neutralize one poison affecting it and it has advantage on saves vs poison for 1 hour"
+			]),
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["action", ""]]
+		},
+		"subclassfeature14" : {
+			name : "Court of Serpents",
+			source : ["DA42:SS", 9],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I invoke a 20-ft aura for 1 minute",
+				"Hostiles have disadvantage on saves vs my poison and necrotic effects",
+				"First time each turn a hostile within aura deals damage to me or ally, it takes poison or psychic damage = my proficiency bonus",
+				"Whenever I apply a Dose, I may also deal extra poison damage = my Cha modifier",
+				"A creature that succeeds on a saving throw against this aura is immune for 24 hours"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+
+if (shamanSubs.indexOf("shaman-speaker of roots") === -1) shamanSubs.push("shaman-speaker of roots");
+// ============================================================================
+// Speaker of Roots (Shamanic Calling)
+// Author: DruidAllanon42
+// Source: DA42:SS
+// ============================================================================
+
+ClassSubList["shaman-speaker of roots"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*roots?).*$/i,
+	subname : "Speaker of Roots",
+	source : ["DA42:SS", 10],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"entangle", "goodberry",
+		"barkskin", "pass without trace",
+		"plant growth", "speak with plants",
+		"grasping vine", "freedom of movement",
+		"tree stride", "commune with nature"
+	],
+
+	features : {
+
+		// Level 1
+		"subclassfeature1" : {
+			name : "Blessings of Roots",
+			source : ["DA42:SS", 10],
+			minlevel : 1,
+			description : desc([
+				"I learn Druidcraft, Mold Earth, and Thorn Whip as shaman cantrips",
+				"I gain proficiency in Nature or Survival (choose one)",
+				"I ignore difficult terrain created by plants and natural undergrowth",
+				"While in contact with the ground, I always know true north"
+			]),
+			skillstxt : "\n\n" + toUni("Blessings of Roots") + ": Choose one from Nature or Survival.",
+			spellcastingBonus : [{
+				name : "Blessings of Roots",
+				spells : ["druidcraft", "mold earth", "thorn whip"],
+				selection : ["druidcraft", "mold earth", "thorn whip"],
+				times : 3
+			}]
+		},
+
+		// Level 1.1
+		"subclassfeature1.1" : {
+			name : "Rootspeaker",
+			source : ["DA42:SS", 10],
+			minlevel : 1,
+			description : desc([
+				"As an action while touching natural ground, I can ask local root-spirits three questions",
+				"Answers are impressions about movement, water, disturbed earth/hidden hollows, and unnatural taint",
+				"Once used, I can't use this again until I finish a short or long rest"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["action", ""]]
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Rootbound Step",
+			source : ["DA42:SS", 10],
+			minlevel : 6,
+			description : desc([
+				"Reaction: when I or an ally within 30 ft would be pushed/pulled/knocked prone/moved against their will, I root them",
+				"Choose: the target isn't moved and isn't knocked prone, OR it moves up to 5 ft and isn't knocked prone",
+				"Afterward, the target's speed is reduced by 10 ft until the end of its next turn"
+			]),
+			usages : "Proficiency bonus per ",
+			recovery : "short rest",
+			action : [["reaction", ""]]
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Living Lattice",
+			source : ["DA42:SS", 10],
+			minlevel : 10,
+			description : desc([
+				"While touching natural ground, I gain tremorsense 10 ft",
+				"I have advantage on Perception checks to detect creatures/objects in contact with the same ground",
+				"I have resistance to poison damage and advantage on saves against being poisoned",
+				"I can communicate simple ideas to plants without magic (grow/open/still/warn)"
+			]),
+			dmgres : ["Poison"],
+			savetxt : { adv_vs : ["being poisoned"] }
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "Worldroot Passage",
+			source : ["DA42:SS", 10],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action while touching natural ground, I and up to 8 willing creatures within 10 ft travel via roots",
+				"We emerge in an unoccupied space I can see within 300 ft that is also natural ground",
+				"This doesn't provoke opportunity attacks and ignores nonmagical barriers between points",
+				"It can't pass through worked stone or metal foundations thicker than 5 ft"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+if (shamanSubs.indexOf("shaman-speaker of the wild hunt") === -1) {shamanSubs.push("shaman-speaker of the wild hunt");
+// ============================================================================
+// Speaker of the Wild Hunt (Shamanic Calling)
+// Author: DruidAllanon42
+// Source: DA42:SS
+// ============================================================================
+
+ClassSubList["shaman-speaker of the wild hunt"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*wild)(?=.*hunt).*$/i,
+	subname : "Speaker of the Wild Hunt",
+	source : ["DA42:SS", 11],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"hunter's mark", "longstrider",
+		"pass without trace", "hold person",
+		"haste", "fear",
+		"freedom of movement", "locate creature",
+		"steel wind strike", "hold monster"
+	],
+
+	features : {
+
+		// Level 1
+		"subclassfeature1" : {
+			name : "Blessings of the Hunt",
+			source : ["DA42:SS", 11],
+			minlevel : 1,
+			description : desc([
+				"I learn Primal Savagery, Guidance, and Thaumaturgy as shaman cantrips",
+				"I gain proficiency in Survival and Intimidation",
+				"My speed increases by 10 ft while not wearing heavy armor",
+				"I have advantage on Survival checks to track creatures I've seen within the last 24 hours"
+			]),
+			skills : ["Survival", "Intimidation"],
+			spellcastingBonus : [{
+				name : "Blessings of the Hunt",
+				spells : ["primal savagery", "guidance", "thaumaturgy"],
+				selection : ["primal savagery", "guidance", "thaumaturgy"],
+				times : 3
+			}],
+			speed : { allModes : "+10" }
+		},
+
+		// Level 1.1
+		"subclassfeature1.1" : {
+			name : "Huntspeaker",
+			source : ["DA42:SS", 11],
+			minlevel : 1,
+			description : desc([
+				"Bonus action: I name a creature I can see within 60 ft as my Quarry (not incapacitated)",
+				"While within 1 mile, I always know the direction of my Quarry",
+				"I have advantage on Perception/Survival checks to locate or follow my Quarry",
+				"Once per turn, when I hit my Quarry with a weapon attack or shaman spell, I deal extra damage = proficiency bonus"
+			]),
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["bonus action", " (name Quarry)"]]
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Relentless Advance",
+			source : ["DA42:SS", 11],
+			minlevel : 6,
+			description : desc([
+				"When I move toward my Quarry on my turn, difficult terrain doesn't cost me extra movement",
+				"Opportunity attacks against me are made at disadvantage while I'm moving toward my Quarry",
+				"Reaction: when my Quarry teleports or magically moves away, I move up to half my speed toward the space it left or appeared in"
+			]),
+			usages : "Proficiency bonus per ",
+			recovery : "short rest",
+			action : [["reaction", " (Quarry moves)"]]
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Terror of the Chase",
+			source : ["DA42:SS", 11],
+			minlevel : 10,
+			description : desc([
+				"When my Quarry starts its turn within 30 ft, it must make a Wis save vs my shaman spell DC",
+				"Fail: its speed -10 until start of its next turn and it has disadvantage on its first attack roll or saving throw that turn",
+				"Success: it is immune to this effect for 24 hours (the Quarry remains marked)"
+			])
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "The Wild Hunt Rides",
+			source : ["DA42:SS", 11],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I invoke the Wild Hunt for 1 minute",
+				"I gain a spectral mount or hunting form; my speed increases by 20 ft; I ignore penalties for water/mud/snow/undergrowth",
+				"I may move through hostile creatures' spaces (as difficult terrain)",
+				"My Quarry has disadvantage on saves vs being frightened, restrained, or knocked prone by me",
+				"First time each turn I deal damage to my Quarry, it takes extra psychic damage = my Cha modifier",
+				"If my Quarry drops to 0 HP, I may name a new Quarry immediately without expending a Huntspeaker use"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};

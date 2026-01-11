@@ -683,3 +683,428 @@ ClassSubList["shaman-speaker of seasons"] = {
 		}
 	}
 };
+if (shamanSubs.indexOf("shaman-speaker of glamour") === -1) shamanSubs.push("shaman-speaker of glamour");
+// ============================================================================
+// Speaker of Glamour (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of glamour"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*glamour).*$/i,
+	subname : "Speaker of Glamour",
+	source : ["DA42:SS", 6],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"charm person", "faerie fire",
+		"enthrall", "calm emotions",
+		"hypnotic pattern", "tongues",
+		"compulsion", "charm monster",
+		"modify memory", "seeming"
+	],
+
+	features : {
+
+		// Level 1
+		"subclassfeature1" : {
+			name : "Blessings of Glamour",
+			source : ["DA42:SS", 6],
+			minlevel : 1,
+
+			description : desc([
+				"I learn the Friends, Thaumaturgy, and Minor Illusion cantrips as shaman cantrips",
+				"I gain proficiency in Performance or Persuasion (choose one)"
+			]),
+
+			skillstxt : "\n\n" + toUni("Blessings of Glamour") + ": Choose one from Performance or Persuasion.",
+
+			spellcastingBonus : [{
+				name : "Blessings of Glamour",
+				spells : ["friends", "thaumaturgy", "minor illusion"],
+				selection : ["friends", "thaumaturgy", "minor illusion"],
+				times : 3
+			}]
+		},
+
+		// Level 1.1
+		"subclassfeature1.1" : {
+			name : "Glamourspeaker",
+			source : ["DA42:SS", 6],
+			minlevel : 1,
+
+			description : desc([
+				"As a bonus action, I heighten my presence toward one creature within 30 ft that can see and hear me",
+				"Until the end of my next turn, that creature has disadvantage on the next Wis save it makes against a charm or fear effect I cause"
+			]),
+
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["bonus action", ""]]
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Borrowed Radiance",
+			source : ["DA42:SS", 6],
+			minlevel : 6,
+
+			description : desc([
+				"When a creature within 30 ft fails a save against being charmed or frightened by me, I gain a benefit",
+				"I choose either temp HP equal to my Cha mod + proficiency bonus, or advantage on my next attack roll or ability check",
+				"I can gain this benefit once per turn"
+			])
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Courtly Presence",
+			source : ["DA42:SS", 6],
+			minlevel : 10,
+
+			description : desc([
+				"I have advantage on saving throws against being charmed or frightened",
+				"When a creature attempts to charm or frighten me and fails, I may use my reaction",
+				"That creature must succeed on a Wis save or be charmed by me until the end of its next turn"
+			]),
+
+			action : [["reaction", ""]]
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "Sovereign Allure",
+			source : ["DA42:SS", 6],
+			minlevel : 14,
+
+			description : desc([
+				"Once per long rest, as an action, I emanate an aura of undeniable presence for 1 minute",
+				"Hostile creatures within 20 ft have disadvantage on saves against being charmed or frightened by me",
+				"The first time a creature becomes charmed or frightened by me during this aura, it is incapacitated until the end of its next turn",
+				"Creatures that succeed on a save against this aura are immune to it for 24 hours"
+			]),
+
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+// ============================================================================
+// Speaker of Glamour (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of glamour"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*glamour).*$/i,
+	subname : "Speaker of Glamour",
+	source : ["DA42:SS", 6],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"charm person", "faerie fire",
+		"enthrall", "calm emotions",
+		"hypnotic pattern", "tongues",
+		"compulsion", "charm monster",
+		"modify memory", "seeming"
+	],
+
+	features : {
+
+		// Level 1
+		"subclassfeature1" : {
+			name : "Blessings of Glamour",
+			source : ["DA42:SS", 6],
+			minlevel : 1,
+
+			description : desc([
+				"I learn the Friends, Thaumaturgy, and Minor Illusion cantrips as shaman cantrips",
+				"I gain proficiency in Performance or Persuasion (choose one)"
+			]),
+
+			skillstxt : "\n\n" + toUni("Blessings of Glamour") + ": Choose one from Performance or Persuasion.",
+
+			spellcastingBonus : [{
+				name : "Blessings of Glamour",
+				spells : ["friends", "thaumaturgy", "minor illusion"],
+				selection : ["friends", "thaumaturgy", "minor illusion"],
+				times : 3
+			}]
+		},
+
+		// Level 1.1
+		"subclassfeature1.1" : {
+			name : "Glamourspeaker",
+			source : ["DA42:SS", 6],
+			minlevel : 1,
+
+			description : desc([
+				"As a bonus action, I heighten my presence toward one creature within 30 ft that can see and hear me",
+				"Until the end of my next turn, that creature has disadvantage on the next Wis save it makes against a charm or fear effect I cause"
+			]),
+
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["bonus action", ""]]
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Borrowed Radiance",
+			source : ["DA42:SS", 6],
+			minlevel : 6,
+
+			description : desc([
+				"When a creature within 30 ft fails a save against being charmed or frightened by me, I gain a benefit",
+				"I choose either temp HP equal to my Cha mod + proficiency bonus, or advantage on my next attack roll or ability check",
+				"I can gain this benefit once per turn"
+			])
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Courtly Presence",
+			source : ["DA42:SS", 6],
+			minlevel : 10,
+
+			description : desc([
+				"I have advantage on saving throws against being charmed or frightened",
+				"When a creature attempts to charm or frighten me and fails, I may use my reaction",
+				"That creature must succeed on a Wis save or be charmed by me until the end of its next turn"
+			]),
+
+			action : [["reaction", ""]]
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "Sovereign Allure",
+			source : ["DA42:SS", 6],
+			minlevel : 14,
+
+			description : desc([
+				"Once per long rest, as an action, I emanate an aura of undeniable presence for 1 minute",
+				"Hostile creatures within 20 ft have disadvantage on saves against being charmed or frightened by me",
+				"The first time a creature becomes charmed or frightened by me during this aura, it is incapacitated until the end of its next turn",
+				"Creatures that succeed on a save against this aura are immune to it for 24 hours"
+			]),
+
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+// ============================================================================
+// Speaker of Glamour (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of glamour"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*glamour).*$/i,
+	subname : "Speaker of Glamour",
+	source : ["DA42:SS", 6],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"charm person", "faerie fire",
+		"enthrall", "calm emotions",
+		"hypnotic pattern", "tongues",
+		"compulsion", "charm monster",
+		"modify memory", "seeming"
+	],
+
+	features : {
+
+		// Level 1
+		"subclassfeature1" : {
+			name : "Blessings of Glamour",
+			source : ["DA42:SS", 6],
+			minlevel : 1,
+
+			description : desc([
+				"I learn the Friends, Thaumaturgy, and Minor Illusion cantrips as shaman cantrips",
+				"I gain proficiency in Performance or Persuasion (choose one)"
+			]),
+
+			skillstxt : "\n\n" + toUni("Blessings of Glamour") + ": Choose one from Performance or Persuasion.",
+
+			spellcastingBonus : [{
+				name : "Blessings of Glamour",
+				spells : ["friends", "thaumaturgy", "minor illusion"],
+				selection : ["friends", "thaumaturgy", "minor illusion"],
+				times : 3
+			}]
+		},
+
+		// Level 1.1
+		"subclassfeature1.1" : {
+			name : "Glamourspeaker",
+			source : ["DA42:SS", 6],
+			minlevel : 1,
+
+			description : desc([
+				"As a bonus action, I heighten my presence toward one creature within 30 ft that can see and hear me",
+				"Until the end of my next turn, that creature has disadvantage on the next Wis save it makes against a charm or fear effect I cause"
+			]),
+
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["bonus action", ""]]
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Borrowed Radiance",
+			source : ["DA42:SS", 6],
+			minlevel : 6,
+
+			description : desc([
+				"When a creature within 30 ft fails a save against being charmed or frightened by me, I gain a benefit",
+				"I choose either temp HP equal to my Cha mod + proficiency bonus, or advantage on my next attack roll or ability check",
+				"I can gain this benefit once per turn"
+			])
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Courtly Presence",
+			source : ["DA42:SS", 6],
+			minlevel : 10,
+
+			description : desc([
+				"I have advantage on saving throws against being charmed or frightened",
+				"When a creature attempts to charm or frighten me and fails, I may use my reaction",
+				"That creature must succeed on a Wis save or be charmed by me until the end of its next turn"
+			]),
+
+			action : [["reaction", ""]]
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "Sovereign Allure",
+			source : ["DA42:SS", 6],
+			minlevel : 14,
+
+			description : desc([
+				"Once per long rest, as an action, I emanate an aura of undeniable presence for 1 minute",
+				"Hostile creatures within 20 ft have disadvantage on saves against being charmed or frightened by me",
+				"The first time a creature becomes charmed or frightened by me during this aura, it is incapacitated until the end of its next turn",
+				"Creatures that succeed on a save against this aura are immune to it for 24 hours"
+			]),
+
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+if (shamanSubs.indexOf("shaman-speaker of masks") === -1) shamanSubs.push("shaman-speaker of masks");
+// ============================================================================
+// Speaker of Masks (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of masks"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*masks?).*$/i,
+	subname : "Speaker of Masks",
+	source : ["DA42:SS", 7],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"disguise self", "silent image",
+		"alter self", "pass without trace",
+		"nondetection", "feign death",
+		"greater invisibility", "freedom of movement",
+		"mislead", "seeming"
+	],
+
+	features : {
+
+		// Level 1
+		"subclassfeature1" : {
+			name : "Blessings of Masks",
+			source : ["DA42:SS", 7],
+			minlevel : 1,
+			description : desc([
+				"I can cast Friends and Message at will, without expending spirit points",
+				"I learn Disguise Self, which counts as a shaman spell for me",
+				"I gain proficiency in Deception and choose one from Performance or Stealth"
+			]),
+			skills : ["Deception"],
+			skillstxt : "\n\n" + toUni("Blessings of Masks") + ": Deception, and choose one from Performance or Stealth.",
+
+			// At-will Friends + Message
+			spellcastingBonus : [{
+				name : "Blessings of Masks (at will)",
+				spells : ["friends", "message"],
+				selection : ["friends", "message"],
+				atwill : true,
+				times : 2
+			}, {
+				name : "Blessings of Masks",
+				spells : ["disguise self"],
+				selection : ["disguise self"],
+				known : true
+			}]
+		},
+
+		// Level 1.1
+		"subclassfeature1.1" : {
+			name : "Maskspeaker",
+			source : ["DA42:SS", 7],
+			minlevel : 1,
+			description : desc([
+				"After observing a humanoid for at least 1 minute, I can spend 10 minutes attuning to a Mask (a social role)",
+				"While wearing a Mask: I have advantage on Cha checks to pass as that role",
+				"Creatures have disadvantage on Insight checks to detect my deception",
+				"This doesn't grant a physical disguise, mimicry of voice, or the creature's knowledge",
+				"I can maintain only one Mask at a time; creating a new one ends the previous"
+			]),
+			action : [["action", " (attune: 10 min)"]]
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Courtly Poison",
+			source : ["DA42:SS", 7],
+			minlevel : 6,
+			description : desc([
+				"Once per turn, when I deal damage to a creature that is charmed by me, surprised by me, or unaware of my true intent",
+				"I may deal extra poison or psychic damage (my choice) equal to my proficiency bonus",
+				"This represents spiritual influence and courtly pressure, not a physical toxin"
+			])
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Stolen Bearing",
+			source : ["DA42:SS", 7],
+			minlevel : 10,
+			description : desc([
+				"As a reaction when a creature I can see within 30 ft fails a saving throw, I steal its bearing until end of my next turn",
+				"I have advantage on attack rolls against it",
+				"It has disadvantage on saving throws against my shaman spells and features"
+			]),
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["reaction", ""]]
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "Shattered Masquerade",
+			source : ["DA42:SS", 7],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I unravel false identities for 1 minute",
+				"Creatures of my choice within 20 ft can't gain advantage on Deception or Stealth checks",
+				"Creatures relying on disguises/false identities/assumed allegiances have disadvantage on saves vs my spells/features",
+				"When a creature fails a saving throw against me for the first time on a turn, it's frightened of me until end of its next turn"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};

@@ -444,3 +444,242 @@ ClassSubList["shaman-speaker of threads"] = {
 	}
 };
 if (shamanSubs.indexOf("shaman-speaker of thorns") === -1) shamanSubs.push("shaman-speaker of thorns");
+// ============================================================================
+// Speaker of Thorns (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of thorns"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*thorns).*$/i,
+	subname : "Speaker of Thorns",
+	source : ["DA42:SS", 4],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"entangle", "sanctuary",
+		"spike growth", "warding bond",
+		"plant growth", "spirit shroud",
+		"guardian of nature", "grasping vine",
+		"antilife shell", "wall of thorns"
+	],
+
+	features : {
+
+		"subclassfeature1" : {
+			name : "Blessings of Thorns",
+			source : ["DA42:SS", 4],
+			minlevel : 1,
+
+			skills : ["Nature"],
+			skillstxt : "\n\n" + toUni("Blessings of Thorns") + ": Nature.",
+
+			description : desc([
+				"I learn the Thorn Whip, Druidcraft, and Primal Savagery cantrips as shaman cantrips",
+				"I gain proficiency in Nature",
+				"Difficult terrain created by nonmagical plants does not cost me extra movement"
+			]),
+
+			spellcastingBonus : [{
+				name : "Blessings of Thorns",
+				spells : ["thorn whip", "druidcraft", "primal savagery"],
+				selection : ["thorn whip", "druidcraft", "primal savagery"],
+				times : 3
+			}]
+		},
+
+		"subclassfeature1.1" : {
+			name : "Thornspeaker",
+			source : ["DA42:SS", 4],
+			minlevel : 1,
+			description : desc([
+				"As an action, I speak with a hedge, bramble, treeline, root network, or other natural boundary within 30 ft",
+				"I may ask the thorn-spirits three questions about recent crossings/lingering, hostility/respect, and directions",
+				"They answer in sensations (tension/tearing/pressure/calm), not exact words",
+				"Once I speak with a specific boundary, I can't do so again until a long rest"
+			]),
+			action : [["action", ""]]
+		},
+
+		"subclassfeature6" : {
+			name : "Barbed Reprisal",
+			source : ["DA42:SS", 4],
+			minlevel : 6,
+			description : desc([
+				"When a creature I can see within 30 ft moves willingly into/through difficult terrain or enters my reach without my consent, I can react",
+				"It takes piercing damage equal to my Cha modifier and its speed is reduced by 10 ft until the end of its turn",
+				"I can use this a number of times equal to my proficiency bonus, regaining uses on a short or long rest"
+			]),
+			usages : "Proficiency bonus per ",
+			recovery : "short rest",
+			action : [["reaction", ""]]
+		},
+
+		"subclassfeature10" : {
+			name : "Living Boundary",
+			source : ["DA42:SS", 4],
+			minlevel : 10,
+			description : desc([
+				"I have resistance to piercing damage",
+				"Creatures provoke opportunity attacks from me even if they take Disengage while within 10 ft of me, unless friendly to me",
+				"When a hostile creature starts its turn within 10 ft of me, its speed is reduced by 10 ft until the start of its next turn"
+			]),
+			dmgres : ["Piercing"]
+		},
+
+		"subclassfeature14" : {
+			name : "Crown of Briars",
+			source : ["DA42:SS", 4],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I conjure a Briar Ward centered on me for 1 minute",
+				"Hostiles treat the area within 20 ft as difficult terrain",
+				"First time on each turn a hostile moves within the ward, it takes piercing damage equal to my proficiency bonus",
+				"Allies within the ward have adv. on saves vs being grappled, restrained, or knocked prone"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+if (shamanSubs.indexOf("shaman-speaker of seasons") === -1) shamanSubs.push("shaman-speaker of seasons");
+// ============================================================================
+// Speaker of Seasons (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of seasons"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*seasons).*$/i,
+	subname : "Speaker of Seasons",
+	source : ["DA42:SS", 5],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"faerie fire", "absorb elements",
+		"moonbeam", "enhance ability",
+		"plant growth", "elemental weapon",
+		"freedom of movement", "ice storm",
+		"antilife shell", "control weather"
+	],
+
+	features : {
+
+		// Level 1: choose Seasonal Aspect (grants cantrips + sets the baseline text)
+		"subclassfeature1" : {
+			name : "Blessings of Seasons",
+			source : ["DA42:SS", 5],
+			minlevel : 1,
+			description : desc([
+				"After each long rest, I adopt a Seasonal Aspect: Spring, Summer, Autumn, or Winter",
+				"I learn three cantrips based on my current Aspect (see choice below); these count as shaman cantrips",
+				"I gain proficiency in Nature or Survival (choose one; note it in the skills section)"
+			]),
+			skillstxt : "\n\n" + toUni("Blessings of Seasons") + ": Choose one from Nature or Survival.",
+			choices : ["Spring Aspect", "Summer Aspect", "Autumn Aspect", "Winter Aspect"],
+
+			"spring aspect" : {
+				name : "Seasonal Aspect: Spring",
+				source : ["DA42:SS", 5],
+				description : desc([
+					"Spring Boon: When I restore HP to a creature, it gains temp HP equal to my Cha modifier (once per turn)"
+				]),
+				spellcastingBonus : [{
+					name : "Spring Aspect",
+					spells : ["druidcraft", "guidance", "spare the dying"],
+					selection : ["druidcraft", "guidance", "spare the dying"],
+					times : 3
+				}]
+			},
+
+			"summer aspect" : {
+				name : "Seasonal Aspect: Summer",
+				source : ["DA42:SS", 5],
+				description : desc([
+					"Summer Boon: When I deal spell damage, I can add my Cha modifier to one damage roll per turn"
+				]),
+				spellcastingBonus : [{
+					name : "Summer Aspect",
+					spells : ["produce flame", "create bonfire", "thaumaturgy"],
+					selection : ["produce flame", "create bonfire", "thaumaturgy"],
+					times : 3
+				}]
+			},
+
+			"autumn aspect" : {
+				name : "Seasonal Aspect: Autumn",
+				source : ["DA42:SS", 5],
+				description : desc([
+					"Autumn Boon: I have advantage on Deception and Insight checks, and I can't be surprised while conscious"
+				]),
+				spellcastingBonus : [{
+					name : "Autumn Aspect",
+					spells : ["minor illusion", "vicious mockery", "mage hand"],
+					selection : ["minor illusion", "vicious mockery", "mage hand"],
+					times : 3
+				}]
+			},
+
+			"winter aspect" : {
+				name : "Seasonal Aspect: Winter",
+				source : ["DA42:SS", 5],
+				description : desc([
+					"Winter Boon: I gain resistance to cold damage",
+					"Winter Boon: Hostile creatures within 10 ft treat the area as difficult terrain the first time each turn they enter it"
+				]),
+				spellcastingBonus : [{
+					name : "Winter Aspect",
+					spells : ["frostbite", "ray of frost", "resistance"],
+					selection : ["frostbite", "ray of frost", "resistance"],
+					times : 3
+				}]
+			}
+		},
+
+		// Level 6
+		"subclassfeature6" : {
+			name : "Turning of the Wheel",
+			source : ["DA42:SS", 5],
+			minlevel : 6,
+			description : desc([
+				"Once per short rest, as a bonus action, I can shift my Seasonal Aspect for 1 minute",
+				"When I shift, I also gain an immediate effect based on the new season:",
+				"Spring: I or an ally within 30 ft regains HP equal to 2d8 + Cha modifier",
+				"Summer: One creature within 30 ft takes fire or radiant damage equal to 2d8 + Cha modifier",
+				"Autumn: One creature within 30 ft must make a save or have disadvantage on attacks until end of its next turn",
+				"Winter: I create a 10-ft-radius patch of numbing cold (difficult terrain) within 60 ft for 1 minute"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["bonus action", ""]]
+		},
+
+		// Level 10
+		"subclassfeature10" : {
+			name : "Court of Seasons",
+			source : ["DA42:SS", 5],
+			minlevel : 10,
+			description : desc([
+				"While conscious, I project a 10-ft aura based on my current Seasonal Aspect:",
+				"Spring: Allies have advantage vs poison/disease and regain +1d4 HP when they receive healing",
+				"Summer: Allies have advantage on saving throws against being frightened",
+				"Autumn: Enemies have disadvantage on Perception checks and can't benefit from being hidden from me",
+				"Winter: Enemies have their speed reduced by 10 ft while in the aura (no save)"
+			])
+		},
+
+		// Level 14
+		"subclassfeature14" : {
+			name : "Sovereign Cycle",
+			source : ["DA42:SS", 5],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I invoke the Full Cycle for 1 minute",
+				"At the start of each of my turns, I may change my Seasonal Aspect (no action)",
+				"The first time each turn I change aspect, I trigger that season's Turning of the Wheel immediate effect (no bonus action)"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};

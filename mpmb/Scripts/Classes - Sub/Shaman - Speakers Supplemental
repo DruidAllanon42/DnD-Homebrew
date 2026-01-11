@@ -1,0 +1,446 @@
+/*	-WHAT IS THIS?-
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
+	-KEEP IN MIND-
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
+*/
+
+/*  -INFORMATION-
+	Subject:    Class (Subclass Supplement)
+	Effect:     Adds additional Shamanic Calling options ("Speaker" subclasses) for the Shaman class by Michael Wolf (DMs Guild)
+	Author:     DruidAllanon42
+	Repository: https://github.com/DruidAllanon42
+	Version:    0.1.0
+	Date:       2026-01-10
+
+	Credits:
+	- Original Shaman class: Michael Wolf
+	- Original transcription for MPMB: Derek, Fourleafclov, and MorePurpleMoreBetter
+	- This supplement (additional subclasses): DruidAllanon42
+*/
+
+var iFileName = "Shaman - Speakers Supplemental [by DruidAllanon42].js";
+RequiredSheetVersion(12.999);
+
+// add homebrew source (DruidAllanon42)
+SourceList["DA42:SS"] = {
+	name : "DruidAllanon42: Shaman Speaker Supplement",
+	abbreviation : "DA42:SS",
+	group : "Homebrew",
+	url : "https://github.com/DruidAllanon42",
+	date : "2026/01/10"
+};
+// ---- Hook: add new Speakers to the existing Shaman class (if present) ----
+if (ClassList["shaman"] && ClassList["shaman"].subclasses && ClassList["shaman"].subclasses[1]) {
+	var shamanSubs = ClassList["shaman"].subclasses[1];
+	if (shamanSubs.indexOf("shaman-speaker of the veil") === -1) shamanSubs.push("shaman-speaker of the veil");
+	// Add future speakers here as you create them:
+	// if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
+}
+// ============================================================================
+// Speaker of the Veil (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of the veil"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*veil).*$/i,
+	subname : "Speaker of the Veil",
+	source : ["DA42:SS", 1],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"false life", "protection from evil and good",
+		"gentle repose", "blur",
+		"feign death", "spirit guardians",
+		"etherealness", "death ward",
+		"negative energy flood", "antilife shell"
+	],
+
+	features : {
+
+		// 1st-level feature
+		"subclassfeature1" : {
+			name : "Blessings of the Veil",
+			source : ["DA42:SS", 1],
+			minlevel : 1,
+
+			skills : ["Insight"],
+			skillstxt : "\n\n" + toUni("Blessings of the Veil") + ": Insight.",
+
+			description : desc([
+				"I learn the Spare the Dying, Toll the Dead, and Thaumaturgy cantrips as shaman cantrips",
+				"I gain proficiency in Insight",
+				"I can tell if a creature I can see within 30 ft is alive, undead, or neither (e.g. construct)"
+			]),
+
+			spellcastingBonus : [{
+				name : "Blessings of the Veil",
+				spells : ["spare the dying", "toll the dead", "thaumaturgy"],
+				selection : ["spare the dying", "toll the dead", "thaumaturgy"],
+				times : 3
+			}]
+		},
+
+		// 1st-level feature (secondary)
+		"subclassfeature1.1" : {
+			name : "Veilspeaker",
+			source : ["DA42:SS", 1],
+			minlevel : 1,
+			description : desc([
+				"As an action, I focus on a corpse, grave, dying creature, or a location where a creature died within 24 hours",
+				"I may ask the attending spirits three questions about identity/emotion, circumstances of death, or direction of departure",
+				"Spirits answer truthfully but symbolically; once used on a creature or location, I can't use it there again until a long rest"
+			]),
+			action : [["action", ""]]
+		},
+
+		// 6th-level feature
+		"subclassfeature6" : {
+			name : "Step Beyond",
+			source : ["DA42:SS", 1],
+			minlevel : 6,
+			description : desc([
+				"As a reaction when hit by an attack I can see, I partially phase until the start of my next turn",
+				"I gain resistance to the triggering attack's damage",
+				"I can move through creatures and objects as difficult terrain",
+				"If I end my movement inside an object, I'm shunted to the nearest empty space and take force damage equal to my Cha modifier"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["reaction", ""]]
+		},
+
+		// 10th-level feature
+		"subclassfeature10" : {
+			name : "Half-Seen, Half-Remembered",
+			source : ["DA42:SS", 1],
+			minlevel : 10,
+			description : desc([
+				"I have advantage on saving throws against being frightened or charmed",
+				"Invisible and ethereal creatures within 30 ft can't gain advantage on attack rolls against me",
+				"I can perceive the presence (but not exact location) of incorporeal creatures within 30 ft"
+			]),
+			savetxt : {
+				adv_vs : ["being frightened", "being charmed"]
+			}
+		},
+
+		// 14th-level feature
+		"subclassfeature14" : {
+			name : "Bearer of the Crossing",
+			source : ["DA42:SS", 1],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I create a Crossing at a point I can see within 30 ft for 1 minute",
+				"I and allied creatures within 10 ft can move through creatures and objects as difficult terrain",
+				"Opportunity attacks against creatures benefiting from the Crossing are made with disadvantage",
+				"If a creature drops to 0 HP within the Crossing, it immediately stabilizes",
+				"When the Crossing ends, any creature inside an object is safely shunted to the nearest open space"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
+
+// ============================================================================
+// Speaker of Mist (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of mist"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*mist).*$/i,
+	subname : "Speaker of Mist",
+	source : ["DA42:SS", 2],
+
+	// Calling Spells (always prepared)
+	// Theme: concealment, misdirection, slipping away, fog-as-spirit
+	spellcastingExtra : [
+		"fog cloud", "disguise self",
+		"misty step", "pass without trace",
+		"gaseous form", "major image",
+		"greater invisibility", "hallucinatory terrain",
+		"mislead", "seeming"
+	],
+
+	features : {
+
+		// 1st-level feature
+		"subclassfeature1" : {
+			name : "Blessings of Mist",
+			source : ["DA42:SS", 2],
+			minlevel : 1,
+
+			skills : ["Stealth"],
+			skillstxt : "\n\n" + toUni("Blessings of Mist") + ": Stealth.",
+
+			description : desc([
+				"I learn the Minor Illusion, Fog Cloud, and Message cantrips as shaman cantrips",
+				"I gain proficiency in Stealth"
+			]),
+
+			// NOTE: "fog cloud" is a 1st-level spell, not a cantrip.
+			// If you'd rather keep this strict to cantrips only, swap Fog Cloud here for "gust" or "shape water".
+			// MPMB will accept it as a bonus spell known; however, for consistency with other Speakers,
+			// we will instead grant 3 cantrips below (Minor Illusion, Message, Prestidigitation).
+			spellcastingBonus : [{
+				name : "Blessings of Mist",
+				spells : ["minor illusion", "message", "prestidigitation"],
+				selection : ["minor illusion", "message", "prestidigitation"],
+				times : 3
+			}]
+		},
+
+		// 1st-level feature (secondary)
+		"subclassfeature1.1" : {
+			name : "Mistspeaker",
+			source : ["DA42:SS", 2],
+			minlevel : 1,
+			description : desc([
+				"As an action, I commune with mist, fog, or low cloud within 30 ft (or I exhale a thin veil of mist as part of this action)",
+				"I may ask the mist three questions about what moved through it nearby within the last hour (DM adjudicates)",
+				"The mist answers in impressions: silhouettes, direction, speed, and mood rather than exact detail",
+				"Once I speak with mist in a specific 1-mile area, I can't do so again there for 24 hours"
+			]),
+			action : [["action", ""]]
+		},
+
+		// 6th-level feature
+		"subclassfeature6" : {
+			name : "Vanish Into Haze",
+			source : ["DA42:SS", 2],
+			minlevel : 6,
+			description : desc([
+				"As a reaction when I'm targeted by an attack or when I fail a Dex saving throw, I blur into mist",
+				"I become lightly obscured until the start of my next turn and can move up to 10 ft without provoking opportunity attacks",
+				"If the triggering effect was an attack roll, the attacker has disadvantage on that roll"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["reaction", ""]]
+		},
+
+		// 10th-level feature
+		"subclassfeature10" : {
+			name : "Unfindable Shape",
+			source : ["DA42:SS", 2],
+			minlevel : 10,
+			description : desc([
+				"I have resistance to cold damage",
+				"I have advantage on Stealth checks while lightly obscured, and I can attempt to hide when only lightly obscured",
+				"Creatures don't gain advantage on attack rolls against me solely because they are unseen"
+			]),
+			dmgres : ["Cold"],
+			skillstxt : "\n\n" + toUni("Unfindable Shape") + ": Adv. on Stealth checks while lightly obscured; can Hide while only lightly obscured."
+		},
+
+		// 14th-level feature
+		"subclassfeature14" : {
+			name : "Mistwalk",
+			source : ["DA42:SS", 2],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I become a drifting mist for 1 minute (no concentration)",
+				"During this time I have a flying speed equal to my walking speed and can move through spaces as narrow as 1 inch",
+				"I can move through creatures and objects as difficult terrain; if I end inside an object, I'm shunted to the nearest empty space",
+				"While Mistwa
+
+if (shamanSubs.indexOf("shaman-speaker of mist") === -1) shamanSubs.push("shaman-speaker of mist");
+// ============================================================================
+// Speaker of Mist (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of mist"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*mist).*$/i,
+	subname : "Speaker of Mist",
+	source : ["DA42:SS", 2],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"fog cloud", "disguise self",
+		"misty step", "pass without trace",
+		"gaseous form", "major image",
+		"greater invisibility", "hallucinatory terrain",
+		"mislead", "seeming"
+	],
+
+	features : {
+
+		"subclassfeature1" : {
+			name : "Blessings of Mist",
+			source : ["DA42:SS", 2],
+			minlevel : 1,
+
+			skills : ["Stealth"],
+			skillstxt : "\n\n" + toUni("Blessings of Mist") + ": Stealth.",
+
+			description : desc([
+				"I learn the Minor Illusion, Message, and Prestidigitation cantrips as shaman cantrips",
+				"I gain proficiency in Stealth"
+			]),
+
+			spellcastingBonus : [{
+				name : "Blessings of Mist",
+				spells : ["minor illusion", "message", "prestidigitation"],
+				selection : ["minor illusion", "message", "prestidigitation"],
+				times : 3
+			}]
+		},
+
+		"subclassfeature1.1" : {
+			name : "Mistspeaker",
+			source : ["DA42:SS", 2],
+			minlevel : 1,
+			description : desc([
+				"As an action, I commune with mist, fog, or low cloud within 30 ft (or draw forth a thin veil with my breath)",
+				"I may ask the mist three questions about what moved through it nearby within the last hour (DM adjudicates)",
+				"It answers in impressions (direction/number/speed/mood), not precise details",
+				"Once I speak with mist in a specific 1-mile area, I can't do so again there until a long rest"
+			]),
+			action : [["action", ""]]
+		},
+
+		"subclassfeature6" : {
+			name : "Vanish Into Haze",
+			source : ["DA42:SS", 2],
+			minlevel : 6,
+			description : desc([
+				"As a reaction when I'm targeted by an attack roll or when I fail a Dex saving throw, I blur into haze",
+				"Until the start of my next turn, I'm lightly obscured and can move up to 10 ft without provoking opportunity attacks",
+				"If the trigger was an attack roll, the attacker has disadvantage on that roll"
+			]),
+			usages : 1,
+			recovery : "short rest",
+			action : [["reaction", ""]]
+		},
+
+		"subclassfeature10" : {
+			name : "Unfindable Shape",
+			source : ["DA42:SS", 2],
+			minlevel : 10,
+			description : desc([
+				"I have resistance to cold damage",
+				"I have advantage on Stealth checks while lightly obscured, and I can attempt to hide while only lightly obscured",
+				"Creatures don't gain advantage on attack rolls against me solely because they are unseen (e.g. invisible)"
+			]),
+			dmgres : ["Cold"],
+			skillstxt : "\n\n" + toUni("Unfindable Shape") + ": Adv. on Stealth checks while lightly obscured; can Hide while only lightly obscured."
+		},
+
+		"subclassfeature14" : {
+			name : "Mistwalk",
+			source : ["DA42:SS", 2],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as an action, I become drifting mist for 1 minute (no concentration)",
+				"I gain a flying speed equal to my walking speed and can move through spaces as narrow as 1 inch",
+				"I can move through creatures/objects as difficult terrain; if I end inside an object, I'm shunted to the nearest empty space",
+				"While Mistwalk lasts, I have resistance to nonmagical bludgeoning, piercing, and slashing damage"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+if (shamanSubs.indexOf("shaman-speaker of threads") === -1) shamanSubs.push("shaman-speaker of threads");
+// ============================================================================
+// Speaker of Threads (Shamanic Calling)
+// Author: DruidAllanon42
+// ============================================================================
+
+ClassSubList["shaman-speaker of threads"] = {
+	regExpSearch : /^(?=.*speaker)(?=.*threads).*$/i,
+	subname : "Speaker of Threads",
+	source : ["DA42:SS", 3],
+
+	// Calling Spells (always prepared)
+	spellcastingExtra : [
+		"bane", "feather fall",
+		"hold person", "silence",
+		"bestow curse", "clairvoyance",
+		"divination", "freedom of movement",
+		"hold monster", "scrying"
+	],
+
+	features : {
+
+		"subclassfeature1" : {
+			name : "Blessings of Threads",
+			source : ["DA42:SS", 3],
+			minlevel : 1,
+
+			description : desc([
+				"I learn the Guidance, Resistance, and Mage Hand cantrips as shaman cantrips",
+				"I gain proficiency in Insight or Perception (choose one)"
+			]),
+
+			// MPMB can't force a choose-one skill cleanly with a popup here, so we use text prompt.
+			skillstxt : "\n\n" + toUni("Blessings of Threads") + ": Choose one from Insight or Perception.",
+
+			spellcastingBonus : [{
+				name : "Blessings of Threads",
+				spells : ["guidance", "resistance", "mage hand"],
+				selection : ["guidance", "resistance", "mage hand"],
+				times : 3
+			}]
+		},
+
+		"subclassfeature1.1" : {
+			name : "Threadreader",
+			source : ["DA42:SS", 3],
+			minlevel : 1,
+			description : desc([
+				"As a reaction when a creature I can see within 60 ft makes an ability check, attack roll, or saving throw, I glimpse its thread",
+				"I learn whether the roll had advantage, disadvantage, or neither, and whether magic is influencing it (DM gives yes/no)",
+				"I can use this reaction a number of times equal to my Cha modifier (min 1), regaining all uses on a long rest"
+			]),
+			usages : "Cha mod",
+			recovery : "long rest",
+			action : [["reaction", ""]]
+		},
+
+		"subclassfeature6" : {
+			name : "Tug the Thread",
+			source : ["DA42:SS", 3],
+			minlevel : 6,
+			description : desc([
+				"As a reaction when a creature I can see within 60 ft makes an attack roll, ability check, or saving throw, I add or subtract 1d4",
+				"I choose after the roll but before the outcome is known",
+				"I can use this feature a number of times equal to my proficiency bonus, regaining uses on a short or long rest"
+			]),
+			usages : "Proficiency bonus per ",
+			recovery : "short rest",
+			action : [["reaction", ""]]
+		},
+
+		"subclassfeature10" : {
+			name : "Woven Reflex",
+			source : ["DA42:SS", 3],
+			minlevel : 10,
+			description : desc([
+				"I can't be surprised while I'm conscious",
+				"When I use Tug the Thread, I may roll a d6 instead of a d4; once I do so, I can't do so again until a long rest"
+			])
+		},
+
+		"subclassfeature14" : {
+			name : "Cut the Knot",
+			source : ["DA42:SS", 3],
+			minlevel : 14,
+			description : desc([
+				"Once per long rest, as a reaction when I or an ally within 60 ft is hit by an attack or fails a saving throw, I sever the connection",
+				"I force the attacker to reroll the attack roll or force the target to reroll the saving throw (my choice); the reroll must be used",
+				"Then I or that ally can move up to 15 ft without provoking opportunity attacks"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["reaction", ""]]
+		}
+	}
+};
+if (shamanSubs.indexOf("shaman-speaker of thorns") === -1) shamanSubs.push("shaman-speaker of thorns");

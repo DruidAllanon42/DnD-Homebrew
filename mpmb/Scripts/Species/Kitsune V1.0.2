@@ -1,0 +1,413 @@
+/* -WHAT IS THIS?-
+This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+Import this file using the "Add Extra Materials" bookmark.
+-KEEP IN MIND-
+It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
+*/
+
+/* -INFORMATION-
+Subject: Species
+Effect: This script adds the Kitsune species and its Elemental Lineage variants from "Kitsune v1.0.2"
+Code by: DruidAllanon42
+Date: 2026-01-13 (sheet v13)
+*/
+var iFileName = "Kitsune v1.0.2 (DruidAllanon42).js";
+
+RequiredSheetVersion("13.0.0");
+
+// Define the source
+SourceList["DA42:KITSUNE"] = {
+	name : "Kitsune v1.0.2 (DruidAllanon42)",
+	abbreviation : "DA42K",
+	group : "DruidAllanon42 Homebrew",
+	url : "", // Optional: add your GitHub URL later
+	date : "2026/01/13"
+};
+
+// Base Kitsune Race
+RaceList["kitsune"] = {
+	regExpSearch : /kitsune/i,
+	name : "Kitsune",
+	sortname : "Kitsune",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	size : 3, // Medium (humanoid form); fox form is Tiny (handled in trait text)
+	speed : {
+		walk : { spd : 30, enc : 20 }
+	},
+	vision : [["Darkvision", 60]],
+	languageProfs : ["Common", "Sylvan"],
+	age : "awakens to its true nature around 100 years of age and can live for well over a thousand years",
+	scoresGeneric : false,
+	scores : [0, 1, 0, 0, 0, 2], // +1 Dex, +2 Cha
+
+	trait : "Kitsune (+2 Charisma, +1 Dexterity)" +
+		"\n \u2022 Creature Type: My creature type is fey, rather than humanoid." +
+		"\n \u2022 Fey Ancestry: I have advantage on saving throws against being charmed, and magic can't put me to sleep." +
+		"\n \u2022 True Form: As an action, I can transform between humanoid form and fox form. My game statistics remain the same except as listed here. " +
+		"In fox form, my size is Tiny and my speed becomes 40 feet. I have advantage on Perception checks that rely on smell or hearing while in fox form. " +
+		"I can speak, cast my Kitsune Magic, and maintain concentration in fox form. If I am reduced to 0 hit points, I remain in my current form. " +
+		"If I am knocked unconscious while in humanoid form, I revert to fox form." +
+		"\n \u2022 Kitsune Magic: I know the Dancing Lights cantrip (kitsunebi). At 3rd level, I can cast Charm Person once per long rest. At 5th level, I can cast Invisibility on myself once per long rest. Charisma is my spellcasting ability for these spells." +
+		"\n \u2022 Elemental Lineage: At character creation, I choose one Elemental Lineage. Many lineages shift my +1 ability score bonus and grant lineage cantrip options and lineage spells (see variants).",
+
+	spellcastingAbility : 6, // Charisma
+	spellcastingBonus : [
+		{
+			name : "Kitsune Magic",
+			spells : ["dancing lights"],
+			selection : ["dancing lights"],
+			firstCol : "atwill"
+		},
+		{
+			name : "Kitsune Magic (Charm Person)",
+			spells : ["charm person"],
+			selection : ["charm person"],
+			firstCol : "oncelr",
+			minlevel : 3
+		},
+		{
+			name : "Kitsune Magic (Invisibility)",
+			spells : ["invisibility"],
+			selection : ["invisibility"],
+			firstCol : "oncelr",
+			minlevel : 5
+		}
+	],
+	action : [["action", "True Form (transform)"]]
+};
+
+var Kitsune_trait = (typePF ? "\n" : "") +
+	" \u2022 Creature Type: My creature type is fey, rather than humanoid." +
+	"\n \u2022 Fey Ancestry: I have advantage on saving throws against being charmed, and magic can't put me to sleep." +
+	"\n \u2022 True Form: As an action, I can transform between humanoid form and fox form. My game statistics remain the same except as listed here. " +
+	"In fox form, my size is Tiny and my speed becomes 40 feet. I have advantage on Perception checks that rely on smell or hearing while in fox form. " +
+	"I can speak, cast my Kitsune Magic, and maintain concentration in fox form. If I am reduced to 0 hit points, I remain in my current form. " +
+	"If I am knocked unconscious while in humanoid form, I revert to fox form." +
+	"\n \u2022 Kitsune Magic: I know the Dancing Lights cantrip (kitsunebi). At 3rd level, I can cast Charm Person once per long rest. At 5th level, I can cast Invisibility on myself once per long rest. Charisma is my spellcasting ability for these spells.";
+
+/* =========================
+   ELEMENTAL LINEAGE VARIANTS
+   ========================= */
+
+/* Kyoukai (Threshold) — replaces portions of Kitsune Magic */
+AddRacialVariant("kitsune", "kyoukai", {
+	regExpSearch : /^(?=.*kitsune)(?=.*kyoukai)|\bkyoukai\b|\bthreshold\b/i,
+	name : "Kitsune (Kyoukai \u2014 Threshold)",
+	sortname : "Kitsune, Kyoukai",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	// Default ASI remains (+2 Cha, +1 Dex) unless you later add a Kyoukai shift
+	scores : [0, 1, 0, 0, 0, 2],
+
+	trait : "Kitsune (Kyoukai \u2014 Threshold) (+2 Charisma, +1 Dexterity)" + Kitsune_trait +
+		"\n \u2022 Lineage Magic Adjustments: I may choose Minor Illusion or Thaumaturgy instead of Dancing Lights." +
+		"\n \u2022 At 3rd level, I can cast Misty Step once per long rest. When I cast it, the DM may apply the Kyoukai distortion effect described in the lineage text." +
+		"\n \u2022 At 5th level, I can cast Blur or See Invisibility once per long rest (choose when you gain this feature).",
+
+	// Kyoukai replaces the 3rd/5th level Kitsune Magic spells
+	spellcastingAbility : 6,
+	spellcastingBonus : [
+		{
+			name : "Kitsune Magic",
+			spells : ["dancing lights"],
+			selection : ["dancing lights"],
+			firstCol : "atwill"
+		},
+		{ name : "Kyoukai Lineage (Misty Step)", spells : ["misty step"], selection : ["misty step"], firstCol : "oncelr", minlevel : 3 },
+		// Choice: Blur OR See Invisibility (MPMB can’t do a clean pick-one toggle here, so list both as options in text and include one here if desired)
+		{ name : "Kyoukai Lineage (Blur)", spells : ["blur"], selection : ["blur"], firstCol : "oncelr", minlevel : 5 }
+	],
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Tengoku (Heaven) */
+AddRacialVariant("kitsune", "tengoku", {
+	regExpSearch : /^(?=.*kitsune)(?=.*tengoku)|\btengoku\b|\bheaven\b/i,
+	name : "Kitsune (Tengoku \u2014 Heaven)",
+	sortname : "Kitsune, Tengoku",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2], // +1 Wis, +2 Cha
+	trait : "Kitsune (Tengoku \u2014 Heaven) (+1 Wisdom, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Light, Spare the Dying (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Bless (3rd), Lesser Restoration (5th), Beacon of Hope (9th), Guardian of Faith (13th), Greater Restoration (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Tengoku Lineage (Bless)", spells : ["bless"], selection : ["bless"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Tengoku Lineage (Lesser Restoration)", spells : ["lesser restoration"], selection : ["lesser restoration"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Tengoku Lineage (Beacon of Hope)", spells : ["beacon of hope"], selection : ["beacon of hope"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Tengoku Lineage (Guardian of Faith)", spells : ["guardian of faith"], selection : ["guardian of faith"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Tengoku Lineage (Greater Restoration)", spells : ["greater restoration"], selection : ["greater restoration"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Kukan (Void / Darkness) */
+AddRacialVariant("kitsune", "kukan", {
+	regExpSearch : /^(?=.*kitsune)(?=.*kukan)|\bkukan\b|\bvoid\b|\bdarkness\b/i,
+	name : "Kitsune (Kukan \u2014 Void)",
+	sortname : "Kitsune, Kukan",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2], // +1 Dex, +2 Cha
+	trait : "Kitsune (Kukan \u2014 Void) (+1 Dexterity, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Minor Illusion, Prestidigitation (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Disguise Self (3rd), Darkness (5th), Fear (9th), Blight (13th), Mislead (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Kukan Lineage (Disguise Self)", spells : ["disguise self"], selection : ["disguise self"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Kukan Lineage (Darkness)", spells : ["darkness"], selection : ["darkness"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Kukan Lineage (Fear)", spells : ["fear"], selection : ["fear"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Kukan Lineage (Blight)", spells : ["blight"], selection : ["blight"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Kukan Lineage (Mislead)", spells : ["mislead"], selection : ["mislead"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Kaze (Wind) */
+AddRacialVariant("kitsune", "kaze", {
+	regExpSearch : /^(?=.*kitsune)(?=.*kaze)|\bkaze\b|\bwind\b/i,
+	name : "Kitsune (Kaze \u2014 Wind)",
+	sortname : "Kitsune, Kaze",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2],
+	trait : "Kitsune (Kaze \u2014 Wind) (+1 Dexterity, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Gust, Message (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Feather Fall (3rd), Levitate (5th), Fly (9th), Freedom of Movement (13th), Control Winds (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Kaze Lineage (Feather Fall)", spells : ["feather fall"], selection : ["feather fall"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Kaze Lineage (Levitate)", spells : ["levitate"], selection : ["levitate"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Kaze Lineage (Fly)", spells : ["fly"], selection : ["fly"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Kaze Lineage (Freedom of Movement)", spells : ["freedom of movement"], selection : ["freedom of movement"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Kaze Lineage (Control Winds)", spells : ["control winds"], selection : ["control winds"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Seishin (Spirit) */
+AddRacialVariant("kitsune", "seishin", {
+	regExpSearch : /^(?=.*kitsune)(?=.*seishin)|\bseishin\b|\bspirit\b/i,
+	name : "Kitsune (Seishin \u2014 Spirit)",
+	sortname : "Kitsune, Seishin",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2], // +1 Wis
+	trait : "Kitsune (Seishin \u2014 Spirit) (+1 Wisdom, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Guidance, Thaumaturgy (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Detect Magic (3rd), See Invisibility (5th), Speak with Dead (9th), Bane (13th), Commune (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Seishin Lineage (Detect Magic)", spells : ["detect magic"], selection : ["detect magic"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Seishin Lineage (See Invisibility)", spells : ["see invisibility"], selection : ["see invisibility"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Seishin Lineage (Speak with Dead)", spells : ["speak with dead"], selection : ["speak with dead"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Seishin Lineage (Bane)", spells : ["bane"], selection : ["bane"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Seishin Lineage (Commune)", spells : ["commune"], selection : ["commune"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Kasai (Fire) */
+AddRacialVariant("kitsune", "kasai", {
+	regExpSearch : /^(?=.*kitsune)(?=.*kasai)|\bkasai\b|\bfire\b/i,
+	name : "Kitsune (Kasai \u2014 Fire)",
+	sortname : "Kitsune, Kasai",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 1, 0, 0, 2], // +1 Con
+	trait : "Kitsune (Kasai \u2014 Fire) (+1 Constitution, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Produce Flame, Control Flames (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Burning Hands (3rd), Flaming Sphere (5th), Fireball (9th), Wall of Fire (13th), Immolation (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Kasai Lineage (Burning Hands)", spells : ["burning hands"], selection : ["burning hands"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Kasai Lineage (Flaming Sphere)", spells : ["flaming sphere"], selection : ["flaming sphere"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Kasai Lineage (Fireball)", spells : ["fireball"], selection : ["fireball"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Kasai Lineage (Wall of Fire)", spells : ["wall of fire"], selection : ["wall of fire"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Kasai Lineage (Immolation)", spells : ["immolation"], selection : ["immolation"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Chikyu (Earth) */
+AddRacialVariant("kitsune", "chikyu", {
+	regExpSearch : /^(?=.*kitsune)(?=.*chikyu)|\bchikyu\b|\bearth\b/i,
+	name : "Kitsune (Chikyu \u2014 Earth)",
+	sortname : "Kitsune, Chikyu",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 1, 0, 0, 2], // +1 Con
+	trait : "Kitsune (Chikyu \u2014 Earth) (+1 Constitution, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Mold Earth, Resistance (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Earth Tremor (3rd), Maximilian\u2019s Earthen Grasp (5th), Meld into Stone (9th), Stone Shape (13th), Wall of Stone (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Chikyu Lineage (Earth Tremor)", spells : ["earth tremor"], selection : ["earth tremor"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Chikyu Lineage (Maximilian\u2019s Earthen Grasp)", spells : ["maximilian's earthen grasp"], selection : ["maximilian's earthen grasp"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Chikyu Lineage (Meld into Stone)", spells : ["meld into stone"], selection : ["meld into stone"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Chikyu Lineage (Stone Shape)", spells : ["stone shape"], selection : ["stone shape"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Chikyu Lineage (Wall of Stone)", spells : ["wall of stone"], selection : ["wall of stone"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Kawa (River) */
+AddRacialVariant("kitsune", "kawa", {
+	regExpSearch : /^(?=.*kitsune)(?=.*kawa)|\bkawa\b|\briver\b/i,
+	name : "Kitsune (Kawa \u2014 River)",
+	sortname : "Kitsune, Kawa",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2], // +1 Wis
+	trait : "Kitsune (Kawa \u2014 River) (+1 Wisdom, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Shape Water, Guidance (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Create or Destroy Water (3rd), Misty Step (5th), Water Walk (9th), Control Water (13th), Maelstrom (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Kawa Lineage (Create or Destroy Water)", spells : ["create or destroy water"], selection : ["create or destroy water"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Kawa Lineage (Misty Step)", spells : ["misty step"], selection : ["misty step"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Kawa Lineage (Water Walk)", spells : ["water walk"], selection : ["water walk"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Kawa Lineage (Control Water)", spells : ["control water"], selection : ["control water"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Kawa Lineage (Maelstrom)", spells : ["maelstrom"], selection : ["maelstrom"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Umi (Ocean) */
+AddRacialVariant("kitsune", "umi", {
+	regExpSearch : /^(?=.*kitsune)(?=.*umi)|\bumi\b|\bocean\b/i,
+	name : "Kitsune (Umi \u2014 Ocean)",
+	sortname : "Kitsune, Umi",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 1, 0, 0, 2], // +1 Con
+	trait : "Kitsune (Umi \u2014 Ocean) (+1 Constitution, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Shape Water, Thunderclap (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Fog Cloud (3rd), Tidal Wave (5th), Water Breathing (9th), Control Water (13th), Tsunami (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Umi Lineage (Fog Cloud)", spells : ["fog cloud"], selection : ["fog cloud"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Umi Lineage (Tidal Wave)", spells : ["tidal wave"], selection : ["tidal wave"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Umi Lineage (Water Breathing)", spells : ["water breathing"], selection : ["water breathing"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Umi Lineage (Control Water)", spells : ["control water"], selection : ["control water"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Umi Lineage (Tsunami)", spells : ["tsunami"], selection : ["tsunami"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Yama (Mountain) */
+AddRacialVariant("kitsune", "yama", {
+	regExpSearch : /^(?=.*kitsune)(?=.*yama)|\byama\b|\bmountain\b/i,
+	name : "Kitsune (Yama \u2014 Mountain)",
+	sortname : "Kitsune, Yama",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+
+	// NOTE: MPMB can't do an in-entry Str-or-Con choice cleanly.
+	// Defaulting to +1 Strength here; if you choose +1 Constitution instead, adjust manually on the sheet.
+	scores : [1, 0, 0, 0, 0, 2], // +1 Str, +2 Cha
+
+	trait : "Kitsune (Yama \u2014 Mountain) (+2 Charisma, +1 Strength or Constitution)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Blade Ward, Resistance (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Shield of Faith (3rd), Enhance Ability (5th), Protection from Energy (9th), Stoneskin (13th), Investiture of Stone (17th).",
+
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Yama Lineage (Shield of Faith)", spells : ["shield of faith"], selection : ["shield of faith"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Yama Lineage (Enhance Ability)", spells : ["enhance ability"], selection : ["enhance ability"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Yama Lineage (Protection from Energy)", spells : ["protection from energy"], selection : ["protection from energy"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Yama Lineage (Stoneskin)", spells : ["stoneskin"], selection : ["stoneskin"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Yama Lineage (Investiture of Stone)", spells : ["investiture of stone"], selection : ["investiture of stone"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Mori (Forest) */
+AddRacialVariant("kitsune", "mori", {
+	regExpSearch : /^(?=.*kitsune)(?=.*mori)|\bmori\b|\bforest\b/i,
+	name : "Kitsune (Mori \u2014 Forest)",
+	sortname : "Kitsune, Mori",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2], // +1 Wis
+	trait : "Kitsune (Mori \u2014 Forest) (+1 Wisdom, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Druidcraft, Poison Spray (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Entangle (3rd), Pass without Trace (5th), Plant Growth (9th), Blight (13th), Tree Stride (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Mori Lineage (Entangle)", spells : ["entangle"], selection : ["entangle"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Mori Lineage (Pass without Trace)", spells : ["pass without trace"], selection : ["pass without trace"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Mori Lineage (Plant Growth)", spells : ["plant growth"], selection : ["plant growth"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Mori Lineage (Blight)", spells : ["blight"], selection : ["blight"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Mori Lineage (Tree Stride)", spells : ["tree stride"], selection : ["tree stride"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Sanda (Thunder) */
+AddRacialVariant("kitsune", "sanda", {
+	regExpSearch : /^(?=.*kitsune)(?=.*sanda)|\bsanda\b|\bthunder\b|\blightning\b/i,
+	name : "Kitsune (Sanda \u2014 Thunder)",
+	sortname : "Kitsune, Sanda",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [1, 0, 0, 0, 0, 2], // +1 Str
+	trait : "Kitsune (Sanda \u2014 Thunder) (+1 Strength, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Thunderclap, Shocking Grasp (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Thunderwave (3rd), Shatter (5th), Lightning Bolt (9th), Storm Sphere (13th), Destructive Wave (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Sanda Lineage (Thunderwave)", spells : ["thunderwave"], selection : ["thunderwave"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Sanda Lineage (Shatter)", spells : ["shatter"], selection : ["shatter"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Sanda Lineage (Lightning Bolt)", spells : ["lightning bolt"], selection : ["lightning bolt"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Sanda Lineage (Storm Sphere)", spells : ["storm sphere"], selection : ["storm sphere"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Sanda Lineage (Destructive Wave)", spells : ["destructive wave"], selection : ["destructive wave"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Jikan (Time) */
+AddRacialVariant("kitsune", "jikan", {
+	regExpSearch : /^(?=.*kitsune)(?=.*jikan)|\bjikan\b|\btime\b/i,
+	name : "Kitsune (Jikan \u2014 Time)",
+	sortname : "Kitsune, Jikan",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 1, 0, 2], // +1 Int
+	trait : "Kitsune (Jikan \u2014 Time) (+1 Intelligence, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Guidance, True Strike (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Longstrider (3rd), Augury (5th), Haste (9th), Divination (13th), Foresight (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Jikan Lineage (Longstrider)", spells : ["longstrider"], selection : ["longstrider"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Jikan Lineage (Augury)", spells : ["augury"], selection : ["augury"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Jikan Lineage (Haste)", spells : ["haste"], selection : ["haste"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Jikan Lineage (Divination)", spells : ["divination"], selection : ["divination"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Jikan Lineage (Foresight)", spells : ["foresight"], selection : ["foresight"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});
+
+/* Ongaku (Sound) */
+AddRacialVariant("kitsune", "ongaku", {
+	regExpSearch : /^(?=.*kitsune)(?=.*ongaku)|\bongaku\b|\bsound\b|\bmusic\b/i,
+	name : "Kitsune (Ongaku \u2014 Sound)",
+	sortname : "Kitsune, Ongaku",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2], // Base Kitsune ASI: +1 Dexterity, +2 Charisma
+	trait : "Kitsune (Ongaku \u2014 Sound) (+1 Dexterity, +2 Charisma)" + Kitsune_trait +
+		"\n \u2022 Cantrip Options: Vicious Mockery, Minor Illusion (may replace Dancing Lights)." +
+		"\n \u2022 Lineage Spells: Dissonant Whispers (3rd), Shatter (5th), Hypnotic Pattern (9th), Confusion (13th), Mass Suggestion (17th).",
+	spellcastingAbility : 6,
+	spellcastingBonus : RaceList["kitsune"].spellcastingBonus.concat([
+		{ name : "Ongaku Lineage (Dissonant Whispers)", spells : ["dissonant whispers"], selection : ["dissonant whispers"], firstCol : "oncelr", minlevel : 3 },
+		{ name : "Ongaku Lineage (Shatter)", spells : ["shatter"], selection : ["shatter"], firstCol : "oncelr", minlevel : 5 },
+		{ name : "Ongaku Lineage (Hypnotic Pattern)", spells : ["hypnotic pattern"], selection : ["hypnotic pattern"], firstCol : "oncelr", minlevel : 9 },
+		{ name : "Ongaku Lineage (Confusion)", spells : ["confusion"], selection : ["confusion"], firstCol : "oncelr", minlevel : 13 },
+		{ name : "Ongaku Lineage (Mass Suggestion)", spells : ["mass suggestion"], selection : ["mass suggestion"], firstCol : "oncelr", minlevel : 17 }
+	]),
+	action : [["action", "True Form (transform)"]]
+});

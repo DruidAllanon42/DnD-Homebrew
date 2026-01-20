@@ -1,0 +1,757 @@
+/* -WHAT IS THIS?-
+This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+Import this file using the "Add Extra Materials" bookmark.
+-KEEP IN MIND-
+It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
+*/
+
+/* -INFORMATION-
+Subject: Species
+Effect: This script adds the Kitsune species and its Elemental Lineage variants from "Kitsune v1.0.2"
+        This is taken from The Homebrewery (https://homebrewery.naturalcrit.com/share/A8mTTzz2gMsT)
+		This species is by DruidAllanon42
+Code by: DruidAllanon42 (converted to 2024-style variants/RaceSubList by ChatGPT)
+Date: 2026-01-13 (MPMB v24.0.4 / sheet v13.2+)
+*/
+
+var iFileName = "Kitsune v1.0.2 (DruidAllanon42) - 2024-style.js";
+RequiredSheetVersion("13.2.3");
+
+// Define the source
+SourceList["DA42:KITSUNE"] = {
+	name : "Kitsune v1.0.2 (DruidAllanon42)",
+	abbreviation : "DA42K",
+	group : "DruidAllanon42 Homebrew",
+	url : "",
+	date : "2026/01/13"
+};
+
+// -----------------------------------------------------------------------------
+// Compatibility: if the 2024 PHB script isn't loaded (which defines legacyRaceRefactor),
+// provide a minimal fallback so this file still works.
+// -----------------------------------------------------------------------------
+if (typeof legacyRaceRefactor !== "function") {
+	function legacyRaceRefactor(raceKey, newRace) {
+		if (newRace.replaces && newRace.replaces.forEach) {
+			for (var i = 0; i < newRace.replaces.length; i++) {
+				var replaced = newRace.replaces[i];
+				if (replaced in RaceList) {
+					var oldRace = RaceList[replaced];
+					RaceList[replaced + " (L)"] = oldRace;
+					delete RaceList[replaced];
+					oldRace.source = [["LEGACYRACE", 1]];
+					if (oldRace.name) oldRace.name = oldRace.name + " (L)";
+					if (oldRace.shortname) oldRace.shortname = oldRace.shortname + " (L)";
+				}
+			}
+		}
+		RaceList[raceKey] = newRace;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Shared trait text (printed summary). Mechanics below are handled per lineage.
+// -----------------------------------------------------------------------------
+var KitsuneBaseTrait = "Kitsune" +
+	"\n \u2022 Creature Type: My creature type is fey, rather than humanoid." +
+	"\n \u2022 Fey Ancestry: I have advantage on saving throws against being charmed, and magic can't put me to sleep." +
+	"\n \u2022 True Form: As an action, I can transform between humanoid form and fox form. My game statistics remain the same except as listed here. " +
+	"In fox form, my size is Tiny and my speed becomes 40 feet. I have advantage on Perception checks that rely on smell or hearing while in fox form. " +
+	"I can speak, cast my Kitsune Magic, and maintain concentration in fox form. If I am reduced to 0 hit points, I remain in my current form. " +
+	"If I am knocked unconscious while in humanoid form, I revert to fox form.";
+
+// -----------------------------------------------------------------------------
+// Helpers (Acrobat/ES3-safe)
+// -----------------------------------------------------------------------------
+function DA42_mergeObjects(dst, src) {
+	for (var k in src) if (src.hasOwnProperty(k)) dst[k] = src[k];
+	return dst;
+}
+
+// Make a selectable cantrip feature using MPMB 'choices'
+function DA42_makeCantripChoiceFeature(featName, choiceArr) {
+	var out = {
+		name : featName,
+		minlevel : 1,
+		choices : choiceArr
+	};
+
+	for (var i = 0; i < choiceArr.length; i++) {
+		var cName = choiceArr[i];
+		var cKey = cName.toLowerCase();
+		cKey = cKey.replace(/[^a-z0-9]+/g, " ").replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ");
+
+		out[cKey] = {
+			name : featName + " (" + cName + ")",
+			minlevel : 1,
+			description : desc(["I know the " + cName + " cantrip. Charisma is my spellcasting ability for spells I cast with this trait."]),
+			spellcastingBonus : [{
+				name : featName,
+				spells : [cName.toLowerCase()],
+				selection : [cName.toLowerCase()],
+				times : 1,
+				firstCol : "atwill"
+			}]
+		};
+	}
+	return out;
+}
+
+// Default Kitsune Magic ladder (cantrip choice + Charm Person at 3 + Invisibility at 5)
+function KitsuneMagicFeatures(cantripChoices, featLabel) {
+	var f = {};
+	var label = featLabel || "Kitsune Magic";
+	var picks = (cantripChoices && cantripChoices.length) ? cantripChoices : ["Dancing Lights"];
+
+	// Cantrip: selectable
+	f["kitsune magic0"] = DA42_makeCantripChoiceFeature(label, picks);
+
+	// Charm Person at 3
+	f["kitsune magic3"] = {
+		name : label,
+		minlevel : 3,
+		usages : 1,
+		recovery : "long rest",
+		description : desc(["I learn Charm Person. I can cast it without a spell slot once per long rest, or using spell slots."]),
+		spellcastingBonus : [{
+			name : label,
+			spells : ["charm person"],
+			selection : ["charm person"],
+			times : 1,
+			firstCol : "oncelr"
+		}]
+	};
+
+	// Invisibility at 5
+	f["kitsune magic5"] = {
+		name : label,
+		minlevel : 5,
+		usages : 1,
+		recovery : "long rest",
+		description : desc(["I learn Invisibility (as described in the lineage text). I can cast it without a spell slot once per long rest, or using spell slots."]),
+		spellcastingBonus : [{
+			name : label,
+			spells : ["invisibility"],
+			selection : ["invisibility"],
+			times : 1,
+			firstCol : "oncelr"
+		}]
+	};
+
+	return f;
+}
+
+function DA42_buildLineageFeatures(extraFeatures, cantripChoices) {
+	var f = {};
+	DA42_mergeObjects(f, KitsuneMagicFeatures(cantripChoices, "Kitsune Magic"));
+	remembered = extraFeatures || {};
+	DA42_mergeObjects(f, extraFeatures || {});
+	return f;
+}
+
+// -----------------------------------------------------------------------------
+// Base Kitsune (2024-style): declare variants; define each variant in RaceSubList.
+// -----------------------------------------------------------------------------
+legacyRaceRefactor("kitsune", {
+	regExpSearch : /kitsune/i,
+	name : "Kitsune",
+	sortname : "Kitsune",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	size : 3,
+	speed : { walk : { spd : 30, enc : 20 } },
+	vision : [["Darkvision", 60]],
+	languageProfs : ["Common", "Sylvan"],
+	age : "awakens to its true nature around 100 years of age and can live for well over a thousand years",
+
+	scoresGeneric : false,
+	scores : [0, 0, 0, 0, 0, 0],
+
+	savetxt : {
+		adv_vs : ["being Charmed"],
+		text : ["Magic can't put me to sleep"]
+	},
+
+	trait : "Kitsune\n\u2022 Elemental Lineage: Use 'Racial Options' above to choose a lineage.\n\u2022 Kitsune traits are described in the selected lineage.",
+
+	// IMPORTANT: Real variants only; no "basic"
+	variants : ["kyoukai", "tengoku", "kukan", "kaze", "seishin", "kasai", "chikyu", "kawa", "umi", "yama", "mori", "sanda", "jikan", "ongaku"],
+
+	action : [["action", "True Form (transform)"]]
+});
+
+// -----------------------------------------------------------------------------
+// LINEAGES (RaceSubList)
+// -----------------------------------------------------------------------------
+
+// 1) Kyoukai (Threshold) — custom spell reminders; cantrip is selectable; replaces the 3/5 ladder with Misty Step and Blur/See Invisibility
+RaceSubList["kitsune-kyoukai"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(kyoukai|threshold)).*$/i,
+	name : "Kitsune (Kyoukai \u2014 Threshold)",
+	sortname : "Kitsune, Kyoukai",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Kyoukai \u2014 Threshold) (+2 Charisma, +1 Dexterity)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Kitsune Magic (Cantrip): Choose Dancing Lights, Minor Illusion, or Thaumaturgy." +
+		"\n \u2022 At 3rd level, I can cast Misty Step once per long rest." +
+		"\n \u2022 At 5th level, I can cast Blur or See Invisibility once per long rest (choose when gained; default coded as Blur).",
+
+	features : {
+		"kyoukai magic0" : DA42_makeCantripChoiceFeature("Kitsune Magic", ["Dancing Lights", "Minor Illusion", "Thaumaturgy"]),
+
+		"kyoukai lineage3" : {
+			name : "Kyoukai Lineage",
+			minlevel : 3,
+			usages : 1,
+			recovery : "long rest",
+			description : desc(["I learn Misty Step. I can cast it without a spell slot once per long rest, or using spell slots."]),
+			spellcastingBonus : [{
+				name : "Kyoukai Lineage",
+				spells : ["misty step"],
+				selection : ["misty step"],
+				times : 1,
+				firstCol : "oncelr"
+			}]
+		},
+
+		"kyoukai lineage5" : {
+			name : "Kyoukai Lineage",
+			minlevel : 5,
+			usages : 1,
+			recovery : "long rest",
+			description : desc(["I learn Blur (or See Invisibility, choose one; default coded as Blur)."]),
+			spellcastingBonus : [{
+				name : "Kyoukai Lineage",
+				spells : ["blur"],
+				selection : ["blur"],
+				times : 1,
+				firstCol : "oncelr"
+			}]
+		}
+	}
+};
+
+// 2) Tengoku (Heaven)
+RaceSubList["kitsune-tengoku"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(tengoku|heaven)).*$/i,
+	name : "Kitsune (Tengoku \u2014 Heaven)",
+	sortname : "Kitsune, Tengoku",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Tengoku \u2014 Heaven) (+1 Wisdom, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Light, Spare the Dying." +
+		"\n \u2022 Lineage Spells: Bless (3rd), Lesser Restoration (5th), Beacon of Hope (9th), Guardian of Faith (13th), Greater Restoration (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"tengoku lineage3" : { name:"Tengoku Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Bless."]),
+			spellcastingBonus:[{ name:"Tengoku Lineage", spells:["bless"], selection:["bless"], times:1, firstCol:"oncelr" }]
+		},
+		"tengoku lineage5" : { name:"Tengoku Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Lesser Restoration."]),
+			spellcastingBonus:[{ name:"Tengoku Lineage", spells:["lesser restoration"], selection:["lesser restoration"], times:1, firstCol:"oncelr" }]
+		},
+		"tengoku lineage9" : { name:"Tengoku Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Beacon of Hope."]),
+			spellcastingBonus:[{ name:"Tengoku Lineage", spells:["beacon of hope"], selection:["beacon of hope"], times:1, firstCol:"oncelr" }]
+		},
+		"tengoku lineage13" : { name:"Tengoku Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Guardian of Faith."]),
+			spellcastingBonus:[{ name:"Tengoku Lineage", spells:["guardian of faith"], selection:["guardian of faith"], times:1, firstCol:"oncelr" }]
+		},
+		"tengoku lineage17" : { name:"Tengoku Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Greater Restoration."]),
+			spellcastingBonus:[{ name:"Tengoku Lineage", spells:["greater restoration"], selection:["greater restoration"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Light", "Spare the Dying"])
+};
+
+// 3) Kukan (Void)
+RaceSubList["kitsune-kukan"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(kukan|void|darkness)).*$/i,
+	name : "Kitsune (Kukan \u2014 Void)",
+	sortname : "Kitsune, Kukan",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Kukan \u2014 Void) (+1 Dexterity, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Minor Illusion, Prestidigitation." +
+		"\n \u2022 Lineage Spells: Disguise Self (3rd), Darkness (5th), Fear (9th), Blight (13th), Mislead (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"kukan lineage3" : { name:"Kukan Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Disguise Self."]),
+			spellcastingBonus:[{ name:"Kukan Lineage", spells:["disguise self"], selection:["disguise self"], times:1, firstCol:"oncelr" }]
+		},
+		"kukan lineage5" : { name:"Kukan Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Darkness."]),
+			spellcastingBonus:[{ name:"Kukan Lineage", spells:["darkness"], selection:["darkness"], times:1, firstCol:"oncelr" }]
+		},
+		"kukan lineage9" : { name:"Kukan Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Fear."]),
+			spellcastingBonus:[{ name:"Kukan Lineage", spells:["fear"], selection:["fear"], times:1, firstCol:"oncelr" }]
+		},
+		"kukan lineage13" : { name:"Kukan Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Blight."]),
+			spellcastingBonus:[{ name:"Kukan Lineage", spells:["blight"], selection:["blight"], times:1, firstCol:"oncelr" }]
+		},
+		"kukan lineage17" : { name:"Kukan Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Mislead."]),
+			spellcastingBonus:[{ name:"Kukan Lineage", spells:["mislead"], selection:["mislead"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Minor Illusion", "Prestidigitation"])
+};
+
+// 4) Kaze (Wind)
+RaceSubList["kitsune-kaze"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(kaze|wind)).*$/i,
+	name : "Kitsune (Kaze \u2014 Wind)",
+	sortname : "Kitsune, Kaze",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Kaze \u2014 Wind) (+1 Dexterity, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Gust, Message." +
+		"\n \u2022 Lineage Spells: Feather Fall (3rd), Levitate (5th), Fly (9th), Freedom of Movement (13th), Control Winds (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"kaze lineage3" : { name:"Kaze Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Feather Fall."]),
+			spellcastingBonus:[{ name:"Kaze Lineage", spells:["feather fall"], selection:["feather fall"], times:1, firstCol:"oncelr" }]
+		},
+		"kaze lineage5" : { name:"Kaze Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Levitate."]),
+			spellcastingBonus:[{ name:"Kaze Lineage", spells:["levitate"], selection:["levitate"], times:1, firstCol:"oncelr" }]
+		},
+		"kaze lineage9" : { name:"Kaze Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Fly."]),
+			spellcastingBonus:[{ name:"Kaze Lineage", spells:["fly"], selection:["fly"], times:1, firstCol:"oncelr" }]
+		},
+		"kaze lineage13" : { name:"Kaze Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Freedom of Movement."]),
+			spellcastingBonus:[{ name:"Kaze Lineage", spells:["freedom of movement"], selection:["freedom of movement"], times:1, firstCol:"oncelr" }]
+		},
+		"kaze lineage17" : { name:"Kaze Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Control Winds."]),
+			spellcastingBonus:[{ name:"Kaze Lineage", spells:["control winds"], selection:["control winds"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Gust", "Message"])
+};
+
+// 5) Seishin (Spirit)
+RaceSubList["kitsune-seishin"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(seishin|spirit)).*$/i,
+	name : "Kitsune (Seishin \u2014 Spirit)",
+	sortname : "Kitsune, Seishin",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Seishin \u2014 Spirit) (+1 Wisdom, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Guidance, Thaumaturgy." +
+		"\n \u2022 Lineage Spells: Detect Magic (3rd), See Invisibility (5th), Speak with Dead (9th), Bane (13th), Commune (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"seishin lineage3" : { name:"Seishin Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Detect Magic."]),
+			spellcastingBonus:[{ name:"Seishin Lineage", spells:["detect magic"], selection:["detect magic"], times:1, firstCol:"oncelr" }]
+		},
+		"seishin lineage5" : { name:"Seishin Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn See Invisibility."]),
+			spellcastingBonus:[{ name:"Seishin Lineage", spells:["see invisibility"], selection:["see invisibility"], times:1, firstCol:"oncelr" }]
+		},
+		"seishin lineage9" : { name:"Seishin Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Speak with Dead."]),
+			spellcastingBonus:[{ name:"Seishin Lineage", spells:["speak with dead"], selection:["speak with dead"], times:1, firstCol:"oncelr" }]
+		},
+		"seishin lineage13" : { name:"Seishin Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Bane."]),
+			spellcastingBonus:[{ name:"Seishin Lineage", spells:["bane"], selection:["bane"], times:1, firstCol:"oncelr" }]
+		},
+		"seishin lineage17" : { name:"Seishin Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Commune."]),
+			spellcastingBonus:[{ name:"Seishin Lineage", spells:["commune"], selection:["commune"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Guidance", "Thaumaturgy"])
+};
+
+// 6) Kasai (Fire)
+RaceSubList["kitsune-kasai"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(kasai|fire)).*$/i,
+	name : "Kitsune (Kasai \u2014 Fire)",
+	sortname : "Kitsune, Kasai",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 1, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Kasai \u2014 Fire) (+1 Constitution, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Produce Flame, Control Flames." +
+		"\n \u2022 Lineage Spells: Burning Hands (3rd), Flaming Sphere (5th), Fireball (9th), Wall of Fire (13th), Immolation (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"kasai lineage3" : { name:"Kasai Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Burning Hands."]),
+			spellcastingBonus:[{ name:"Kasai Lineage", spells:["burning hands"], selection:["burning hands"], times:1, firstCol:"oncelr" }]
+		},
+		"kasai lineage5" : { name:"Kasai Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Flaming Sphere."]),
+			spellcastingBonus:[{ name:"Kasai Lineage", spells:["flaming sphere"], selection:["flaming sphere"], times:1, firstCol:"oncelr" }]
+		},
+		"kasai lineage9" : { name:"Kasai Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Fireball."]),
+			spellcastingBonus:[{ name:"Kasai Lineage", spells:["fireball"], selection:["fireball"], times:1, firstCol:"oncelr" }]
+		},
+		"kasai lineage13" : { name:"Kasai Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Wall of Fire."]),
+			spellcastingBonus:[{ name:"Kasai Lineage", spells:["wall of fire"], selection:["wall of fire"], times:1, firstCol:"oncelr" }]
+		},
+		"kasai lineage17" : { name:"Kasai Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Immolation."]),
+			spellcastingBonus:[{ name:"Kasai Lineage", spells:["immolation"], selection:["immolation"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Produce Flame", "Control Flames"])
+};
+
+// 7) Chikyu (Earth)
+RaceSubList["kitsune-chikyu"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(chikyu|earth)).*$/i,
+	name : "Kitsune (Chikyu \u2014 Earth)",
+	sortname : "Kitsune, Chikyu",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 1, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Chikyu \u2014 Earth) (+1 Constitution, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Mold Earth, Resistance." +
+		"\n \u2022 Lineage Spells: Earth Tremor (3rd), Maximilian\u2019s Earthen Grasp (5th), Meld into Stone (9th), Stone Shape (13th), Wall of Stone (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"chikyu lineage3" : { name:"Chikyu Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Earth Tremor."]),
+			spellcastingBonus:[{ name:"Chikyu Lineage", spells:["earth tremor"], selection:["earth tremor"], times:1, firstCol:"oncelr" }]
+		},
+		"chikyu lineage5" : { name:"Chikyu Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Maximilian\u2019s Earthen Grasp."]),
+			spellcastingBonus:[{ name:"Chikyu Lineage", spells:["maximilian's earthen grasp"], selection:["maximilian's earthen grasp"], times:1, firstCol:"oncelr" }]
+		},
+		"chikyu lineage9" : { name:"Chikyu Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Meld into Stone."]),
+			spellcastingBonus:[{ name:"Chikyu Lineage", spells:["meld into stone"], selection:["meld into stone"], times:1, firstCol:"oncelr" }]
+		},
+		"chikyu lineage13" : { name:"Chikyu Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Stone Shape."]),
+			spellcastingBonus:[{ name:"Chikyu Lineage", spells:["stone shape"], selection:["stone shape"], times:1, firstCol:"oncelr" }]
+		},
+		"chikyu lineage17" : { name:"Chikyu Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Wall of Stone."]),
+			spellcastingBonus:[{ name:"Chikyu Lineage", spells:["wall of stone"], selection:["wall of stone"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Mold Earth", "Resistance"])
+};
+
+// 8) Kawa (River)
+RaceSubList["kitsune-kawa"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(kawa|river)).*$/i,
+	name : "Kitsune (Kawa \u2014 River)",
+	sortname : "Kitsune, Kawa",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Kawa \u2014 River) (+1 Wisdom, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Shape Water, Guidance." +
+		"\n \u2022 Lineage Spells: Create or Destroy Water (3rd), Misty Step (5th), Water Walk (9th), Control Water (13th), Maelstrom (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"kawa lineage3" : { name:"Kawa Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Create or Destroy Water."]),
+			spellcastingBonus:[{ name:"Kawa Lineage", spells:["create or destroy water"], selection:["create or destroy water"], times:1, firstCol:"oncelr" }]
+		},
+		"kawa lineage5" : { name:"Kawa Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Misty Step."]),
+			spellcastingBonus:[{ name:"Kawa Lineage", spells:["misty step"], selection:["misty step"], times:1, firstCol:"oncelr" }]
+		},
+		"kawa lineage9" : { name:"Kawa Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Water Walk."]),
+			spellcastingBonus:[{ name:"Kawa Lineage", spells:["water walk"], selection:["water walk"], times:1, firstCol:"oncelr" }]
+		},
+		"kawa lineage13" : { name:"Kawa Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Control Water."]),
+			spellcastingBonus:[{ name:"Kawa Lineage", spells:["control water"], selection:["control water"], times:1, firstCol:"oncelr" }]
+		},
+		"kawa lineage17" : { name:"Kawa Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Maelstrom."]),
+			spellcastingBonus:[{ name:"Kawa Lineage", spells:["maelstrom"], selection:["maelstrom"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Shape Water", "Guidance"])
+};
+
+// 9) Umi (Ocean)
+RaceSubList["kitsune-umi"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(umi|ocean)).*$/i,
+	name : "Kitsune (Umi \u2014 Ocean)",
+	sortname : "Kitsune, Umi",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 1, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Umi \u2014 Ocean) (+1 Constitution, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Shape Water, Thunderclap." +
+		"\n \u2022 Lineage Spells: Fog Cloud (3rd), Tidal Wave (5th), Water Breathing (9th), Control Water (13th), Tsunami (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"umi lineage3" : { name:"Umi Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Fog Cloud."]),
+			spellcastingBonus:[{ name:"Umi Lineage", spells:["fog cloud"], selection:["fog cloud"], times:1, firstCol:"oncelr" }]
+		},
+		"umi lineage5" : { name:"Umi Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Tidal Wave."]),
+			spellcastingBonus:[{ name:"Umi Lineage", spells:["tidal wave"], selection:["tidal wave"], times:1, firstCol:"oncelr" }]
+		},
+		"umi lineage9" : { name:"Umi Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Water Breathing."]),
+			spellcastingBonus:[{ name:"Umi Lineage", spells:["water breathing"], selection:["water breathing"], times:1, firstCol:"oncelr" }]
+		},
+		"umi lineage13" : { name:"Umi Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Control Water."]),
+			spellcastingBonus:[{ name:"Umi Lineage", spells:["control water"], selection:["control water"], times:1, firstCol:"oncelr" }]
+		},
+		"umi lineage17" : { name:"Umi Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Tsunami."]),
+			spellcastingBonus:[{ name:"Umi Lineage", spells:["tsunami"], selection:["tsunami"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Shape Water", "Thunderclap"])
+};
+
+// 10) Yama (Mountain)
+RaceSubList["kitsune-yama"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(yama|mountain)).*$/i,
+	name : "Kitsune (Yama \u2014 Mountain)",
+	sortname : "Kitsune, Yama",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [1, 0, 0, 0, 0, 2], // Default: +1 Str; manual adjust to Con if desired
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Yama \u2014 Mountain) (+2 Charisma, +1 Strength or Constitution)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Blade Ward, Resistance." +
+		"\n \u2022 Lineage Spells: Shield of Faith (3rd), Enhance Ability (5th), Protection from Energy (9th), Stoneskin (13th), Investiture of Stone (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"yama lineage3" : { name:"Yama Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Shield of Faith."]),
+			spellcastingBonus:[{ name:"Yama Lineage", spells:["shield of faith"], selection:["shield of faith"], times:1, firstCol:"oncelr" }]
+		},
+		"yama lineage5" : { name:"Yama Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Enhance Ability."]),
+			spellcastingBonus:[{ name:"Yama Lineage", spells:["enhance ability"], selection:["enhance ability"], times:1, firstCol:"oncelr" }]
+		},
+		"yama lineage9" : { name:"Yama Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Protection from Energy."]),
+			spellcastingBonus:[{ name:"Yama Lineage", spells:["protection from energy"], selection:["protection from energy"], times:1, firstCol:"oncelr" }]
+		},
+		"yama lineage13" : { name:"Yama Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Stoneskin."]),
+			spellcastingBonus:[{ name:"Yama Lineage", spells:["stoneskin"], selection:["stoneskin"], times:1, firstCol:"oncelr" }]
+		},
+		"yama lineage17" : { name:"Yama Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Investiture of Stone."]),
+			spellcastingBonus:[{ name:"Yama Lineage", spells:["investiture of stone"], selection:["investiture of stone"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Blade Ward", "Resistance"])
+};
+
+// 11) Mori (Forest)
+RaceSubList["kitsune-mori"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(mori|forest)).*$/i,
+	name : "Kitsune (Mori \u2014 Forest)",
+	sortname : "Kitsune, Mori",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 0, 1, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Mori \u2014 Forest) (+1 Wisdom, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Druidcraft, Poison Spray." +
+		"\n \u2022 Lineage Spells: Entangle (3rd), Pass without Trace (5th), Plant Growth (9th), Blight (13th), Tree Stride (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"mori lineage3" : { name:"Mori Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Entangle."]),
+			spellcastingBonus:[{ name:"Mori Lineage", spells:["entangle"], selection:["entangle"], times:1, firstCol:"oncelr" }]
+		},
+		"mori lineage5" : { name:"Mori Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Pass without Trace."]),
+			spellcastingBonus:[{ name:"Mori Lineage", spells:["pass without trace"], selection:["pass without trace"], times:1, firstCol:"oncelr" }]
+		},
+		"mori lineage9" : { name:"Mori Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Plant Growth."]),
+			spellcastingBonus:[{ name:"Mori Lineage", spells:["plant growth"], selection:["plant growth"], times:1, firstCol:"oncelr" }]
+		},
+		"mori lineage13" : { name:"Mori Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Blight."]),
+			spellcastingBonus:[{ name:"Mori Lineage", spells:["blight"], selection:["blight"], times:1, firstCol:"oncelr" }]
+		},
+		"mori lineage17" : { name:"Mori Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Tree Stride."]),
+			spellcastingBonus:[{ name:"Mori Lineage", spells:["tree stride"], selection:["tree stride"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Druidcraft", "Poison Spray"])
+};
+
+// 12) Sanda (Thunder)
+RaceSubList["kitsune-sanda"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(sanda|thunder|lightning)).*$/i,
+	name : "Kitsune (Sanda \u2014 Thunder)",
+	sortname : "Kitsune, Sanda",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [1, 0, 0, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Sanda \u2014 Thunder) (+1 Strength, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Thunderclap, Shocking Grasp." +
+		"\n \u2022 Lineage Spells: Thunderwave (3rd), Shatter (5th), Lightning Bolt (9th), Storm Sphere (13th), Destructive Wave (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"sanda lineage3" : { name:"Sanda Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Thunderwave."]),
+			spellcastingBonus:[{ name:"Sanda Lineage", spells:["thunderwave"], selection:["thunderwave"], times:1, firstCol:"oncelr" }]
+		},
+		"sanda lineage5" : { name:"Sanda Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Shatter."]),
+			spellcastingBonus:[{ name:"Sanda Lineage", spells:["shatter"], selection:["shatter"], times:1, firstCol:"oncelr" }]
+		},
+		"sanda lineage9" : { name:"Sanda Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Lightning Bolt."]),
+			spellcastingBonus:[{ name:"Sanda Lineage", spells:["lightning bolt"], selection:["lightning bolt"], times:1, firstCol:"oncelr" }]
+		},
+		"sanda lineage13" : { name:"Sanda Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Storm Sphere."]),
+			spellcastingBonus:[{ name:"Sanda Lineage", spells:["storm sphere"], selection:["storm sphere"], times:1, firstCol:"oncelr" }]
+		},
+		"sanda lineage17" : { name:"Sanda Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Destructive Wave."]),
+			spellcastingBonus:[{ name:"Sanda Lineage", spells:["destructive wave"], selection:["destructive wave"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Thunderclap", "Shocking Grasp"])
+};
+
+// 13) Jikan (Time)
+RaceSubList["kitsune-jikan"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(jikan|time)).*$/i,
+	name : "Kitsune (Jikan \u2014 Time)",
+	sortname : "Kitsune, Jikan",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 0, 0, 1, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Jikan \u2014 Time) (+1 Intelligence, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Guidance, True Strike." +
+		"\n \u2022 Lineage Spells: Longstrider (3rd), Augury (5th), Haste (9th), Divination (13th), Foresight (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"jikan lineage3" : { name:"Jikan Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Longstrider."]),
+			spellcastingBonus:[{ name:"Jikan Lineage", spells:["longstrider"], selection:["longstrider"], times:1, firstCol:"oncelr" }]
+		},
+		"jikan lineage5" : { name:"Jikan Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Augury."]),
+			spellcastingBonus:[{ name:"Jikan Lineage", spells:["augury"], selection:["augury"], times:1, firstCol:"oncelr" }]
+		},
+		"jikan lineage9" : { name:"Jikan Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Haste."]),
+			spellcastingBonus:[{ name:"Jikan Lineage", spells:["haste"], selection:["haste"], times:1, firstCol:"oncelr" }]
+		},
+		"jikan lineage13" : { name:"Jikan Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Divination."]),
+			spellcastingBonus:[{ name:"Jikan Lineage", spells:["divination"], selection:["divination"], times:1, firstCol:"oncelr" }]
+		},
+		"jikan lineage17" : { name:"Jikan Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Foresight."]),
+			spellcastingBonus:[{ name:"Jikan Lineage", spells:["foresight"], selection:["foresight"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Guidance", "True Strike"])
+};
+
+// 14) Ongaku (Sound)
+RaceSubList["kitsune-ongaku"] = {
+	regExpSearch : /^(?=.*kitsune)(?=.*(ongaku|sound|music)).*$/i,
+	name : "Kitsune (Ongaku \u2014 Sound)",
+	sortname : "Kitsune, Ongaku",
+	source : [["DA42:KITSUNE", 0]],
+	plural : "Kitsune",
+	scores : [0, 1, 0, 0, 0, 2],
+	spellcastingAbility : 6,
+
+	trait :
+		"Kitsune (Ongaku \u2014 Sound) (+1 Dexterity, +2 Charisma)\n" +
+		KitsuneBaseTrait +
+		"\n \u2022 Cantrip Options: Dancing Lights, Vicious Mockery, Minor Illusion." +
+		"\n \u2022 Lineage Spells: Dissonant Whispers (3rd), Shatter (5th), Hypnotic Pattern (9th), Confusion (13th), Mass Suggestion (17th).",
+
+	features : DA42_buildLineageFeatures({
+		"ongaku lineage3" : { name:"Ongaku Lineage", minlevel:3, usages:1, recovery:"long rest",
+			description: desc(["I learn Dissonant Whispers."]),
+			spellcastingBonus:[{ name:"Ongaku Lineage", spells:["dissonant whispers"], selection:["dissonant whispers"], times:1, firstCol:"oncelr" }]
+		},
+		"ongaku lineage5" : { name:"Ongaku Lineage", minlevel:5, usages:1, recovery:"long rest",
+			description: desc(["I learn Shatter."]),
+			spellcastingBonus:[{ name:"Ongaku Lineage", spells:["shatter"], selection:["shatter"], times:1, firstCol:"oncelr" }]
+		},
+		"ongaku lineage9" : { name:"Ongaku Lineage", minlevel:9, usages:1, recovery:"long rest",
+			description: desc(["I learn Hypnotic Pattern."]),
+			spellcastingBonus:[{ name:"Ongaku Lineage", spells:["hypnotic pattern"], selection:["hypnotic pattern"], times:1, firstCol:"oncelr" }]
+		},
+		"ongaku lineage13" : { name:"Ongaku Lineage", minlevel:13, usages:1, recovery:"long rest",
+			description: desc(["I learn Confusion."]),
+			spellcastingBonus:[{ name:"Ongaku Lineage", spells:["confusion"], selection:["confusion"], times:1, firstCol:"oncelr" }]
+		},
+		"ongaku lineage17" : { name:"Ongaku Lineage", minlevel:17, usages:1, recovery:"long rest",
+			description: desc(["I learn Mass Suggestion."]),
+			spellcastingBonus:[{ name:"Ongaku Lineage", spells:["mass suggestion"], selection:["mass suggestion"], times:1, firstCol:"oncelr" }]
+		}
+	}, ["Dancing Lights", "Vicious Mockery", "Minor Illusion"])
+};

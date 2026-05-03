@@ -1,0 +1,590 @@
+/*
+	-INFORMATION-
+	Subject:    Dark Knight Class
+	Effect:     Adds the Dark Knight class and its Dark Paths for MorePurpleMoreBetter's Character Record Sheet
+	Code by:    Daniel Lott / DruidAllanon42
+	Date:       2026-05-03
+	Sheet:      v13.2.3+
+	Notes:      Designed for the 2024/5.5e MPMB framework. This is a Paladin-style half-caster.
+*/
+
+var iFileName = "Dark Knight Class [DruidAllanon42] v1.js";
+RequiredSheetVersion("13.2.3");
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Source                           >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+SourceList["SotW:DK"] = {
+	name : "ScholarofTheWild: Dark Knight",
+	abbreviation : "SotW:DK",
+	group : "Homebrew",
+	date : "2026/05/03",
+};
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Dark Knight Spell List           >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+// This list is gated by spell level through spellcastingList.level [1, 5].
+// As a half-caster, the sheet should only allow choosing spells of levels for which the Dark Knight has spell slots.
+
+var DarkKnightSpellList = [
+	// 1st-level
+	"arms of hadar", "bane", "burning hands", "cure wounds", "detect magic", "detect poison and disease",
+	"dissonant whispers", "false life", "hex", "protection from evil and good", "purify food and drink",
+	"ray of sickness", "shield", "witch bolt",
+	// 2nd-level
+	"blindness/deafness", "blur", "cloud of daggers", "crown of madness", "lesser restoration",
+	"locate object", "magic weapon", "spike growth",
+	// 3rd-level
+	"bestow curse", "call lightning", "create food and water", "dispel magic", "elemental weapon",
+	"fear", "hunger of hadar", "phantom steed", "revivify", "sleet storm",
+	// 4th-level
+	"black tentacles", "blight", "control water", "locate creature", "wall of fire",
+	// 5th-level
+	"antilife shell", "arcane hand", "contagion", "conjure volley", "dispel evil and good", "raise dead"
+];
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Dark Knight Class                >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+ClassList["dark knight"] = {
+	regExpSearch : /^(?=.*dark)(?=.*knight).*$/i,
+	name : "Dark Knight",
+	source : [["SotW:DK", 0]],
+	primaryAbility : "Strength or Charisma",
+	prereqs : "Strength 13 and Charisma 13",
+	die : 10,
+	improvements : [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0],
+	saves : ["Con", "Cha"],
+	skillstxt : {
+		primary : "Choose two from Athletics, Deception, Insight, Intimidation, Perception, and Persuasion"
+	},
+	armorProfs : {
+		primary : [true, true, true, true],
+		secondary : [true, true, false, true]
+	},
+	weaponProfs : {
+		primary : [true, true],
+		secondary : [true, true]
+	},
+	equipment : "Dark Knight starting equipment:\n \u2022 A martial weapon and a Shield, or two martial weapons;\n \u2022 A Shortbow and 20 Arrows, or any simple melee weapon;\n \u2022 Chain Mail or Scale Mail;\n \u2022 A Dungeoneer's Pack or an Explorer's Pack.\nAlternatively, start with 5d4 \u00d7 10 gp.",
+	subclasses : ["Dark Path", []],
+	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+	spellcastingFactor : 2,
+	spellcastingAbility : 6,
+	spellcastingKnown : {
+		spells : "list",
+		prepared : true
+	},
+	spellcastingList : {
+		spells : DarkKnightSpellList,
+		level : [1, 5]
+	},
+	spellcastingTable : [
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0],
+		[0, 2, 0, 0, 0, 0],
+		[0, 3, 0, 0, 0, 0],
+		[0, 3, 0, 0, 0, 0],
+		[0, 4, 2, 0, 0, 0],
+		[0, 4, 2, 0, 0, 0],
+		[0, 4, 3, 0, 0, 0],
+		[0, 4, 3, 0, 0, 0],
+		[0, 4, 3, 2, 0, 0],
+		[0, 4, 3, 2, 0, 0],
+		[0, 4, 3, 3, 0, 0],
+		[0, 4, 3, 3, 0, 0],
+		[0, 4, 3, 3, 1, 0],
+		[0, 4, 3, 3, 1, 0],
+		[0, 4, 3, 3, 2, 0],
+		[0, 4, 3, 3, 2, 0],
+		[0, 4, 3, 3, 3, 1],
+		[0, 4, 3, 3, 3, 1],
+		[0, 4, 3, 3, 3, 2],
+		[0, 4, 3, 3, 3, 2]
+	],
+	features : {
+		"bloody hands" : {
+			name : "Bloody Hands",
+			source : [["SotW:DK", 0]],
+			minlevel : 1,
+			description : desc([
+				"As a Bonus Action, I empower my next melee weapon attack with necrotic damage for 1 minute or until it hits",
+				"On a hit, the attack deals extra necrotic damage equal to my Dark Knight level + Prof Bonus + Cha mod",
+				"After the hit, I lose HP equal to half the necrotic damage dealt, rounded down; this can't reduce me to 0 HP",
+				"Alternatively, I can lose HP equal to my Dark Knight level to make my next hit ignore resistance to that attack's damage",
+				"If I reduce a creature to 0 HP with Bloody Hands, I regain HP equal to half my Dark Knight level + Prof Bonus + Cha mod"
+			]),
+			additional : levels.map(function (n) {
+				return n < 1 ? "" : "+" + n + " + Prof + Cha necrotic; self-damage half";
+			}),
+			action : [["bonus action", ""]]
+		},
+		"detect outsiders" : {
+			name : "Detect Outsiders",
+			source : [["SotW:DK", 0]],
+			minlevel : 1,
+			description : desc([
+				"As an Action for 1 minute, I sense aberrations, celestials, fey, and fiends within 60 ft",
+				"I know the creature type, but not identity; I also sense consecrated or desecrated places and objects"
+			]),
+			usages : "1 + Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, 1 + What('Cha Mod'));",
+			recovery : "long rest",
+			action : [["action", ""]]
+		},
+		"fighting style" : {
+			name : "Fighting Style",
+			source : [["SotW:DK", 0]],
+			minlevel : 2,
+			description : desc([
+				"Choose one Fighting Style using the Choose Feature button above"
+			]),
+			extraname : "Fighting Style",
+			extrachoices : ["Blind Fighting", "Defense", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting", "Thrown Weapon Fighting", "Unarmed Fighting", "Dark Warrior"],
+			extraTimes : levels.map(function (n) { return n < 2 ? 0 : 1; }),
+			"blind fighting" : FightingStyles.blind_fighting ? FightingStyles.blind_fighting : {
+				name : "Blind Fighting",
+				description : "I have Blindsight with a range of 10 ft."
+			},
+			"defense" : FightingStyles.defense,
+			"dueling" : FightingStyles.dueling,
+			"great weapon fighting" : FightingStyles.great_weapon,
+			"two-weapon fighting" : FightingStyles.two_weapon,
+			"thrown weapon fighting" : FightingStyles.thrown_weapon,
+			"unarmed fighting" : FightingStyles.unarmed,
+			"dark warrior" : {
+				name : "Dark Warrior",
+				description : desc([
+					"I learn two Warlock cantrips, which count as Dark Knight spells for me and use Charisma",
+					"I learn one additional Warlock cantrip at Dark Knight levels 4 and 10"
+				]),
+				spellcastingBonus : [{
+					name : "Dark Warrior",
+					"class" : "warlock",
+					level : [0, 0],
+					spellcastingAbility : 6,
+					times : levels.map(function (n) { return n < 2 ? 0 : n < 4 ? 2 : n < 10 ? 3 : 4; })
+				}]
+			}
+		},
+		"spellcasting" : {
+			name : "Spellcasting",
+			source : [["SotW:DK", 0]],
+			minlevel : 2,
+			description : desc([
+				"I can cast prepared Dark Knight spells using Charisma as my spellcasting ability",
+				"I prepare Cha mod + half my Dark Knight level spells, rounded down, minimum one",
+				"I regain all expended spell slots when I finish a Long Rest"
+			])
+		},
+		"dark bane" : {
+			name : "Dark Bane",
+			source : [["SotW:DK", 0]],
+			minlevel : 2,
+			description : desc([
+				"When I hit with a melee weapon attack, I can expend a spell slot to deal extra necrotic damage",
+				"The damage is 2d8 for a 1st-level slot, +1d8 per slot level above 1st, to a maximum of 5d8",
+				"The damage increases by 1d8 against celestials or creatures vulnerable to necrotic damage, to a maximum of 6d8"
+			])
+		},
+		"infernal mind" : {
+			name : "Infernal Mind",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"The dark power within me grants immunity to the Charmed and Frightened conditions"
+			]),
+			savetxt : { immune : ["charmed", "frightened"] }
+		},
+		"harness dark power" : {
+			name : "Harness Dark Power",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"As a Bonus Action, I regain one expended spell slot of a level no higher than half my Prof Bonus, rounded up",
+				"I can use this feature once at level 3, twice at level 7, and three times at level 15"
+			]),
+			additional : levels.map(function (n) {
+				return n < 3 ? "" : (n < 7 ? "1 use" : n < 15 ? "2 uses" : "3 uses") + "; slot level up to " + Math.ceil((n < 5 ? 2 : n < 9 ? 3 : n < 13 ? 4 : n < 17 ? 5 : 6) / 2);
+			}),
+			usages : levels.map(function (n) { return n < 3 ? 0 : n < 7 ? 1 : n < 15 ? 2 : 3; }),
+			recovery : "long rest",
+			action : [["bonus action", ""]]
+		},
+		"extra attack" : {
+			name : "Extra Attack",
+			source : [["SotW:DK", 0]],
+			minlevel : 5,
+			description : desc([
+				"I can attack twice, instead of once, whenever I take the Attack action on my turn"
+			])
+		},
+		"abyssal bane" : {
+			name : "Abyssal Bane",
+			source : [["SotW:DK", 0]],
+			minlevel : 5,
+			description : desc([
+				"As a Bonus Action, I infuse my attacks with abyssal energy for 1 minute",
+				"Once on each of my turns when I hit with a melee weapon or unarmed strike, I deal +1d6 necrotic damage",
+				"The extra damage increases to +1d8 at level 11 and +1d10 at level 17"
+			]),
+			additional : levels.map(function (n) { return n < 5 ? "" : "+1d" + (n < 11 ? 6 : n < 17 ? 8 : 10) + " necrotic once/turn"; }),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "long rest",
+			action : [["bonus action", ""]],
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (!v.isSpell && /abyssal/i.test(v.WeaponTextName)) {
+							var dkLvl = classes.known["dark knight"] ? classes.known["dark knight"].level : 0;
+							var die = dkLvl < 11 ? 6 : dkLvl < 17 ? 8 : 10;
+							fields.Description += (fields.Description ? "; " : "") + "+1d" + die + " necrotic once/turn while Abyssal Bane active";
+						}
+					},
+					"If I include the word 'Abyssal' in a weapon name, the attack description notes Abyssal Bane's extra damage."
+				]
+			}
+		},
+		"aura of sorrow" : {
+			name : "Aura of Sorrow",
+			source : [["SotW:DK", 0]],
+			minlevel : 6,
+			description : desc([
+				"Hostile creatures within 10 ft of me take a penalty to saving throws equal to half my Cha mod, rounded up, minimum -1",
+				"I must be conscious for this aura to function; the aura range increases to 30 ft at level 18"
+			]),
+			additional : levels.map(function (n) { return n < 6 ? "" : (n < 18 ? "10-ft aura" : "30-ft aura"); })
+		},
+		"aura of clarity" : {
+			name : "Aura of Clarity",
+			source : [["SotW:DK", 0]],
+			minlevel : 10,
+			description : desc([
+				"While I am conscious, I and friendly creatures within 10 ft of me can't be Blinded or Deafened",
+				"The aura range increases to 30 ft at level 18"
+			]),
+			additional : levels.map(function (n) { return n < 10 ? "" : (n < 18 ? "10-ft aura" : "30-ft aura"); }),
+			savetxt : { immune : ["blinded/deafened in aura"] }
+		},
+		"infernal health" : {
+			name : "Infernal Health",
+			source : [["SotW:DK", 0]],
+			minlevel : 11,
+			description : desc([
+				"I am immune to disease and have resistance to poison damage and advantage on saves against poison"
+			]),
+			dmgres : ["Poison"],
+			savetxt : { adv_vs : ["poison"], immune : ["disease"] }
+		},
+		"contaminating touch" : {
+			name : "Contaminating Touch",
+			source : [["SotW:DK", 0]],
+			minlevel : 14,
+			description : desc([
+				"As an Action, I touch myself or a willing creature and extend one spell affecting the target until the end of my next turn",
+				"I choose which spell is prolonged if multiple spells affect the target"
+			]),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+};
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Path of Violence                 >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+AddSubClass("dark knight", "violence", {
+	regExpSearch : /^(?=.*violence).*$/i,
+	subname : "Path of Violence",
+	source : [["SotW:DK", 0]],
+	spellcastingExtra : ["compelled duel", "hunter's mark", "magic weapon", "ray of enfeeblement", "slow", "vampiric touch", "banishment", "locate creature", "hold monster", "wall of force"],
+	features : {
+		"subclassfeature3" : {
+			name : "Violence Spells",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"I always have my Path of Violence spells prepared; they don't count against my prepared spells"
+			])
+		},
+		"subclassfeature3.1" : {
+			name : "Dark Arts: Violence",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"I gain the Evil Reach, No Escape, and Dark Ferocity Dark Arts; active options share one resource",
+				"I can use active Dark Arts a number of times equal to my Cha mod, minimum once, per Short or Long Rest"
+			]),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "short rest",
+			extraname : "Violence Dark Art",
+			extrachoices : ["Evil Reach", "No Escape", "Dark Ferocity"],
+			extraTimes : levels.map(function (n) { return n < 3 ? 0 : 3; }),
+			"evil reach" : {
+				name : "Evil Reach",
+				description : desc([
+					"As a Bonus Action, my melee reach increases by 5 ft and ranged weapon ranges increase by 20 ft for 1 minute"
+				]),
+				action : [["bonus action", ""]]
+			},
+			"no escape" : {
+				name : "No Escape",
+				description : desc([
+					"As a Bonus Action, my Speed increases by 10 ft for 1 minute; this becomes 15 ft at level 11 and 20 ft at level 17"
+				]),
+				additional : levels.map(function (n) { return n < 3 ? "" : "+" + (n < 11 ? 10 : n < 17 ? 15 : 20) + " ft speed"; }),
+				action : [["bonus action", ""]]
+			},
+			"dark ferocity" : {
+				name : "Dark Ferocity",
+				description : desc([
+					"Once per turn before my first Strength-based melee weapon attack, I can gain Advantage on my melee attacks this turn",
+					"Attack rolls against me have Advantage until the start of my next turn"
+				])
+			}
+		},
+		"subclassfeature7" : {
+			name : "Accursed Hands",
+			source : [["SotW:DK", 0]],
+			minlevel : 7,
+			description : desc([
+				"When I use Bloody Hands, I can make a Con save against my Dark Knight spell save DC",
+				"On a success, I take no self-damage and add my Con mod to the necrotic damage; on a failure, I take the usual self-damage"
+			])
+		},
+		"subclassfeature15" : {
+			name : "Aura of Brutality",
+			source : [["SotW:DK", 0]],
+			minlevel : 15,
+			description : desc([
+				"My weapon attacks and those of friendly creatures within 15 ft count as magical for overcoming resistance and immunity",
+				"Once on each of my turns, when I hit with a melee weapon attack, I add my Cha mod to the damage roll"
+			])
+		},
+		"subclassfeature20" : {
+			name : "Idol of Violence",
+			source : [["SotW:DK", 0]],
+			minlevel : 20,
+			description : desc([
+				"As an Action for 1 minute, I gain Temp HP equal to 2d12 + my Dark Knight level + Prof Bonus",
+				"I have Advantage on Str, Dex, and Con saving throws and ability checks",
+				"Once on each of my turns, one weapon hit deals extra damage equal to my Con mod + 2d8"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+});
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Path of Devilry                  >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+AddSubClass("dark knight", "devilry", {
+	regExpSearch : /^(?=.*devilry).*$/i,
+	subname : "Path of Devilry",
+	source : [["SotW:DK", 0]],
+	spellcastingExtra : ["armor of agathys", "charm person", "darkness", "detect thoughts", "animate dead", "haste", "fire shield", "phantasmal killer", "cone of cold", "dream"],
+	features : {
+		"subclassfeature3" : {
+			name : "Devilry Spells",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"I always have my Path of Devilry spells prepared; they don't count against my prepared spells"
+			])
+		},
+		"subclassfeature3.1" : {
+			name : "Dark Arts: Devilry",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"I gain the Hellfire, Evil Eye, and Demonic Touch Dark Arts; active options share one resource",
+				"I can use active Dark Arts a number of times equal to my Cha mod, minimum once, per Short or Long Rest"
+			]),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "short rest",
+			extraname : "Devilry Dark Art",
+			extrachoices : ["Hellfire", "Evil Eye", "Demonic Touch"],
+			extraTimes : levels.map(function (n) { return n < 3 ? 0 : 3; }),
+			"hellfire" : {
+				name : "Hellfire",
+				description : desc([
+					"As a Bonus Action, I wreath myself in hellfire for 1 minute",
+					"Once per turn, a hostile creature within 10 ft that starts its turn there or hits me takes fire damage"
+				]),
+				additional : levels.map(function (n) { return n < 3 ? "" : "2d" + (n < 5 ? 6 : n < 11 ? 8 : n < 17 ? 10 : 12) + " + Cha fire"; }),
+				action : [["bonus action", ""]]
+			},
+			"evil eye" : {
+				name : "Evil Eye",
+				description : desc([
+					"As a Bonus Action, one hostile creature I can see within 30 ft must make a Wis save or be Frightened for 1 minute",
+					"The condition ends early if the creature breaks line of sight; my hits against it deal extra damage equal to Prof Bonus"
+				]),
+				action : [["bonus action", ""]]
+			},
+			"demonic touch" : {
+				name : "Demonic Touch",
+				description : desc([
+					"I can use Charisma instead of Strength or Dexterity for attack and damage rolls with melee weapons and unarmed strikes"
+				]),
+				calcChanges : {
+					atkAdd : [
+						function (fields, v) {
+							if (!v.isSpell && v.isMeleeWeapon && !(/off.hand/i).test(v.WeaponTextName)) {
+								fields.Mod = 6;
+							}
+						},
+						"With Demonic Touch, melee weapon and unarmed strike attacks can use Charisma."
+					]
+				}
+			}
+		},
+		"subclassfeature7" : {
+			name : "Aura of Apparition",
+			source : [["SotW:DK", 0]],
+			minlevel : 7,
+			description : desc([
+				"As a Bonus Action, I create a 10-ft aura for 1 minute while conscious",
+				"Hostile creatures in the aura have Disadvantage on attack rolls against me"
+			]),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "long rest",
+			action : [["bonus action", ""]]
+		},
+		"subclassfeature15" : {
+			name : "Blood Weapon",
+			source : [["SotW:DK", 0]],
+			minlevel : 15,
+			description : desc([
+				"Once per turn when I hit a creature with a melee weapon attack, I gain Temp HP equal to my Prof Bonus + Cha mod",
+				"Temporary HP gained from this feature can't exceed half my maximum HP and vanishes 10 minutes after combat"
+			])
+		},
+		"subclassfeature20" : {
+			name : "Idol of Devilry",
+			source : [["SotW:DK", 0]],
+			minlevel : 20,
+			description : desc([
+				"As an Action for 1 minute, I gain a 30-ft hellfire aura, a 50-ft Fly Speed, and one chain-binding use",
+				"Hostile creatures in the aura take 2d12 + Cha mod fire damage once per turn when they start there or hit me",
+				"As an Action once during this form, I choose creatures I can see to be bound by chains; they take 5d8 piercing + 2d12 fire damage and are Restrained until the end of my next turn on a failed Str save"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""]]
+		}
+	}
+});
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+// >>> Path of Deception                >>> //
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
+
+AddSubClass("dark knight", "deception", {
+	regExpSearch : /^(?=.*deception).*$/i,
+	subname : "Path of Deception",
+	source : [["SotW:DK", 0]],
+	spellcastingExtra : ["comprehend languages", "guiding bolt", "find traps", "invisibility", "counterspell", "nondetection", "arcane eye", "greater invisibility", "mislead", "modify memory"],
+	features : {
+		"subclassfeature3" : {
+			name : "Deception Spells",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"I always have my Path of Deception spells prepared; they don't count against my prepared spells"
+			])
+		},
+		"subclassfeature3.1" : {
+			name : "Dark Arts: Deception",
+			source : [["SotW:DK", 0]],
+			minlevel : 3,
+			description : desc([
+				"I gain the Grisly Wound, Invoke Duplicity, and Savage Opportunist Dark Arts; active options share one resource",
+				"I can use active Dark Arts a number of times equal to my Cha mod, minimum once, per Short or Long Rest"
+			]),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "short rest",
+			extraname : "Deception Dark Art",
+			extrachoices : ["Grisly Wound", "Invoke Duplicity", "Savage Opportunist"],
+			extraTimes : levels.map(function (n) { return n < 3 ? 0 : 3; }),
+			"grisly wound" : {
+				name : "Grisly Wound",
+				description : desc([
+					"As a Bonus Action, I poison one weapon or piece of ammunition for 1 minute",
+					"The next hit deals poison damage equal to 1d6 + half my Dark Knight level and forces a Con save or Poisoned until the end of my next turn"
+				]),
+				action : [["bonus action", ""]]
+			},
+			"invoke duplicity" : {
+				name : "Invoke Duplicity",
+				description : desc([
+					"As an Action, I create a visual illusion of myself within 30 ft for 1 minute, requiring Concentration",
+					"As a Bonus Action, I move it up to 30 ft; I can cast spells from its space using my senses",
+					"If both of us are within 5 ft of a creature that sees it, I have Advantage on attack rolls against that creature"
+				]),
+				action : [["action", ""], ["bonus action", "Move illusion"]]
+			},
+			"savage opportunist" : {
+				name : "Savage Opportunist",
+				description : desc([
+					"Once per turn when I hit with a light or finesse weapon, I deal +1d4 damage if I have Advantage",
+					"I can also apply this damage if another enemy of the target is within 5 ft and I don't have Disadvantage"
+				])
+			}
+		},
+		"subclassfeature7" : {
+			name : "Mark of Exhaustion",
+			source : [["SotW:DK", 0]],
+			minlevel : 7,
+			description : desc([
+				"As an Action, I mark up to three hostile creatures I can see within 30 ft for 1 minute",
+				"Once per turn when a marked target attacks, casts a spell, or moves more than 5 ft, it makes a Con save",
+				"On a failed save, it falls Prone and the mark ends; on a success, the mark ends"
+			]),
+			usages : "Charisma modifier per ",
+			usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
+			recovery : "long rest",
+			action : [["action", ""]]
+		},
+		"subclassfeature15" : {
+			name : "Devilish Escape",
+			source : [["SotW:DK", 0]],
+			minlevel : 15,
+			description : desc([
+				"As an Action, I become Invisible for 1 minute; on the same turn, I can teleport up to 60 ft as a Bonus Action",
+				"The destination must be an unoccupied space I can see"
+			]),
+			usages : 2,
+			recovery : "long rest",
+			action : [["action", ""], ["bonus action", "Teleport"]]
+		},
+		"subclassfeature20" : {
+			name : "Idol of Deception",
+			source : [["SotW:DK", 0]],
+			minlevel : 20,
+			description : desc([
+				"As an Action for 1 minute, I become Invisible; the invisibility breaks when I attack, but I can restore it as a Bonus Action",
+				"My Speed doubles, and once during this form I can use Mark of Exhaustion on up to 10 hostile creatures within 50 ft",
+				"The first successful attack I make after being Invisible deals an extra 4d6 poison damage"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : [["action", ""], ["bonus action", "Restore invisibility"]]
+		}
+	}
+});

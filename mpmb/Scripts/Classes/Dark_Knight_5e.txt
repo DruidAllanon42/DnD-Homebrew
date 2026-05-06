@@ -8,7 +8,7 @@
 	Notes:      Designed for the 2024/5.5e MPMB framework. This is a Paladin-style half-caster.
 */
 
-var iFileName = "Dark Knight Class [DruidAllanon42] v1.js";
+var iFileName = "Dark Knight Class [DruidAllanon42] v1.1.js";
 RequiredSheetVersion("13.2.3");
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -17,7 +17,7 @@ RequiredSheetVersion("13.2.3");
 
 SourceList["SotW:DK"] = {
 	name : "ScholarofTheWild: Dark Knight",
-	abbreviation : "SotW:DK",
+	abbreviation : "DA42:DK",
 	group : "Homebrew",
 	date : "2026/05/03",
 };
@@ -154,8 +154,21 @@ ClassList["dark knight"] = {
 			"dueling" : FightingStyles.dueling,
 			"great weapon fighting" : FightingStyles.great_weapon,
 			"two-weapon fighting" : FightingStyles.two_weapon,
-			"thrown weapon fighting" : FightingStyles.thrown_weapon,
-			"unarmed fighting" : FightingStyles.unarmed,
+			"thrown weapon fighting" : {
+				name : "Thrown Weapon Fighting",
+				description : desc([
+					"I can draw a weapon that has the Thrown property as part of the attack I make with the weapon",
+					"When I hit with a ranged attack using a thrown weapon, I gain a +1 bonus to the damage roll"
+				])
+			},
+			"unarmed fighting" : {
+				name : "Unarmed Fighting",
+				description : desc([
+					"My Unarmed Strike can deal 1d6 + Str mod bludgeoning damage, or 1d8 + Str mod if both hands are free",
+					"When I successfully start a grapple, I can deal 1d4 bludgeoning damage to the grappled creature",
+					"Until the grapple ends, I can also deal this damage whenever I hit the grappled creature with a melee attack"
+				])
+			},
 			"dark warrior" : {
 				name : "Dark Warrior",
 				description : desc([

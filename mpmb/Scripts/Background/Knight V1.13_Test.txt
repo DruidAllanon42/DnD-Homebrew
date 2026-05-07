@@ -1,10 +1,9 @@
-var iFileName = "Background - Knight [DA42BG V1.13].js";
+var iFileName = "Background - Knight [DA42BG V1.13.1].js";
 RequiredSheetVersion("14.0.0");
 
 /*	-INFORMATION-
 	Subject:	Background
-	Effect:		Adds the Knight background with selectable Knightly Order feats
-				for use with MPMB Character Sheets.
+	Effect:		Adds the Knight background with selectable Knightly Order feats.
 	Code by:	Daniel Lott / DruidAllanon42
 	Date:		2026-05-07
 */
@@ -18,57 +17,12 @@ SourceList["DA42BG"] = {
 	date : "2026/05/07"
 };
 
-var DA42BG_Knight = "knight";
-var DA42BG_KOBetrayed = "knightly order broken oath betrayed order";
-var DA42BG_KODivine = "knightly order broken oath failed divine trial";
-var DA42BG_KOLove = "knightly order broken oath forbidden love";
-var DA42BG_KOWarCrime = "knightly order broken oath war crime survivor";
-var DA42BG_KORelic = "knightly order broken oath corrupted relic bearer";
-
 BackgroundFeatureList["knightly reputation"] = {
-	description : "I was trained within a knightly order, martial fellowship, sacred guard, noble house, or sworn military tradition. My bearing, discipline, and reputation mark me as someone shaped by command, duty, and violence. Other knights, soldiers, nobles, clergy, and military officials may recognize my training, though their reaction depends on the order I once served.",
+	description : "I was trained within a knightly order, martial fellowship, sacred guard, noble house, or sworn military tradition. My bearing, discipline, and reputation mark me as someone shaped by command, duty, and violence.",
 	source : [["DA42BG", 1]]
 };
 
-var DA42BG_KnightTraits = [
-	"I still follow old battlefield habits even when no battle is near.",
-	"I judge people by how they act when frightened.",
-	"I keep my armor, weapons, and gear in careful order.",
-	"I do not easily forgive broken promises.",
-	"I am formal with strangers, even when I dislike them.",
-	"I find comfort in watches, patrols, and routines.",
-	"I rarely speak of the oath, order, or banner that shaped me.",
-	"I protect others instinctively, even when I tell myself I do not care."
-];
-
-var DA42BG_KnightIdeals = [
-	["Duty", "Duty. A life without discipline collapses into chaos. (Lawful)"],
-	["Freedom", "Freedom. No oath should become a chain around the soul. (Chaotic)"],
-	["Protection", "Protection. Strength exists to shield those who cannot defend themselves. (Good)"],
-	["Power", "Power. Titles, vows, and banners matter only if they make others obey. (Evil)"],
-	["Survival", "Survival. Orders fall. Kingdoms burn. The living keep moving. (Neutral)"],
-	["Redemption", "Redemption. My past is stained, but my next choice is still mine. (Any)"]
-];
-
-var DA42BG_KnightBonds = [
-	"I still carry the symbol of the order that shaped me.",
-	"Someone from my former life is still searching for me.",
-	"I owe my survival to a comrade, lover, mentor, or enemy.",
-	"I know a secret that could ruin a noble house, temple, or military order.",
-	"I failed someone I swore to protect.",
-	"I seek the battlefield, relic, commander, or truth that changed my life."
-];
-
-var DA42BG_KnightFlaws = [
-	"I distrust anyone who speaks too proudly of honor.",
-	"I answer shame with anger.",
-	"I struggle to ask for help, even when I need it.",
-	"I expect betrayal before kindness.",
-	"I cannot ignore an insult to my courage or loyalty.",
-	"I sometimes treat mercy as weakness."
-];
-
-BackgroundList[DA42BG_Knight] = {
+BackgroundList["knight"] = {
 	regExpSearch : /^(?=.*knight).*$/i,
 	name : "Knight",
 	source : [["DA42BG", 1]],
@@ -77,11 +31,11 @@ BackgroundList[DA42BG_Knight] = {
 	languageProfs : [],
 	featsAdd : [{
 		options : [
-			{ key : DA42BG_KOBetrayed },
-			{ key : DA42BG_KODivine },
-			{ key : DA42BG_KOLove },
-			{ key : DA42BG_KOWarCrime },
-			{ key : DA42BG_KORelic }
+			{ key : "knightly order broken oath betrayed order" },
+			{ key : "knightly order broken oath failed divine trial" },
+			{ key : "knightly order broken oath forbidden love" },
+			{ key : "knightly order broken oath war crime survivor" },
+			{ key : "knightly order broken oath corrupted relic bearer" }
 		]
 	}],
 	gold : 15,
@@ -93,120 +47,124 @@ BackgroundList[DA42BG_Knight] = {
 		["Belt pouch (with coins)", 1, 1]
 	],
 	feature : "Knightly Reputation",
-	trait : DA42BG_KnightTraits,
-	ideal : DA42BG_KnightIdeals,
-	bond : DA42BG_KnightBonds,
-	flaw : DA42BG_KnightFlaws,
+	trait : [
+		"I still follow old battlefield habits even when no battle is near.",
+		"I judge people by how they act when frightened.",
+		"I keep my armor, weapons, and gear in careful order.",
+		"I do not easily forgive broken promises.",
+		"I am formal with strangers, even when I dislike them.",
+		"I find comfort in watches, patrols, and routines.",
+		"I rarely speak of the oath, order, or banner that shaped me.",
+		"I protect others instinctively, even when I tell myself I do not care."
+	],
+	ideal : [
+		["Duty", "Duty. A life without discipline collapses into chaos. (Lawful)"],
+		["Freedom", "Freedom. No oath should become a chain around the soul. (Chaotic)"],
+		["Protection", "Protection. Strength exists to shield those who cannot defend themselves. (Good)"],
+		["Power", "Power. Titles, vows, and banners matter only if they make others obey. (Evil)"],
+		["Survival", "Survival. Orders fall. Kingdoms burn. The living keep moving. (Neutral)"],
+		["Redemption", "Redemption. My past is stained, but my next choice is still mine. (Any)"]
+	],
+	bond : [
+		"I still carry the symbol of the order that shaped me.",
+		"Someone from my former life is still searching for me.",
+		"I owe my survival to a comrade, lover, mentor, or enemy.",
+		"I know a secret that could ruin a noble house, temple, or military order.",
+		"I failed someone I swore to protect.",
+		"I seek the battlefield, relic, commander, or truth that changed my life."
+	],
+	flaw : [
+		"I distrust anyone who speaks too proudly of honor.",
+		"I answer shame with anger.",
+		"I struggle to ask for help, even when I need it.",
+		"I expect betrayal before kindness.",
+		"I cannot ignore an insult to my courage or loyalty.",
+		"I sometimes treat mercy as weakness."
+	],
 	lifestyle : "modest"
 };
 
-FeatsList[DA42BG_KOBetrayed] = {
+FeatsList["knightly order broken oath betrayed order"] = {
 	name : "Knightly Order: Broken Oath, Betrayed Order",
 	source : [["DA42BG", 1]],
 	type : "origin",
-	description : "Broken Oath knight framed by their former order. I gain Intimidation, Insight, Vehicles (land), Celestial, and story hooks tied to a secret sympathizer and sealed accusation scroll.",
-	descriptionFull : "My order framed me to preserve its reputation. I escaped with proof, suspicion, or only the bitter knowledge that the people who preached honor chose convenience over truth.\n\nProficiencies: Intimidation, Insight, Vehicles (land), Celestial.\nSuggested Ability Scores: +2 Strength and +1 Charisma, or +1 to three different ability scores.\nSuggested Origin Feat: Tough.\nContact: A secret sympathizer inside the order.\nItem: A sealed accusation scroll.\nRoleplay Note: I instinctively distrust authority.\nPerk: I have advantage on checks to identify military ranks, heraldry, or knightly customs.",
+	description : "I gain proficiency in Intimidation, Insight, Vehicles (land), and Celestial.",
+	descriptionFull : "My order framed me to preserve its reputation. I escaped with proof, suspicion, or only the bitter knowledge that the people who preached honor chose convenience over truth.",
 	skills : ["Intimidation", "Insight"],
 	toolProfs : ["Vehicles (land)"],
 	languageProfs : ["Celestial"],
 	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
 	toNotesPage : [{
 		name : "Broken Oath: Betrayed Order",
-		note : [
-			"My order framed me to preserve its reputation.",
-			"Contact: Secret sympathizer inside the order.",
-			"Item: Sealed accusation scroll.",
-			"RP Note: I instinctively distrust authority.",
-			"Perk: I have advantage on checks to identify military ranks, heraldry, or knightly customs."
-		],
+		note : "My order framed me to preserve its reputation.\nContact: Secret sympathizer inside the order.\nItem: Sealed accusation scroll.\nRP Note: I instinctively distrust authority.",
 		page3notes : true
 	}]
 };
 
-FeatsList[DA42BG_KODivine] = {
+FeatsList["knightly order broken oath failed divine trial"] = {
 	name : "Knightly Order: Broken Oath, Failed Divine Trial",
 	source : [["DA42BG", 1]],
 	type : "origin",
-	description : "Broken Oath knight who failed a divine trial. I gain Intimidation, Insight, Religion, Vehicles (land), and one language of my choice.",
-	descriptionFull : "I was tested by my deity, temple, saint, or sacred order, and I failed. Whether the test was just or cruel no longer matters to those who judged me.\n\nProficiencies: Intimidation, Insight, Religion, Vehicles (land), one language of my choice.\nSuggested Ability Scores: +2 Strength and +1 Charisma, or +1 to three different ability scores.\nSuggested Origin Feat: Tough.\nMark: Burned holy brand.\nRoleplay Note: Temples react uneasily around me.\nOptional Spell Hook: Thaumaturgy cantrip, if allowed by the DM.",
+	description : "I gain proficiency in Intimidation, Insight, Religion, Vehicles (land), and one language of my choice.",
+	descriptionFull : "I was tested by my deity, temple, saint, or sacred order, and I failed.",
 	skills : ["Intimidation", "Insight", "Religion"],
 	toolProfs : ["Vehicles (land)"],
 	languageProfs : [["Choose one", 1]],
 	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
 	toNotesPage : [{
 		name : "Broken Oath: Failed Divine Trial",
-		note : [
-			"I was tested by my deity and failed.",
-			"Mark: Burned holy brand.",
-			"RP Note: Temples react uneasily around me.",
-			"Optional Spell Hook: Thaumaturgy cantrip, if allowed by the DM."
-		],
+		note : "I was tested by my deity and failed.\nMark: Burned holy brand.\nRP Note: Temples react uneasily around me.\nOptional Spell Hook: Thaumaturgy cantrip, if allowed by the DM.",
 		page3notes : true
 	}]
 };
 
-FeatsList[DA42BG_KOLove] = {
+FeatsList["knightly order broken oath forbidden love"] = {
 	name : "Knightly Order: Broken Oath, Forbidden Love",
 	source : [["DA42BG", 1]],
 	type : "origin",
-	description : "Broken Oath knight who abandoned their oath for love. I gain Intimidation, Insight, Vehicles (land), one musical instrument or disguise kit, and one language tied to my beloved.",
-	descriptionFull : "I chose a person over my oath. Whether that choice was romantic, familial, sacred, or forbidden by bloodline, nation, temple, or order, it made me a traitor in the eyes of those I left behind.\n\nProficiencies: Intimidation, Insight, Vehicles (land), one musical instrument or disguise kit, and one language tied to my beloved.\nSuggested Ability Scores: +2 Strength and +1 Charisma, or +1 to three different ability scores.\nSuggested Origin Feat: Tough.\nContact: Hidden lover or someone protecting them.\nItem: Faded ribbon, locket, or hidden love letter.\nRoleplay Note: My former order may still hunt me.",
+	description : "I gain proficiency in Intimidation, Insight, Vehicles (land), one musical instrument or disguise kit, and one language tied to my beloved.",
+	descriptionFull : "I chose a person over my oath. That choice made me a traitor in the eyes of those I left behind.",
 	skills : ["Intimidation", "Insight"],
 	toolProfs : [["Musical instrument or Disguise kit", 1], "Vehicles (land)"],
 	languageProfs : [["Language tied to your beloved", 1]],
 	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
 	toNotesPage : [{
 		name : "Broken Oath: Forbidden Love",
-		note : [
-			"I abandoned my oath for someone.",
-			"Contact: Hidden lover or someone protecting them.",
-			"Item: Faded ribbon, locket, or hidden love letter.",
-			"RP Note: My former order may still hunt me."
-		],
+		note : "I abandoned my oath for someone.\nContact: Hidden lover or someone protecting them.\nItem: Faded ribbon, locket, or hidden love letter.\nRP Note: My former order may still hunt me.",
 		page3notes : true
 	}]
 };
 
-FeatsList[DA42BG_KOWarCrime] = {
+FeatsList["knightly order broken oath war crime survivor"] = {
 	name : "Knightly Order: Broken Oath, War Crime Survivor",
 	source : [["DA42BG", 1]],
 	type : "origin",
-	description : "Broken Oath knight who survived atrocities committed by their own order. I gain Intimidation, Insight, Survival, Vehicles (land), and one language of my choice.",
-	descriptionFull : "My order committed atrocities, and I survived them. I know the difference between battle and slaughter, between command and cruelty, between obedience and guilt.\n\nProficiencies: Intimidation, Insight, Survival, Vehicles (land), one language of my choice.\nSuggested Ability Scores: +2 Strength and +1 Charisma, or +1 to three different ability scores.\nSuggested Origin Feat: Tough.\nEnemy: Former commander, loyalist faction, or surviving witness.\nItem: Broken insignia or battlefield map with bloodstains.\nRoleplay Note: I recognize signs of occupation, massacre, and battlefield logistics.\nPerk: I can identify military movements, abandoned camps, and signs of forced relocation.",
+	description : "I gain proficiency in Intimidation, Insight, Survival, Vehicles (land), and one language of my choice.",
+	descriptionFull : "My order committed atrocities, and I survived them.",
 	skills : ["Intimidation", "Insight", "Survival"],
 	toolProfs : ["Vehicles (land)"],
 	languageProfs : [["Choose one", 1]],
 	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
 	toNotesPage : [{
 		name : "Broken Oath: War Crime Survivor",
-		note : [
-			"My order committed atrocities, and I survived them.",
-			"Enemy: Former commander, loyalist faction, or surviving witness.",
-			"Item: Broken insignia or battlefield map with bloodstains.",
-			"RP Note: I recognize signs of occupation, massacre, and battlefield logistics.",
-			"Perk: I can identify military movements, abandoned camps, and signs of forced relocation."
-		],
+		note : "My order committed atrocities, and I survived them.\nEnemy: Former commander, loyalist faction, or surviving witness.\nRP Note: I recognize signs of occupation, massacre, and battlefield logistics.",
 		page3notes : true
 	}]
 };
 
-FeatsList[DA42BG_KORelic] = {
+FeatsList["knightly order broken oath corrupted relic bearer"] = {
 	name : "Knightly Order: Broken Oath, Corrupted Relic Bearer",
 	source : [["DA42BG", 1]],
 	type : "origin",
-	description : "Broken Oath knight marked by a corrupted relic. I gain Intimidation, Insight, Arcana, Vehicles (land), and one language chosen from Abyssal, Celestial, Deep Speech, Infernal, or Primordial.",
-	descriptionFull : "I carried, guarded, stole, or survived a corrupted relic. Its influence marked my soul, twisted my dreams, and left me changed in ways my former order could not forgive.\n\nProficiencies: Intimidation, Insight, Arcana, Vehicles (land), and one language chosen from Abyssal, Celestial, Deep Speech, Infernal, or Primordial.\nSuggested Ability Scores: +2 Strength and +1 Charisma, or +1 to three different ability scores.\nSuggested Origin Feat: Tough.\nMark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol.\nRoleplay Note: The relic occasionally reacts to nearby magic.\nOptional Spell Hook: Thaumaturgy or a darkvision-related boon, if allowed by the DM.",
+	description : "I gain proficiency in Intimidation, Insight, Arcana, Vehicles (land), and one language chosen from Abyssal, Celestial, Deep Speech, Infernal, or Primordial.",
+	descriptionFull : "I carried, guarded, stole, or survived a corrupted relic. Its influence marked my soul and twisted my dreams.",
 	skills : ["Intimidation", "Insight", "Arcana"],
 	toolProfs : ["Vehicles (land)"],
 	languageProfs : [["Abyssal, Celestial, Deep Speech, Infernal, or Primordial", 1]],
 	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
 	toNotesPage : [{
 		name : "Broken Oath: Corrupted Relic Bearer",
-		note : [
-			"I carried a cursed relic that changed me.",
-			"Mark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol.",
-			"RP Note: The relic occasionally reacts to nearby magic.",
-			"Optional Spell Hook: Thaumaturgy or a darkvision-related boon, if allowed by the DM."
-		],
+		note : "I carried a cursed relic that changed me.\nMark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol.\nRP Note: The relic occasionally reacts to nearby magic.",
 		page3notes : true
 	}]
+};

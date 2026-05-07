@@ -16,7 +16,7 @@ RequiredSheetVersion("13.2.3");
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
 SourceList["SotW:DK"] = {
-	name : "ScholarofTheWild: Dark Knight",
+	name : "DruidAllanon42: Dark Knight",
 	abbreviation : "DA42:DK",
 	group : "Homebrew",
 	date : "2026/05/03",
@@ -76,7 +76,9 @@ ClassList["dark knight"] = {
 	spellcastingFactor : 2,
 	spellcastingAbility : 6,
 	spellcastingKnown : {
-		spells : "list",
+		spells : levels.map(function (n) {
+			return n < 2 ? 0 : Math.max(1, Math.floor(n / 2) + What('Cha Mod'));
+		}),
 		prepared : true
 	},
 	spellcastingList : {
@@ -146,14 +148,39 @@ ClassList["dark knight"] = {
 			extraname : "Fighting Style",
 			extrachoices : ["Blind Fighting", "Defense", "Dueling", "Great Weapon Fighting", "Two-Weapon Fighting", "Thrown Weapon Fighting", "Unarmed Fighting", "Dark Warrior"],
 			extraTimes : levels.map(function (n) { return n < 2 ? 0 : 1; }),
-			"blind fighting" : FightingStyles.blind_fighting ? FightingStyles.blind_fighting : {
+			"blind fighting" : {
 				name : "Blind Fighting",
-				description : "I have Blindsight with a range of 10 ft."
+				description : desc([
+					"I have Blindsight with a range of 10 ft. Within that range, I can see anything that isn't behind Total Cover, even if I am Blinded or in Darkness",
+					"I can also see an Invisible creature within that range, unless it successfully hides from me"
+				])
 			},
-			"defense" : FightingStyles.defense,
-			"dueling" : FightingStyles.dueling,
-			"great weapon fighting" : FightingStyles.great_weapon,
-			"two-weapon fighting" : FightingStyles.two_weapon,
+			"defense" : {
+				name : "Defense",
+				description : desc([
+					"While I am wearing armor, I gain a +1 bonus to AC"
+				]),
+				eval : "AddACMisc(1, 'Defense Fighting Style', 'While wearing armor, I gain a +1 bonus to AC.', 'CurrentArmour.known');",
+				removeeval : "AddACMisc(0, 'Defense Fighting Style', 'While wearing armor, I gain a +1 bonus to AC.');"
+			},
+			"dueling" : {
+				name : "Dueling",
+				description : desc([
+					"When I wield a melee weapon in one hand and no other weapons, I gain a +2 bonus to damage rolls with it"
+				])
+			},
+			"great weapon fighting" : {
+				name : "Great Weapon Fighting",
+				description : desc([
+					"When I roll a 1 or 2 on a damage die for an attack with a two-handed or versatile melee weapon held in two hands, I can reroll the die, and must use the new roll"
+				])
+			},
+			"two-weapon fighting" : {
+				name : "Two-Weapon Fighting",
+				description : desc([
+					"When I make the extra attack of two-weapon fighting, I can add my ability modifier to the damage"
+				])
+			},
 			"thrown weapon fighting" : {
 				name : "Thrown Weapon Fighting",
 				description : desc([

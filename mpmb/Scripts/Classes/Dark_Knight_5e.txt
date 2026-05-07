@@ -8,7 +8,7 @@
 	Notes:      Designed for the 2024/5.5e MPMB framework. This is a Paladin-style half-caster.
 */
 
-var iFileName = "Dark Knight Class [DruidAllanon42] v1.1.js";
+var iFileName = "Dark Knight Class [DruidAllanon42] v1.13.js";
 RequiredSheetVersion("13.2.3");
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
@@ -73,6 +73,7 @@ ClassList["dark knight"] = {
 	equipment : "Dark Knight starting equipment:\n \u2022 A martial weapon and a Shield, or two martial weapons;\n \u2022 A Shortbow and 20 Arrows, or any simple melee weapon;\n \u2022 Chain Mail or Scale Mail;\n \u2022 A Dungeoneer's Pack or an Explorer's Pack.\nAlternatively, start with 5d4 \u00d7 10 gp.",
 	subclasses : ["Dark Path", []],
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+	spellcastingFactor : "paladin",
 	spellcastingAbility : 6,
 	spellcastingKnown : {
 		spells : "list",

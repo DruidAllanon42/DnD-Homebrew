@@ -1,0 +1,88 @@
+# DA42BG Knight V14 Minimal Choice Test
+
+```javascript
+var iFileName = "Background - Knight [DA42BG V14 Test].js";
+RequiredSheetVersion("14.0.0");
+
+/*
+	-INFORMATION-
+	Subject:	Background
+	Effect:	Adds a Knight background with selectable Broken Oath feats
+	Code by:	Daniel Lott / DruidAllanon42
+	Date:		2026-05-07
+*/
+
+SourceList["DA42BG"] = {
+	name : "Daniel Lott Backgrounds",
+	abbreviation : "DA42BG",
+	group : "DruidAllanon42",
+	author : "Daniel Lott / DruidAllanon42",
+	url : "",
+	date : "2026/05/07"
+};
+
+BackgroundFeatureList["knightly reputation"] = {
+	description : "I was trained within a knightly order.",
+	source : [["DA42BG", 1]]
+};
+
+BackgroundList["knight"] = {
+	regExpSearch : /knight/i,
+	name : "Knight",
+	source : [["DA42BG", 1]],
+	skills : ["Intimidation", "Insight"],
+	toolProfs : ["Vehicles (land)"],
+	gold : 15,
+	feature : "Knightly Reputation",
+	featsAdd : [{
+		options : [
+			{
+				key : "broken oath betrayed order"
+			},
+			{
+				key : "broken oath failed divine trial"
+			}
+		]
+	}],
+	trait : [
+		"I still follow old battlefield habits even when no battle is near.",
+		"I judge people by how they act when frightened."
+	],
+	ideal : [
+		["Duty", "Duty. A life without discipline collapses into chaos. (Lawful)"]
+	],
+	bond : [
+		"I still carry the symbol of the order that shaped me."
+	],
+	flaw : [
+		"I distrust anyone who speaks too proudly of honor."
+	],
+	lifestyle : "modest"
+};
+
+FeatsList["broken oath betrayed order"] = {
+	name : "Broken Oath: Betrayed Order",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I was framed by my former order.",
+	skills : ["Intimidation"],
+	languageProfs : ["Celestial"]
+};
+
+FeatsList["broken oath failed divine trial"] = {
+	name : "Broken Oath: Failed Divine Trial",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I failed a divine trial.",
+	skills : ["Religion"],
+	languageProfs : [["Choose one", 1]]
+};
+```
+
+## Important Test Notes
+
+1. Remove ALL previous Knight scripts before importing.
+2. Test ONLY in the v14 / 2024 sheet.
+3. This is intentionally stripped down to isolate the feat-choice architecture.
+4. If this works, then the earlier issue was caused by malformed object nesting or a missing bracket in the larger script.
+5. If this still fails, then the problem is specifically with how v14 handles `featsAdd` inside backgrounds.

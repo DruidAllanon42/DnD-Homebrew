@@ -15,9 +15,9 @@ RequiredSheetVersion("13.2.3");
 // >>> Source                           >>> //
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> //
 
-SourceList["SotW:DK"] = {
+SourceList["DA42:DK"] = {
 	name : "DruidAllanon42: Dark Knight",
-	abbreviation : "DA42:DK",
+	abbreviation : "DA42: DK",
 	group : "Homebrew",
 	date : "2026/05/03",
 };
@@ -53,7 +53,7 @@ var DarkKnightSpellList = [
 ClassList["dark knight"] = {
 	regExpSearch : /^(?=.*dark)(?=.*knight).*$/i,
 	name : "Dark Knight",
-	source : [["SotW:DK", 0]],
+	source : [["DA42:DK", 0]],
 	primaryAbility : "Strength or Charisma",
 	prereqs : "Strength 13 and Charisma 13",
 	die : 10,
@@ -73,12 +73,9 @@ ClassList["dark knight"] = {
 	equipment : "Dark Knight starting equipment:\n \u2022 A martial weapon and a Shield, or two martial weapons;\n \u2022 A Shortbow and 20 Arrows, or any simple melee weapon;\n \u2022 Chain Mail or Scale Mail;\n \u2022 A Dungeoneer's Pack or an Explorer's Pack.\nAlternatively, start with 5d4 \u00d7 10 gp.",
 	subclasses : ["Dark Path", []],
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-	spellcastingFactor : 2,
 	spellcastingAbility : 6,
 	spellcastingKnown : {
-		spells : levels.map(function (n) {
-			return n < 2 ? 0 : Math.max(1, Math.floor(n / 2) + What('Cha Mod'));
-		}),
+		spells : "list",
 		prepared : true
 	},
 	spellcastingList : {
@@ -111,7 +108,7 @@ ClassList["dark knight"] = {
 	features : {
 		"bloody hands" : {
 			name : "Bloody Hands",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 1,
 			description : desc([
 				"As a Bonus Action, I empower my next melee weapon attack with necrotic damage for 1 minute or until it hits",
@@ -127,7 +124,7 @@ ClassList["dark knight"] = {
 		},
 		"detect outsiders" : {
 			name : "Detect Outsiders",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 1,
 			description : desc([
 				"As an Action for 1 minute, I sense aberrations, celestials, fey, and fiends within 60 ft",
@@ -140,7 +137,7 @@ ClassList["dark knight"] = {
 		},
 		"fighting style" : {
 			name : "Fighting Style",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 2,
 			description : desc([
 				"Choose one Fighting Style using the Choose Feature button above"
@@ -213,7 +210,7 @@ ClassList["dark knight"] = {
 		},
 		"spellcasting" : {
 			name : "Spellcasting",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 2,
 			description : desc([
 				"I can cast prepared Dark Knight spells using Charisma as my spellcasting ability",
@@ -223,7 +220,7 @@ ClassList["dark knight"] = {
 		},
 		"dark bane" : {
 			name : "Dark Bane",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 2,
 			description : desc([
 				"When I hit with a melee weapon attack, I can expend a spell slot to deal extra necrotic damage",
@@ -233,7 +230,7 @@ ClassList["dark knight"] = {
 		},
 		"infernal mind" : {
 			name : "Infernal Mind",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"The dark power within me grants immunity to the Charmed and Frightened conditions"
@@ -242,7 +239,7 @@ ClassList["dark knight"] = {
 		},
 		"harness dark power" : {
 			name : "Harness Dark Power",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"As a Bonus Action, I regain one expended spell slot of a level no higher than half my Prof Bonus, rounded up",
@@ -257,7 +254,7 @@ ClassList["dark knight"] = {
 		},
 		"extra attack" : {
 			name : "Extra Attack",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 5,
 			description : desc([
 				"I can attack twice, instead of once, whenever I take the Attack action on my turn"
@@ -265,7 +262,7 @@ ClassList["dark knight"] = {
 		},
 		"abyssal bane" : {
 			name : "Abyssal Bane",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 5,
 			description : desc([
 				"As a Bonus Action, I infuse my attacks with abyssal energy for 1 minute",
@@ -292,7 +289,7 @@ ClassList["dark knight"] = {
 		},
 		"aura of sorrow" : {
 			name : "Aura of Sorrow",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 6,
 			description : desc([
 				"Hostile creatures within 10 ft of me take a penalty to saving throws equal to half my Cha mod, rounded up, minimum -1",
@@ -302,7 +299,7 @@ ClassList["dark knight"] = {
 		},
 		"aura of clarity" : {
 			name : "Aura of Clarity",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 10,
 			description : desc([
 				"While I am conscious, I and friendly creatures within 10 ft of me can't be Blinded or Deafened",
@@ -313,7 +310,7 @@ ClassList["dark knight"] = {
 		},
 		"infernal health" : {
 			name : "Infernal Health",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 11,
 			description : desc([
 				"I am immune to disease and have resistance to poison damage and advantage on saves against poison"
@@ -323,7 +320,7 @@ ClassList["dark knight"] = {
 		},
 		"contaminating touch" : {
 			name : "Contaminating Touch",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 14,
 			description : desc([
 				"As an Action, I touch myself or a willing creature and extend one spell affecting the target until the end of my next turn",
@@ -344,12 +341,12 @@ ClassList["dark knight"] = {
 AddSubClass("dark knight", "violence", {
 	regExpSearch : /^(?=.*violence).*$/i,
 	subname : "Path of Violence",
-	source : [["SotW:DK", 0]],
+	source : [["DA42:DK", 0]],
 	spellcastingExtra : ["compelled duel", "hunter's mark", "magic weapon", "ray of enfeeblement", "slow", "vampiric touch", "banishment", "locate creature", "hold monster", "wall of force"],
 	features : {
 		"subclassfeature3" : {
 			name : "Violence Spells",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"I always have my Path of Violence spells prepared; they don't count against my prepared spells"
@@ -357,7 +354,7 @@ AddSubClass("dark knight", "violence", {
 		},
 		"subclassfeature3.1" : {
 			name : "Dark Arts: Violence",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"I gain the Evil Reach, No Escape, and Dark Ferocity Dark Arts; active options share one resource",
@@ -394,7 +391,7 @@ AddSubClass("dark knight", "violence", {
 		},
 		"subclassfeature7" : {
 			name : "Accursed Hands",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 7,
 			description : desc([
 				"When I use Bloody Hands, I can make a Con save against my Dark Knight spell save DC",
@@ -403,7 +400,7 @@ AddSubClass("dark knight", "violence", {
 		},
 		"subclassfeature15" : {
 			name : "Aura of Brutality",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 15,
 			description : desc([
 				"My weapon attacks and those of friendly creatures within 15 ft count as magical for overcoming resistance and immunity",
@@ -412,7 +409,7 @@ AddSubClass("dark knight", "violence", {
 		},
 		"subclassfeature20" : {
 			name : "Idol of Violence",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 20,
 			description : desc([
 				"As an Action for 1 minute, I gain Temp HP equal to 2d12 + my Dark Knight level + Prof Bonus",
@@ -433,12 +430,12 @@ AddSubClass("dark knight", "violence", {
 AddSubClass("dark knight", "devilry", {
 	regExpSearch : /^(?=.*devilry).*$/i,
 	subname : "Path of Devilry",
-	source : [["SotW:DK", 0]],
+	source : [["DA42:DK", 0]],
 	spellcastingExtra : ["armor of agathys", "charm person", "darkness", "detect thoughts", "animate dead", "haste", "fire shield", "phantasmal killer", "cone of cold", "dream"],
 	features : {
 		"subclassfeature3" : {
 			name : "Devilry Spells",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"I always have my Path of Devilry spells prepared; they don't count against my prepared spells"
@@ -446,7 +443,7 @@ AddSubClass("dark knight", "devilry", {
 		},
 		"subclassfeature3.1" : {
 			name : "Dark Arts: Devilry",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"I gain the Hellfire, Evil Eye, and Demonic Touch Dark Arts; active options share one resource",
@@ -494,7 +491,7 @@ AddSubClass("dark knight", "devilry", {
 		},
 		"subclassfeature7" : {
 			name : "Aura of Apparition",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 7,
 			description : desc([
 				"As a Bonus Action, I create a 10-ft aura for 1 minute while conscious",
@@ -507,7 +504,7 @@ AddSubClass("dark knight", "devilry", {
 		},
 		"subclassfeature15" : {
 			name : "Blood Weapon",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 15,
 			description : desc([
 				"Once per turn when I hit a creature with a melee weapon attack, I gain Temp HP equal to my Prof Bonus + Cha mod",
@@ -516,7 +513,7 @@ AddSubClass("dark knight", "devilry", {
 		},
 		"subclassfeature20" : {
 			name : "Idol of Devilry",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 20,
 			description : desc([
 				"As an Action for 1 minute, I gain a 30-ft hellfire aura, a 50-ft Fly Speed, and one chain-binding use",
@@ -537,12 +534,12 @@ AddSubClass("dark knight", "devilry", {
 AddSubClass("dark knight", "deception", {
 	regExpSearch : /^(?=.*deception).*$/i,
 	subname : "Path of Deception",
-	source : [["SotW:DK", 0]],
+	source : [["DA42:DK", 0]],
 	spellcastingExtra : ["comprehend languages", "guiding bolt", "find traps", "invisibility", "counterspell", "nondetection", "arcane eye", "greater invisibility", "mislead", "modify memory"],
 	features : {
 		"subclassfeature3" : {
 			name : "Deception Spells",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"I always have my Path of Deception spells prepared; they don't count against my prepared spells"
@@ -550,7 +547,7 @@ AddSubClass("dark knight", "deception", {
 		},
 		"subclassfeature3.1" : {
 			name : "Dark Arts: Deception",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 3,
 			description : desc([
 				"I gain the Grisly Wound, Invoke Duplicity, and Savage Opportunist Dark Arts; active options share one resource",
@@ -589,7 +586,7 @@ AddSubClass("dark knight", "deception", {
 		},
 		"subclassfeature7" : {
 			name : "Mark of Exhaustion",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 7,
 			description : desc([
 				"As an Action, I mark up to three hostile creatures I can see within 30 ft for 1 minute",
@@ -603,7 +600,7 @@ AddSubClass("dark knight", "deception", {
 		},
 		"subclassfeature15" : {
 			name : "Devilish Escape",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 15,
 			description : desc([
 				"As an Action, I become Invisible for 1 minute; on the same turn, I can teleport up to 60 ft as a Bonus Action",
@@ -615,7 +612,7 @@ AddSubClass("dark knight", "deception", {
 		},
 		"subclassfeature20" : {
 			name : "Idol of Deception",
-			source : [["SotW:DK", 0]],
+			source : [["DA42:DK", 0]],
 			minlevel : 20,
 			description : desc([
 				"As an Action for 1 minute, I become Invisible; the invisibility breaks when I attack, but I can restore it as a Bonus Action",

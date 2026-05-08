@@ -1,0 +1,165 @@
+var iFileName = "Background - Knight of the Broken Oath [DA42BG V1.14].js";
+RequiredSheetVersion("14.0.0");
+
+/*	-INFORMATION-
+	Subject:	Background
+	Effect:		Adds the Knight of the Broken Oath background system with selectable Broken Oath causes.
+	Code by:	Daniel Lott / DruidAllanon42
+	Version:	V1.14
+	Date:		2026-05-07
+*/
+
+SourceList["DA42BG"] = {
+	name : "Daniel Lott Backgrounds",
+	abbreviation : "DA42BG",
+	group : "DruidAllanon42",
+	author : "Daniel Lott / DruidAllanon42",
+	url : "",
+	date : "2026/05/07"
+};
+
+BackgroundFeatureList["haunted reputation"] = {
+	description : "My former oath still follows me like a shadow. Common folk, soldiers, clergy, and knightly orders may recognize the signs of my broken station. I can often gain information, compliance, or wary silence through fear, infamy, or the weight of my past. However, loyalists of my former order may treat me with suspicion or hostility.",
+	source : [["DA42BG", 1]]
+};
+
+FeatsList["da42bg broken oath betrayed order"] = {
+	name : "Broken Oath: Betrayed Order",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I was framed by my former order. I gain Intimidation and Celestial.",
+	descriptionFull : "My order framed me to preserve its reputation. I escaped with proof, suspicion, or only the bitter knowledge that the people who preached honor chose convenience over truth.\n\nProficiencies: Intimidation and Celestial.\nContact: A secret sympathizer inside the order.\nItem: A sealed accusation scroll or broken knightly insignia.\nRoleplay Note: I instinctively distrust authority.\nPerk: I have advantage on checks to identify military ranks, heraldry, or knightly customs.",
+	skills : ["Intimidation"],
+	languageProfs : ["Celestial"],
+	toNotesPage : [{
+		name : "Broken Oath: Betrayed Order",
+		note : "My order framed me to preserve its reputation.\nContact: Secret sympathizer inside the order.\nItem: Sealed accusation scroll or broken knightly insignia.\nRP Note: I instinctively distrust authority.\nPerk: I have advantage on checks to identify military ranks, heraldry, or knightly customs.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath failed divine trial"] = {
+	name : "Broken Oath: Failed Divine Trial",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I failed a divine trial. I gain Intimidation, Religion, and one language of my choice.",
+	descriptionFull : "I was tested by my deity, temple, saint, or sacred order, and I failed. Whether the test was just or cruel no longer matters to those who judged me.\n\nProficiencies: Intimidation, Religion, and one language of my choice.\nMark: A burned holy brand, scarred prayer mark, or cracked devotional token.\nRoleplay Note: Temples react uneasily around me.\nOptional Spell Hook: Thaumaturgy cantrip, if allowed by the DM.",
+	skills : ["Intimidation", "Religion"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{
+		name : "Broken Oath: Failed Divine Trial",
+		note : "I was tested by my deity and failed.\nMark: Burned holy brand, scarred prayer mark, or cracked devotional token.\nRP Note: Temples react uneasily around me.\nOptional Spell Hook: Thaumaturgy cantrip, if allowed by the DM.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath forbidden love"] = {
+	name : "Broken Oath: Forbidden Love",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I abandoned my oath for someone. I gain Intimidation, one musical instrument or disguise kit, and one language tied to my beloved.",
+	descriptionFull : "I chose a person over my oath. Whether that choice was romantic, familial, sacred, or forbidden by bloodline, nation, temple, or order, it made me a traitor in the eyes of those I left behind.\n\nProficiencies: Intimidation, one musical instrument or disguise kit, and one language tied to my beloved.\nContact: A hidden lover or someone protecting them.\nItem: A faded ribbon, locket, signet, or hidden love letter.\nRoleplay Note: My former order may still hunt me.",
+	skills : ["Intimidation"],
+	toolProfs : [["Musical instrument or Disguise kit", 1]],
+	languageProfs : [["Language tied to your beloved", 1]],
+	toNotesPage : [{
+		name : "Broken Oath: Forbidden Love",
+		note : "I abandoned my oath for someone.\nContact: Hidden lover or someone protecting them.\nItem: Faded ribbon, locket, signet, or hidden love letter.\nRP Note: My former order may still hunt me.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath war crime survivor"] = {
+	name : "Broken Oath: War Crime Survivor",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I survived atrocities committed by my own order. I gain Intimidation, Survival, and one language of my choice.",
+	descriptionFull : "My order committed atrocities, and I survived them. I know the difference between battle and slaughter, between command and cruelty, between obedience and guilt.\n\nProficiencies: Intimidation, Survival, and one language of my choice.\nEnemy: A former commander, loyalist faction, or surviving witness.\nItem: A broken insignia, battlefield map, or bloodstained order document.\nRoleplay Note: I recognize signs of occupation, massacre, and battlefield logistics.\nPerk: I can identify military movements, abandoned camps, and signs of forced relocation.",
+	skills : ["Intimidation", "Survival"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{
+		name : "Broken Oath: War Crime Survivor",
+		note : "My order committed atrocities, and I survived them.\nEnemy: Former commander, loyalist faction, or surviving witness.\nItem: Broken insignia, battlefield map, or bloodstained order document.\nRP Note: I recognize signs of occupation, massacre, and battlefield logistics.\nPerk: I can identify military movements, abandoned camps, and signs of forced relocation.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath corrupted relic bearer"] = {
+	name : "Broken Oath: Corrupted Relic Bearer",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I carried a corrupted relic that changed me. I gain Intimidation, Arcana, and one language chosen from Abyssal, Celestial, Deep Speech, Infernal, or Primordial.",
+	descriptionFull : "I carried, guarded, stole, or survived a corrupted relic. Its influence marked my soul, twisted my dreams, and left me changed in ways my former order could not forgive.\n\nProficiencies: Intimidation, Arcana, and one language chosen from Abyssal, Celestial, Deep Speech, Infernal, or Primordial.\nMark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol.\nRoleplay Note: The relic occasionally reacts to nearby magic.\nOptional Spell Hook: Thaumaturgy or a darkvision-related boon, if allowed by the DM.",
+	skills : ["Intimidation", "Arcana"],
+	languageProfs : [["Abyssal, Celestial, Deep Speech, Infernal, or Primordial", 1]],
+	toNotesPage : [{
+		name : "Broken Oath: Corrupted Relic Bearer",
+		note : "I carried a corrupted relic that changed me.\nMark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol.\nRP Note: The relic occasionally reacts to nearby magic.\nOptional Spell Hook: Thaumaturgy or a darkvision-related boon, if allowed by the DM.",
+		page3notes : true
+	}]
+};
+
+BackgroundList["knight of the broken oath"] = {
+	regExpSearch : /^(?=.*knight)(?=.*broken)(?=.*oath).*$/i,
+	name : "Knight of the Broken Oath",
+	source : [["DA42BG", 1]],
+	scores : [2, 0, 0, 0, 0, 1],
+	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
+	skills : ["Insight"],
+	toolProfs : ["Vehicles (land)"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg broken oath betrayed order" },
+			{ key : "da42bg broken oath failed divine trial" },
+			{ key : "da42bg broken oath forbidden love" },
+			{ key : "da42bg broken oath war crime survivor" },
+			{ key : "da42bg broken oath corrupted relic bearer" }
+		]
+	}],
+	gold : 15,
+	equipleft : [
+		["Broken knightly insignia", 1, ""],
+		["Travel-stained cloak", 1, ""],
+		["Keepsake from fallen oath", 1, ""]
+	],
+	equipright : [
+		["Traveler's clothes", 1, 4],
+		["Belt pouch (with coins)", 1, 1]
+	],
+	feature : "Haunted Reputation",
+	trait : [
+		"I speak of honor with bitterness, as though the word still tastes of ash.",
+		"I keep the habits of my old order even though I despise what it became.",
+		"I do not trust easy mercy, clean uniforms, or people who speak too proudly of duty.",
+		"I still polish my armor where the old insignia used to be.",
+		"I measure everyone by what they are willing to sacrifice.",
+		"I laugh when priests speak of certainty.",
+		"I sleep lightly and wake with my hand near a weapon.",
+		"I protect the innocent, but I refuse to call it righteousness."
+	],
+	ideal : [
+		["Survival", "Survival. Oaths break. Orders fall. The living continue. (Neutral)"],
+		["Vengeance", "Vengeance. Those who used faith, law, or honor as chains will answer for it. (Chaotic)"],
+		["Redemption", "Redemption. I do not know if I can be forgiven, but I can still choose what I do next. (Good)"],
+		["Power", "Power. I will never again kneel before a master who can discard me. (Evil)"],
+		["Truth", "Truth. A cruel truth is better than a holy lie. (Any)"],
+		["Defiance", "Defiance. My broken oath is not my shame; it is my rebellion. (Chaotic)"]
+	],
+	bond : [
+		"I still carry the symbol of the order I abandoned.",
+		"Someone within my former order secretly helped me escape.",
+		"I am hunted by those who once called me brother, sister, or comrade.",
+		"I failed someone I swore to protect, and their memory walks beside me.",
+		"I know a terrible secret my old order would kill to bury.",
+		"I seek the relic, commander, priest, or battlefield where my oath was broken."
+	],
+	flaw : [
+		"I assume every authority figure is hiding corruption.",
+		"I answer shame with anger before wisdom can intervene.",
+		"I cannot ignore insults about cowardice, loyalty, or broken vows.",
+		"I sometimes frighten people who are only trying to help.",
+		"I would rather burn a bridge than admit I need it.",
+		"I secretly fear my old order was right about me."
+	],
+	lifestyle : "modest"
+};

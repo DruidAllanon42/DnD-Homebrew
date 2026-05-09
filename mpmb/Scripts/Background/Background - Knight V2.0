@@ -6,7 +6,7 @@ RequiredSheetVersion("14.0.0");
 	Effect:		Adds the DA42BG Knight background with nested Knightly Orders and Order Causes.
 	Code by:	Daniel Lott / DruidAllanon42
 	Version:	V2.0
-	Date:		2026-05-07
+	Date:		2026-05-08
 */
 
 SourceList["DA42BG"] = {

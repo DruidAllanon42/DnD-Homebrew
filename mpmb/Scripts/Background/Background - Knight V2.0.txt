@@ -1,0 +1,670 @@
+var iFileName = "Background - Knight [DA42BG V2.0].js";
+RequiredSheetVersion("14.0.0");
+
+/*	-INFORMATION-
+	Subject:	Background
+	Effect:		Adds the DA42BG Knight background with nested Knightly Orders and Order Causes.
+	Code by:	Daniel Lott / DruidAllanon42
+	Version:	V2.0
+	Date:		2026-05-07
+*/
+
+SourceList["DA42BG"] = {
+	name : "Daniel Lott Backgrounds",
+	abbreviation : "DA42BG",
+	group : "DruidAllanon42",
+	author : "Daniel Lott / DruidAllanon42",
+	url : "",
+	date : "2026/05/07"
+};
+
+BackgroundFeatureList["knightly reputation"] = {
+	description : "I was trained within a knightly order, martial fellowship, sacred guard, noble house, or sworn military tradition. My bearing, discipline, and reputation mark me as someone shaped by command, duty, and violence. Other knights, soldiers, nobles, clergy, and military officials may recognize my training, though their reaction depends on the order I served.",
+	source : [["DA42BG", 1]]
+};
+
+FeatsList["da42bg broken oath cause betrayed order"] = {
+	name : "Broken Oath Cause: Betrayed Order",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "My order framed me to preserve its reputation. I gain History and Celestial.",
+	descriptionFull : "My order framed me to preserve its reputation.\nContact: Secret sympathizer inside the order. Item: Sealed accusation scroll or broken knightly insignia. RP Note: I instinctively distrust authority.",
+	skills : ["History"],
+	languageProfs : ["Celestial"],
+	toNotesPage : [{
+		name : "Broken Oath Cause: Betrayed Order",
+		note : "My order framed me to preserve its reputation.\nContact: Secret sympathizer inside the order. Item: Sealed accusation scroll or broken knightly insignia. RP Note: I instinctively distrust authority.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath cause failed divine trial"] = {
+	name : "Broken Oath Cause: Failed Divine Trial",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I was tested by my deity, temple, saint, or sacred order, and I failed. I gain Religion.",
+	descriptionFull : "I was tested by my deity, temple, saint, or sacred order, and I failed.\nMark: Burned holy brand, scarred prayer mark, or cracked devotional token. RP Note: Temples react uneasily around me.",
+	skills : ["Religion"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{
+		name : "Broken Oath Cause: Failed Divine Trial",
+		note : "I was tested by my deity, temple, saint, or sacred order, and I failed.\nMark: Burned holy brand, scarred prayer mark, or cracked devotional token. RP Note: Temples react uneasily around me.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath cause forbidden love"] = {
+	name : "Broken Oath Cause: Forbidden Love",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I abandoned my oath for someone forbidden to me. I gain Persuasion.",
+	descriptionFull : "I abandoned my oath for someone forbidden to me.\nContact: Hidden lover or someone protecting them. Item: Faded ribbon, locket, signet, or hidden love letter.",
+	skills : ["Persuasion"],
+	toolProfs : [["Musical instrument or Disguise kit", 1]],
+	languageProfs : [["Language tied to your beloved", 1]],
+	toNotesPage : [{
+		name : "Broken Oath Cause: Forbidden Love",
+		note : "I abandoned my oath for someone forbidden to me.\nContact: Hidden lover or someone protecting them. Item: Faded ribbon, locket, signet, or hidden love letter.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath cause war crime survivor"] = {
+	name : "Broken Oath Cause: War Crime Survivor",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "My order committed atrocities, and I survived them. I gain Survival.",
+	descriptionFull : "My order committed atrocities, and I survived them.\nEnemy: Former commander, loyalist faction, or surviving witness. RP Note: I recognize signs of occupation, massacre, and battlefield logistics.",
+	skills : ["Survival"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{
+		name : "Broken Oath Cause: War Crime Survivor",
+		note : "My order committed atrocities, and I survived them.\nEnemy: Former commander, loyalist faction, or surviving witness. RP Note: I recognize signs of occupation, massacre, and battlefield logistics.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg broken oath cause corrupted relic bearer"] = {
+	name : "Broken Oath Cause: Corrupted Relic Bearer",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I carried a corrupted relic that changed me. I gain Arcana.",
+	descriptionFull : "I carried a corrupted relic that changed me.\nMark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol. RP Note: The relic occasionally reacts to nearby magic.",
+	skills : ["Arcana"],
+	languageProfs : [["Abyssal, Celestial, Deep Speech, Infernal, or Primordial", 1]],
+	toNotesPage : [{
+		name : "Broken Oath Cause: Corrupted Relic Bearer",
+		note : "I carried a corrupted relic that changed me.\nMark: Strange whispers, cold dreams, shadowed veins, or a corrupted holy symbol. RP Note: The relic occasionally reacts to nearby magic.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg knightly order broken oath"] = {
+	name : "Knightly Order: Broken Oath",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I belonged to a knightly order whose oath I abandoned, broke, or survived. I gain Intimidation.",
+	descriptionFull : "I once belonged to a knightly order, sacred guard, militant temple, noble chapter, or sworn martial fellowship. That oath is broken now, but its shadow remains.",
+	skills : ["Intimidation"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg broken oath cause betrayed order" },
+			{ key : "da42bg broken oath cause failed divine trial" },
+			{ key : "da42bg broken oath cause forbidden love" },
+			{ key : "da42bg broken oath cause war crime survivor" },
+			{ key : "da42bg broken oath cause corrupted relic bearer" }
+		]
+	}],
+	toNotesPage : [{
+		name : "Knightly Order: Broken Oath",
+		note : "I once belonged to a knightly order, sacred guard, militant temple, noble chapter, or sworn martial fellowship. That oath is broken now, but its shadow remains.",
+		page3notes : true
+	}]
+};
+
+FeatsList["da42bg silver flame cause relic guardian"] = {
+	name : "Silver Flame Cause: Relic Guardian",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I protected a sacred relic of immense power. I gain History and Celestial.",
+	skills : ["History"],
+	languageProfs : ["Celestial"],
+	toNotesPage : [{ name : "Silver Flame Cause: Relic Guardian", note : "I protected a sacred relic of immense power.\nItem: Consecrated reliquary. Contact: Temple archivist or relic keeper. RP Note: I assess sacred objects for corruption or danger.", page3notes : true }]
+};
+
+FeatsList["da42bg silver flame cause last survivor"] = {
+	name : "Silver Flame Cause: Last Survivor",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "My chapter was annihilated while defending others. I gain Survival.",
+	skills : ["Survival"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Silver Flame Cause: Last Survivor", note : "My chapter was annihilated while defending others.\nItem: Burned chapter banner. RP Note: I struggle with being the only one left alive.", page3notes : true }]
+};
+
+FeatsList["da42bg silver flame cause flame initiate"] = {
+	name : "Silver Flame Cause: Flame Initiate",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I survived a holy trial by sacred fire. I gain Medicine and smiths tools.",
+	skills : ["Medicine"],
+	toolProfs : ["Smith's tools"],
+	toNotesPage : [{ name : "Silver Flame Cause: Flame Initiate", note : "I survived a holy trial by sacred fire.\nMark: Sacred burn scars. RP Note: Open flame holds spiritual significance for me.", page3notes : true }]
+};
+
+FeatsList["da42bg silver flame cause witch hunter"] = {
+	name : "Silver Flame Cause: Witch Hunter",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I was trained to root out corruption and dangerous magic. I gain Investigation.",
+	skills : ["Investigation"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Silver Flame Cause: Witch Hunter", note : "I was trained to root out corruption and dangerous magic.\nItem: Silvered token or witch-hunter writ. RP Note: I notice subtle signs of magical corruption quickly.", page3notes : true }]
+};
+
+FeatsList["da42bg silver flame cause beacon bearer"] = {
+	name : "Silver Flame Cause: Beacon Bearer",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I carry or once carried a sacred lantern or eternal flame. I gain Medicine and navigators tools.",
+	skills : ["Medicine"],
+	toolProfs : ["Navigator's tools"],
+	toNotesPage : [{ name : "Silver Flame Cause: Beacon Bearer", note : "I carry or once carried a sacred lantern or eternal flame.\nItem: Sacred lantern. Contact: Pilgrims and shrine-keepers. RP Note: People look to me for reassurance in darkness.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order silver flame"] = {
+	name : "Knightly Order: Silver Flame",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I served a radiant order of sacred guardians and holy defenders. I gain Religion.",
+	descriptionFull : "I stood among radiant protectors, sacred guardians, and holy defenders against darkness.",
+	skills : ["Religion"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg silver flame cause relic guardian" },
+			{ key : "da42bg silver flame cause last survivor" },
+			{ key : "da42bg silver flame cause flame initiate" },
+			{ key : "da42bg silver flame cause witch hunter" },
+			{ key : "da42bg silver flame cause beacon bearer" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Silver Flame", note : "I stood among radiant protectors, sacred guardians, and holy defenders against darkness.", page3notes : true }]
+};
+
+FeatsList["da42bg black banner cause siegebreaker"] = {
+	name : "Black Banner Cause: Siegebreaker",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I specialized in storming fortresses and breaking defensive lines. I gain Investigation and masons tools.",
+	skills : ["Investigation"],
+	toolProfs : ["Mason's tools"],
+	toNotesPage : [{ name : "Black Banner Cause: Siegebreaker", note : "I specialized in storming fortresses and breaking defensive lines.\nItem: Siege plans. Contact: Veteran engineer. RP Note: I evaluate walls, gates, and chokepoints instinctively.", page3notes : true }]
+};
+
+FeatsList["da42bg black banner cause dread marshal"] = {
+	name : "Black Banner Cause: Dread Marshal",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I commanded feared soldiers during brutal campaigns. I gain Intimidation and one gaming set.",
+	skills : ["Intimidation"],
+	toolProfs : [["Gaming set", 1]],
+	toNotesPage : [{ name : "Black Banner Cause: Dread Marshal", note : "I commanded feared soldiers during brutal campaigns.\nItem: Command insignia. Contact: Military veterans. RP Note: I fall naturally into battlefield leadership.", page3notes : true }]
+};
+
+FeatsList["da42bg black banner cause iron tax collector"] = {
+	name : "Black Banner Cause: Iron Tax Collector",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I enforced imperial law and brutal taxation. I gain Insight.",
+	skills : ["Insight"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Black Banner Cause: Iron Tax Collector", note : "I enforced imperial law and brutal taxation.\nItem: Ledger book. RP Note: I recognize smuggling routes, economic desperation, and civil unrest.", page3notes : true }]
+};
+
+FeatsList["da42bg black banner cause banner survivor"] = {
+	name : "Black Banner Cause: Banner Survivor",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "My legion was annihilated or betrayed. I gain Survival.",
+	skills : ["Survival"],
+	toNotesPage : [{ name : "Black Banner Cause: Banner Survivor", note : "My legion was annihilated or betrayed.\nItem: Tattered banner fragment. RP Note: I distrust ambitious commanders.", page3notes : true }]
+};
+
+FeatsList["da42bg black banner cause ash campaign veteran"] = {
+	name : "Black Banner Cause: Ash Campaign Veteran",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I survived a catastrophic war that consumed entire regions. I gain History.",
+	skills : ["History"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Black Banner Cause: Ash Campaign Veteran", note : "I survived a catastrophic war that consumed entire regions.\nItem: Burned campaign map. RP Note: Smoke, ash, and mass graves unsettle me deeply.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order black banner"] = {
+	name : "Knightly Order: Black Banner",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I served among imperial war knights, conquerors, enforcers, or disciplined engines of war. I gain Athletics.",
+	descriptionFull : "I was shaped by conquest, discipline, siegecraft, and the iron logic of war.",
+	skills : ["Athletics"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg black banner cause siegebreaker" },
+			{ key : "da42bg black banner cause dread marshal" },
+			{ key : "da42bg black banner cause iron tax collector" },
+			{ key : "da42bg black banner cause banner survivor" },
+			{ key : "da42bg black banner cause ash campaign veteran" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Black Banner", note : "I was shaped by conquest, discipline, siegecraft, and the iron logic of war.", page3notes : true }]
+};
+
+FeatsList["da42bg royal warden cause crown guardian"] = {
+	name : "Royal Warden Cause: Crown Guardian",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I served directly beside royalty. I gain Persuasion and one gaming set.",
+	skills : ["Persuasion"],
+	toolProfs : [["Gaming set", 1]],
+	toNotesPage : [{ name : "Royal Warden Cause: Crown Guardian", note : "I served directly beside royalty.\nItem: Royal insignia. Contact: Noble court. RP Note: I assess threats in crowded gatherings.", page3notes : true }]
+};
+
+FeatsList["da42bg royal warden cause palace survivor"] = {
+	name : "Royal Warden Cause: Palace Survivor",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I survived a coup, assassination attempt, or civil collapse. I gain Survival.",
+	skills : ["Survival"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Royal Warden Cause: Palace Survivor", note : "I survived a coup, assassination attempt, or civil collapse.\nKnowledge: Hidden escape routes. RP Note: I rarely sit with my back exposed.", page3notes : true }]
+};
+
+FeatsList["da42bg royal warden cause silent blade"] = {
+	name : "Royal Warden Cause: Silent Blade",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I quietly removed threats to the throne. I gain Stealth and disguise kit.",
+	skills : ["Stealth"],
+	toolProfs : ["Disguise kit"],
+	toNotesPage : [{ name : "Royal Warden Cause: Silent Blade", note : "I quietly removed threats to the throne.\nItem: Concealed weapon. Contact: Intelligence network. RP Note: I scan for exits and ambushes.", page3notes : true }]
+};
+
+FeatsList["da42bg royal warden cause exiled retainer"] = {
+	name : "Royal Warden Cause: Exiled Retainer",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I failed to protect someone important and was exiled. I gain Insight.",
+	skills : ["Insight"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Royal Warden Cause: Exiled Retainer", note : "I failed to protect someone important and was exiled.\nItem: Broken oath token. RP Note: I overprotect vulnerable people.", page3notes : true }]
+};
+
+FeatsList["da42bg royal warden cause throne witness"] = {
+	name : "Royal Warden Cause: Throne Witness",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I know dangerous political secrets. I gain History and calligraphers supplies.",
+	skills : ["History"],
+	toolProfs : ["Calligrapher's supplies"],
+	toNotesPage : [{ name : "Royal Warden Cause: Throne Witness", note : "I know dangerous political secrets.\nItem: Hidden documents. RP Note: I am cautious about speaking openly near nobles.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order royal warden"] = {
+	name : "Knightly Order: Royal Warden",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I served as an elite protector of rulers, courts, noble houses, or political stability. I gain Perception.",
+	descriptionFull : "I stood vigilant in courts, palaces, noble halls, and dangerous gatherings where one mistake could end a dynasty.",
+	skills : ["Perception"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg royal warden cause crown guardian" },
+			{ key : "da42bg royal warden cause palace survivor" },
+			{ key : "da42bg royal warden cause silent blade" },
+			{ key : "da42bg royal warden cause exiled retainer" },
+			{ key : "da42bg royal warden cause throne witness" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Royal Warden", note : "I stood vigilant in courts, palaces, noble halls, and dangerous gatherings where one mistake could end a dynasty.", page3notes : true }]
+};
+
+FeatsList["da42bg ashen crusader cause plague burner"] = {
+	name : "Ashen Crusader Cause: Plague Burner",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I cleansed infected settlements with fire and steel. I gain Survival and alchemists supplies.",
+	skills : ["Survival"],
+	toolProfs : ["Alchemist's supplies"],
+	toNotesPage : [{ name : "Ashen Crusader Cause: Plague Burner", note : "I cleansed infected settlements with fire and steel.\nItem: Plague mask. RP Note: I am hyperaware of disease and contamination.", page3notes : true }]
+};
+
+FeatsList["da42bg ashen crusader cause grave sentinel"] = {
+	name : "Ashen Crusader Cause: Grave Sentinel",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I guarded cursed cemeteries or mass graves. I gain Religion.",
+	skills : ["Religion"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Ashen Crusader Cause: Grave Sentinel", note : "I guarded cursed cemeteries or mass graves.\nItem: Gravekeeper tools or funeral token. RP Note: I treat burial grounds with solemn respect.", page3notes : true }]
+};
+
+FeatsList["da42bg ashen crusader cause ash survivor"] = {
+	name : "Ashen Crusader Cause: Ash Survivor",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I survived an undead catastrophe. I gain History.",
+	skills : ["History"],
+	toNotesPage : [{ name : "Ashen Crusader Cause: Ash Survivor", note : "I survived an undead catastrophe.\nMark: Burn scars. RP Note: Large crowds can unsettle me after witnessing mass death.", page3notes : true }]
+};
+
+FeatsList["da42bg ashen crusader cause cinder pilgrim"] = {
+	name : "Ashen Crusader Cause: Cinder Pilgrim",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I wander ruined lands searching for remnants of the lost. I gain Nature and cartographers tools.",
+	skills : ["Nature"],
+	toolProfs : ["Cartographer's tools"],
+	toNotesPage : [{ name : "Ashen Crusader Cause: Cinder Pilgrim", note : "I wander ruined lands searching for remnants of the lost.\nItem: Charred map fragments. RP Note: I search ruins for hidden survivors.", page3notes : true }]
+};
+
+FeatsList["da42bg ashen crusader cause hollow witness"] = {
+	name : "Ashen Crusader Cause: Hollow Witness",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I saw something horrific that shattered my faith. I gain Arcana.",
+	skills : ["Arcana"],
+	languageProfs : [["Abyssal, Celestial, Deep Speech, Infernal, or Primordial", 1]],
+	toNotesPage : [{ name : "Ashen Crusader Cause: Hollow Witness", note : "I saw something horrific that shattered my faith.\nMark: Disturbing visions. RP Note: Certain prayers, sounds, or symbols trigger unsettling memories.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order ashen crusader"] = {
+	name : "Knightly Order: Ashen Crusader",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I confronted plague, undeath, corruption, and apocalyptic horrors. I gain Medicine.",
+	descriptionFull : "I walked through plague, undeath, ash, and corruption so others would not have to.",
+	skills : ["Medicine"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg ashen crusader cause plague burner" },
+			{ key : "da42bg ashen crusader cause grave sentinel" },
+			{ key : "da42bg ashen crusader cause ash survivor" },
+			{ key : "da42bg ashen crusader cause cinder pilgrim" },
+			{ key : "da42bg ashen crusader cause hollow witness" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Ashen Crusader", note : "I walked through plague, undeath, ash, and corruption so others would not have to.", page3notes : true }]
+};
+
+FeatsList["da42bg stormbound cavalier cause tempest rider"] = {
+	name : "Stormbound Cavalier Cause: Tempest Rider",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I rode storm fronts, aerial mounts, or lightning roads. I gain Acrobatics and navigators tools.",
+	skills : ["Acrobatics"],
+	toolProfs : ["Navigator's tools"],
+	toNotesPage : [{ name : "Stormbound Cavalier Cause: Tempest Rider", note : "I rode storm fronts, aerial mounts, or lightning roads.\nItem: Storm-rider gear. RP Note: I grow restless without travel.", page3notes : true }]
+};
+
+FeatsList["da42bg stormbound cavalier cause shipbreaker"] = {
+	name : "Stormbound Cavalier Cause: Shipbreaker",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I survived catastrophic naval battles and storms. I gain Survival and vehicles water.",
+	skills : ["Survival"],
+	toolProfs : ["Vehicles (water)"],
+	toNotesPage : [{ name : "Stormbound Cavalier Cause: Shipbreaker", note : "I survived catastrophic naval battles and storms.\nItem: Waterlogged charts. RP Note: I evaluate weather and escape routes near water.", page3notes : true }]
+};
+
+FeatsList["da42bg stormbound cavalier cause tidebound oath"] = {
+	name : "Stormbound Cavalier Cause: Tidebound Oath",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I swore myself to sea gods or storm spirits. I gain Religion and Primordial.",
+	skills : ["Religion"],
+	languageProfs : ["Primordial"],
+	toNotesPage : [{ name : "Stormbound Cavalier Cause: Tidebound Oath", note : "I swore myself to sea gods or storm spirits.\nItem: Sacred tide charms. RP Note: I treat storms with reverence rather than fear.", page3notes : true }]
+};
+
+FeatsList["da42bg stormbound cavalier cause thunder herald"] = {
+	name : "Stormbound Cavalier Cause: Thunder Herald",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I served as a wartime messenger and storm courier. I gain Perception.",
+	skills : ["Perception"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Stormbound Cavalier Cause: Thunder Herald", note : "I served as a wartime messenger and storm courier.\nItem: Signal banners. RP Note: I notice subtle changes in wind, weather, and sound quickly.", page3notes : true }]
+};
+
+FeatsList["da42bg stormbound cavalier cause leviathan hunter"] = {
+	name : "Stormbound Cavalier Cause: Leviathan Hunter",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I hunted sea monsters and deep horrors. I gain Athletics and harpooners tools.",
+	skills : ["Athletics"],
+	toolProfs : [["Harpooner's tools", 1]],
+	toNotesPage : [{ name : "Stormbound Cavalier Cause: Leviathan Hunter", note : "I hunted sea monsters and deep horrors.\nItem: Monster trophy. RP Note: I am wary of unnaturally calm water.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order stormbound cavalier"] = {
+	name : "Knightly Order: Stormbound Cavalier",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I served as a tempest rider, sea knight, storm herald, or wandering cavalry tied to sky and sea. I gain Nature.",
+	descriptionFull : "I rode beneath stormclouds and along wild routes where sea, sky, and road became one oath.",
+	skills : ["Nature"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg stormbound cavalier cause tempest rider" },
+			{ key : "da42bg stormbound cavalier cause shipbreaker" },
+			{ key : "da42bg stormbound cavalier cause tidebound oath" },
+			{ key : "da42bg stormbound cavalier cause thunder herald" },
+			{ key : "da42bg stormbound cavalier cause leviathan hunter" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Stormbound Cavalier", note : "I rode beneath stormclouds and along wild routes where sea, sky, and road became one oath.", page3notes : true }]
+};
+
+FeatsList["da42bg knight errant cause wandering duelist"] = {
+	name : "Knight-Errant Cause: Wandering Duelist",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I traveled from court to court seeking worthy opponents. I gain Acrobatics.",
+	skills : ["Acrobatics"],
+	toolProfs : [["Gaming set or musical instrument", 1]],
+	toNotesPage : [{ name : "Knight-Errant Cause: Wandering Duelist", note : "I traveled from court to court seeking worthy opponents.\nItem: Fine dueling weapon token. Contact: Rival swordsman. RP Note: I judge stance and confidence whenever someone reaches for a weapon.", page3notes : true }]
+};
+
+FeatsList["da42bg knight errant cause pilgrim knight"] = {
+	name : "Knight-Errant Cause: Pilgrim Knight",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I undertook a sacred or personal pilgrimage across dangerous lands. I gain Religion.",
+	skills : ["Religion"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Knight-Errant Cause: Pilgrim Knight", note : "I undertook a sacred or personal pilgrimage across dangerous lands.\nItem: Pilgrim tokens. RP Note: I feel uneasy remaining in one place for too long.", page3notes : true }]
+};
+
+FeatsList["da42bg knight errant cause fallen noble"] = {
+	name : "Knight-Errant Cause: Fallen Noble",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "My house collapsed, was exiled, or lost everything. I gain History.",
+	skills : ["History"],
+	toolProfs : [["Gaming set", 1]],
+	toNotesPage : [{ name : "Knight-Errant Cause: Fallen Noble", note : "My house collapsed, was exiled, or lost everything.\nItem: Broken signet ring. RP Note: I still carry myself like nobility even when wearing rags.", page3notes : true }]
+};
+
+FeatsList["da42bg knight errant cause road warden"] = {
+	name : "Knight-Errant Cause: Road Warden",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I protected roads, caravans, and isolated villages far from civilization. I gain Perception and cartographers tools.",
+	skills : ["Perception"],
+	toolProfs : ["Cartographer's tools"],
+	toNotesPage : [{ name : "Knight-Errant Cause: Road Warden", note : "I protected roads, caravans, and isolated villages far from civilization.\nContact: Merchants and caravan masters. RP Note: I notice unsafe roads, ambush terrain, and vulnerable travelers.", page3notes : true }]
+};
+
+FeatsList["da42bg knight errant cause storykeeper"] = {
+	name : "Knight-Errant Cause: Storykeeper",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I preserved histories, songs, and legends gathered during my wandering life. I gain Performance and calligraphers supplies.",
+	skills : ["Performance"],
+	toolProfs : ["Calligrapher's supplies"],
+	toNotesPage : [{ name : "Knight-Errant Cause: Storykeeper", note : "I preserved histories, songs, and legends gathered during my wandering life.\nItem: Collection of stories and maps. RP Note: I compare current events to old legends.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order knight errant"] = {
+	name : "Knightly Order: Knight-Errant",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I am a wandering knight bound not to a kingdom, but to the road, personal honor, or unfinished purpose. I gain Survival.",
+	descriptionFull : "I belong nowhere, so I ride everywhere. My oath is carried by road dust, weathered steel, and memory.",
+	skills : ["Survival"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg knight errant cause wandering duelist" },
+			{ key : "da42bg knight errant cause pilgrim knight" },
+			{ key : "da42bg knight errant cause fallen noble" },
+			{ key : "da42bg knight errant cause road warden" },
+			{ key : "da42bg knight errant cause storykeeper" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Knight-Errant", note : "I belong nowhere, so I ride everywhere. My oath is carried by road dust, weathered steel, and memory.", page3notes : true }]
+};
+
+FeatsList["da42bg oathsworn sentinel cause rift watcher"] = {
+	name : "Oathsworn Sentinel Cause: Rift Watcher",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I guarded a dimensional tear, abyssal breach, or unstable magical scar in reality. I gain Arcana and Deep Speech.",
+	skills : ["Arcana"],
+	languageProfs : ["Deep Speech"],
+	toNotesPage : [{ name : "Oathsworn Sentinel Cause: Rift Watcher", note : "I guarded a dimensional tear, abyssal breach, or unstable magical scar in reality.\nMark: Residual planar scars. RP Note: I react to magical instability and extraplanar phenomena.", page3notes : true }]
+};
+
+FeatsList["da42bg oathsworn sentinel cause seal guardian"] = {
+	name : "Oathsworn Sentinel Cause: Seal Guardian",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I protected an ancient prison, relic vault, or forbidden chamber. I gain Perception and masons tools.",
+	skills : ["Perception"],
+	toolProfs : ["Mason's tools"],
+	toNotesPage : [{ name : "Oathsworn Sentinel Cause: Seal Guardian", note : "I protected an ancient prison, relic vault, or forbidden chamber.\nKnowledge: Ancient ward symbols. RP Note: I evaluate structures for weaknesses or breaches.", page3notes : true }]
+};
+
+FeatsList["da42bg oathsworn sentinel cause last sentinel"] = {
+	name : "Oathsworn Sentinel Cause: Last Sentinel",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "My entire order was destroyed while holding back an ancient threat. I gain Survival.",
+	skills : ["Survival"],
+	languageProfs : [["Choose one", 1]],
+	toNotesPage : [{ name : "Oathsworn Sentinel Cause: Last Sentinel", note : "My entire order was destroyed while holding back an ancient threat.\nItem: Ruined order insignia. RP Note: I struggle with the belief that vigilance inevitably ends in failure.", page3notes : true }]
+};
+
+FeatsList["da42bg oathsworn sentinel cause void witness"] = {
+	name : "Oathsworn Sentinel Cause: Void Witness",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I observed an entity, event, or cosmic truth that altered my understanding of reality. I gain Arcana.",
+	skills : ["Arcana"],
+	languageProfs : [["Abyssal, Celestial, Deep Speech, Infernal, or Primordial", 1]],
+	toNotesPage : [{ name : "Oathsworn Sentinel Cause: Void Witness", note : "I observed an entity, event, or cosmic truth that altered my understanding of reality.\nMark: Disturbing dreams and fragmented knowledge. RP Note: Certain stars, sounds, or magical effects trigger memories I cannot explain.", page3notes : true }]
+};
+
+FeatsList["da42bg oathsworn sentinel cause obelisk keeper"] = {
+	name : "Oathsworn Sentinel Cause: Obelisk Keeper",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I maintained ancient monuments, seals, or resonance obelisks. I gain History and masons tools.",
+	skills : ["History"],
+	toolProfs : ["Mason's tools"],
+	toNotesPage : [{ name : "Oathsworn Sentinel Cause: Obelisk Keeper", note : "I maintained ancient monuments, seals, or resonance obelisks.\nKnowledge: Resonance calibration and maintenance rites. RP Note: I recognize magical decay, instability, and structural resonance failure.", page3notes : true }]
+};
+
+FeatsList["da42bg knightly order oathsworn sentinel"] = {
+	name : "Knightly Order: Oathsworn Sentinel",
+	source : [["DA42BG", 1]],
+	type : "origin",
+	description : "I guarded seals, ruins, obelisks, dimensional thresholds, or forgotten horrors. I gain Investigation.",
+	descriptionFull : "I guard the gate because no one else remembers it exists.",
+	skills : ["Investigation"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg oathsworn sentinel cause rift watcher" },
+			{ key : "da42bg oathsworn sentinel cause seal guardian" },
+			{ key : "da42bg oathsworn sentinel cause last sentinel" },
+			{ key : "da42bg oathsworn sentinel cause void witness" },
+			{ key : "da42bg oathsworn sentinel cause obelisk keeper" }
+		]
+	}],
+	toNotesPage : [{ name : "Knightly Order: Oathsworn Sentinel", note : "I guard the gate because no one else remembers it exists.", page3notes : true }]
+};
+
+BackgroundList["knight"] = {
+	regExpSearch : /^(?=.*knight).*$/i,
+	name : "Knight",
+	source : [["DA42BG", 1]],
+	scores : [2, 0, 0, 0, 0, 1],
+	scorestxt : "+2 Strength and +1 Charisma, or +1 to three different ability scores",
+	skills : ["Insight"],
+	toolProfs : ["Vehicles (land)"],
+	featsAdd : [{
+		options : [
+			{ key : "da42bg knightly order broken oath" },
+			{ key : "da42bg knightly order silver flame" },
+			{ key : "da42bg knightly order black banner" },
+			{ key : "da42bg knightly order royal warden" },
+			{ key : "da42bg knightly order ashen crusader" },
+			{ key : "da42bg knightly order stormbound cavalier" },
+			{ key : "da42bg knightly order knight errant" },
+			{ key : "da42bg knightly order oathsworn sentinel" }
+		]
+	}],
+	gold : 15,
+	equipleft : [
+		["Knightly token or broken insignia", 1, ""],
+		["Traveler's clothes", 1, 4]
+	],
+	equipright : [
+		["Belt pouch (with coins)", 1, 1]
+	],
+	feature : "Knightly Reputation",
+	trait : [
+		"I still follow old battlefield habits even when no battle is near.",
+		"I judge people by how they act when frightened.",
+		"I keep my armor, weapons, and gear in careful order.",
+		"I do not easily forgive broken promises.",
+		"I am formal with strangers, even when I dislike them.",
+		"I find comfort in watches, patrols, and routines.",
+		"I rarely speak of the oath, order, or banner that shaped me.",
+		"I protect others instinctively, even when I tell myself I do not care."
+	],
+	ideal : [
+		["Duty", "Duty. A life without discipline collapses into chaos. (Lawful)"],
+		["Freedom", "Freedom. No oath should become a chain around the soul. (Chaotic)"],
+		["Protection", "Protection. Strength exists to shield those who cannot defend themselves. (Good)"],
+		["Power", "Power. Titles, vows, and banners matter only if they make others obey. (Evil)"],
+		["Survival", "Survival. Orders fall. Kingdoms burn. The living keep moving. (Neutral)"],
+		["Redemption", "Redemption. My past is stained, but my next choice is still mine. (Any)"]
+	],
+	bond : [
+		"I still carry the symbol of the order that shaped me.",
+		"Someone from my former life is still searching for me.",
+		"I owe my survival to a comrade, lover, mentor, or enemy.",
+		"I know a secret that could ruin a noble house, temple, or military order.",
+		"I failed someone I swore to protect.",
+		"I seek the battlefield, relic, commander, or truth that changed my life."
+	],
+	flaw : [
+		"I distrust anyone who speaks too proudly of honor.",
+		"I answer shame with anger.",
+		"I struggle to ask for help, even when I need it.",
+		"I expect betrayal before kindness.",
+		"I cannot ignore an insult to my courage or loyalty.",
+		"I sometimes treat mercy as weakness."
+	],
+	lifestyle : "modest"
+};

@@ -18,7 +18,9 @@ RequiredSheetVersion("13.2.3");
 SourceList["DA42:DK"] = {
 	name : "DruidAllanon42: Dark Knight",
 	abbreviation : "DA42: DK",
-	group : "Homebrew",
+        group : "DruidAllanon42",
+	author : "Daniel Lott / DruidAllanon42",
+	url : "https://www.dandwiki.com/wiki/Dark_Knight_(5e_Class)",
 	date : "2026/05/03",
 };
 

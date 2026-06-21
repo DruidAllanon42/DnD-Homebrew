@@ -1,0 +1,34 @@
+var iFileName = "Hollowbane.js";
+RequiredSheetVersion(13);
+
+MagicItemsList["hollowbane"] = {
+	name : "Hollowbane",
+	source : ["HB", 0],
+	type : "weapon",
+	rarity : "legendary",
+	attunement : true,
+	prerequisite : "Requires attunement",
+	description : "This magical glaive warns its wielder of fiends, demonic rituals, and corruption. Once per long rest, it can deal extra radiant or necrotic damage to certain creatures.",
+	descriptionFull : "The haft of Hollowbane is fashioned from dark ashwood wrapped around a hidden core of polished bone taken from Moira's remains. Thin veins of fractured fiend crystal run through the blade, pulsing faintly whenever corruption draws near.\n\nWhile dormant, Hollowbane functions as a magical glaive and possesses the following properties:\n\nCrystal Resonance. When within 30 feet of fiends, active demonic rituals, or significant corruption sites, the crystal emits a faint crimson glow visible only to the wielder.\n\nWitch-Hunter's Legacy. Once per long rest, when you hit a Fiend, Undead, or Aberration, you may deal an additional 1d6 radiant or necrotic damage.\n\nMemorial Weapon. If the wielder knowingly murders an innocent creature using Hollowbane, all magical properties become dormant until an act of atonement is completed.\n\nEcho of Moira. The wielder occasionally experiences feelings of unease, intuition, or fleeting impressions. These provide no direct mechanical benefit in the Dormant stage.",
+	weight : 6,
+	weaponOptions : {
+		baseWeapon : "glaive",
+		regExpSearch : /^(?=.*hollowbane).*$/i,
+		name : "Hollowbane",
+		source : ["HB", 0],
+		list : "melee",
+		ability : 1,
+		type : "Martial",
+		damage : [1, 10, "slashing"],
+		range : "Melee",
+		weight : 6,
+		description : "Heavy, reach, two-handed; magical; once per LR +1d6 radiant/necrotic vs fiend, undead, or aberration",
+		abilitytodamage : true,
+		selectNow : true
+	},
+	weaponsAdd : ["Hollowbane"],
+	usages : 1,
+	recovery : "long rest",
+	additional : "Witch-Hunter's Legacy",
+	action : ["action", ""]
+};

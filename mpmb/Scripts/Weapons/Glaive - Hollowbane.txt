@@ -1,34 +1,84 @@
-var iFileName = "Hollowbane.js";
-RequiredSheetVersion(13);
+/*	-INFORMATION-
+	Subject:	Magic Item / Weapon
+	Effect:		Adds Hollowbane as a selectable glaive weapon and magic item
+	Code by:	Daniel / Stormhaven Homebrew
+	Date:		2026-06-21
+*/
 
+var iFileName = "Hollowbane.js";
+RequiredSheetVersion("13.1.0");
+
+SourceList["SH"] = {
+	name : "Stormhaven Campaign",
+	abbreviation : "SH",
+	group : "Homebrew",
+	url : "",
+	date : "2026/06/21"
+};
+
+/* Hollowbane as a selectable weapon */
+WeaponsList["hollowbane"] = {
+	regExpSearch : /^(?=.*hollowbane).*$/i,
+	name : "Hollowbane",
+	source : ["SH", 0],
+	list : "melee",
+	ability : 1,
+	type : "Martial",
+	damage : [1, 10, "slashing"],
+	range : "Melee",
+	description : "Heavy, reach, two-handed; magical",
+	abilitytodamage : true,
+	weight : 6,
+	monkweapon : false
+};
+
+/* Hollowbane as a magic item */
 MagicItemsList["hollowbane"] = {
 	name : "Hollowbane",
-	source : ["HB", 0],
-	type : "weapon",
+	source : ["SH", 0],
+	type : "weapon (glaive)",
 	rarity : "legendary",
 	attunement : true,
 	prerequisite : "Requires attunement",
-	description : "This magical glaive warns its wielder of fiends, demonic rituals, and corruption. Once per long rest, it can deal extra radiant or necrotic damage to certain creatures.",
-	descriptionFull : "The haft of Hollowbane is fashioned from dark ashwood wrapped around a hidden core of polished bone taken from Moira's remains. Thin veins of fractured fiend crystal run through the blade, pulsing faintly whenever corruption draws near.\n\nWhile dormant, Hollowbane functions as a magical glaive and possesses the following properties:\n\nCrystal Resonance. When within 30 feet of fiends, active demonic rituals, or significant corruption sites, the crystal emits a faint crimson glow visible only to the wielder.\n\nWitch-Hunter's Legacy. Once per long rest, when you hit a Fiend, Undead, or Aberration, you may deal an additional 1d6 radiant or necrotic damage.\n\nMemorial Weapon. If the wielder knowingly murders an innocent creature using Hollowbane, all magical properties become dormant until an act of atonement is completed.\n\nEcho of Moira. The wielder occasionally experiences feelings of unease, intuition, or fleeting impressions. These provide no direct mechanical benefit in the Dormant stage.",
+	prereqeval : function(v) { return true; },
+
+	description : "This magical glaive is forged from Moira's remains and fragments of shattered fiend crystal. It has the heavy, reach, and two-handed properties. While dormant, it warns the wielder of nearby corruption and can deal extra radiant or necrotic damage to fiends, undead, or aberrations once per long rest.",
+
+	descriptionFull : "The haft of Hollowbane is fashioned from dark ashwood wrapped around a hidden core of polished bone taken from Moira's remains. Thin veins of fractured fiend crystal run through the blade, pulsing faintly whenever corruption draws near.\n\nDormant Relic: Hollowbane functions as a magical glaive. It deals 1d10 slashing damage and has the heavy, reach, and two-handed properties.\n\nCrystal Resonance: When within 30 feet of fiends, active demonic rituals, or significant corruption sites, the crystal emits a faint crimson glow visible only to the wielder.\n\nWitch-Hunter's Legacy: Once per long rest, when you hit a Fiend, Undead, or Aberration with Hollowbane, you may deal an additional 1d6 radiant or necrotic damage.\n\nEcho of Moira: The wielder occasionally experiences feelings of unease, intuition, or fleeting impressions. These provide no direct mechanical benefit while the weapon is dormant.\n\nMemorial Weapon: If the wielder knowingly murders an innocent creature using Hollowbane, all magical properties become dormant until an act of atonement is completed.",
+
 	weight : 6,
+
 	weaponOptions : {
 		baseWeapon : "glaive",
 		regExpSearch : /^(?=.*hollowbane).*$/i,
 		name : "Hollowbane",
-		source : ["HB", 0],
+		source : ["SH", 0],
 		list : "melee",
 		ability : 1,
 		type : "Martial",
 		damage : [1, 10, "slashing"],
 		range : "Melee",
-		weight : 6,
-		description : "Heavy, reach, two-handed; magical; once per LR +1d6 radiant/necrotic vs fiend, undead, or aberration",
+		description : "Heavy, reach, two-handed; magical",
 		abilitytodamage : true,
+		weight : 6,
 		selectNow : true
 	},
+
 	weaponsAdd : ["Hollowbane"],
+
 	usages : 1,
 	recovery : "long rest",
-	additional : "Witch-Hunter's Legacy",
-	action : ["action", ""]
+
+	additional : "1d6 radiant or necrotic vs fiend, undead, or aberration",
+
+	calcChanges : {
+		atkAdd : [
+			function (fields, v) {
+				if (v.WeaponName == "hollowbane" || /hollowbane/i.test(v.WeaponTextName)) {
+					fields.Description += (fields.Description ? "; " : "") + "Once per long rest: +1d6 radiant or necrotic damage vs fiend, undead, or aberration";
+				}
+			},
+			"Hollowbane is a magical glaive. Once per long rest, when you hit a Fiend, Undead, or Aberration with it, you may deal an additional 1d6 radiant or necrotic damage."
+		]
+	}
 };

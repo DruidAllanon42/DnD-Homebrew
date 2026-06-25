@@ -38,7 +38,7 @@ SourceList["STHVN"] = {
     abbreviationSpellsheet : "S",
     group : "Homebrew",
     url : "",
-    date : "2026/06/23"
+    date : "2026/06/25"
 };
 
 /*  =========================================================
@@ -47,26 +47,26 @@ SourceList["STHVN"] = {
 */
 
 CreatureList["ghostmane"] = {
-	name : "Ghostmane",
-	source : ["STHVN", 0],
-	companion : ["stormhaven soulbound beast"],
-	size : 3,
-	type : "Monstrosity",
-	subtype : "Spirit Beast; Soulbound Beast",
-	alignment : "Neutral Good",
-	ac : 14,
-	hp : 52,
-	hd : [7, 10],
-	speed : "60 ft",
-	scores : [15, 18, 15, 6, 14, 12],
-	saves : ["Str", "Wis"],
-	skills : {
-		"Perception" : 4,
-		"Stealth" : 6,
-		"Survival" : 4
-	},
-	description : "Also known as the Wolf of the Second Gallop and Wulfrunner."
-};
+    name : "Ghostmane",
+    nameAlt : ["The Wolf of the Second Gallop", "Wulfrunner"],
+    source : ["STHVN", 0],
+    companion : ["stormhaven soulbound beast"],
+    size : 3,
+    type : "Monstrosity",
+    subtype : "Spirit Beast; Soulbound Beast",
+    alignment : "Neutral Good",
+    ac : 14,
+    hp : 52,
+    hd : [7, 10],
+    speed : "60 ft",
+    scores : [15, 18, 15, 6, 14, 12],
+    saves : ["Str", "Wis"],
+    skills : {
+        "Perception" : 4,
+        "Stealth" : 6,
+        "Survival" : 4
+    },
+    description : "Also known as the Wolf of the Second Gallop and Wulfrunner.",
     senses : "Darkvision 60 ft; keen hearing and smell",
     passivePerception : 14,
     languages : "Understands the languages of its bonded companion but can't speak",
@@ -161,10 +161,10 @@ CompanionList["stormhaven soulbound beast"] = {
     notes : [{
         name : "Soulbound Nature",
         description : "Ghostmane is a resurrected wolf whose soul became intertwined with the lingering essence of a horse. Flesh followed spirit, creating a creature that is neither fully wolf nor horse, but both.",
-        joinString : "\\n   "
+        joinString : "\n   "
     }, {
         name : "Personality & Instincts",
         description : "Wolf instincts: hunts, tracks, protects its pack, and remains territorial. Horse instincts: loves open fields, enjoys being brushed, bonds deeply with trusted companions, and becomes anxious when confined for long periods.",
-        joinString : "\\n   "
+        joinString : "\n   "
     }]
 };

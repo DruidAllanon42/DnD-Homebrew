@@ -47,25 +47,26 @@ SourceList["STHVN"] = {
 */
 
 CreatureList["ghostmane"] = {
-    name : "Ghostmane",
-    nameAlt : ["The Wolf of the Second Gallop", "Wulfrunner"],
-    source : ["STHVN", 0],
-    companion : ["stormhaven soulbound beast"],
-    size : 3,
-    type : "Monstrosity",
-    subtype : "Spirit Beast; Soulbound Beast",
-    alignment : "Neutral Good",
-    ac : 14,
-    hp : 52,
-    hd : [7, 10],
-    speed : "60 ft",
-    scores : [15, 18, 15, 6, 14, 12],
-    saves : ["Str", "Wis"],
-    skills : {
-        "Athletics" : 4,
-        "Perception" : 4,
-        "Survival" : 4
-    },
+	name : "Ghostmane",
+	source : ["STHVN", 0],
+	companion : ["stormhaven soulbound beast"],
+	size : 3,
+	type : "Monstrosity",
+	subtype : "Spirit Beast; Soulbound Beast",
+	alignment : "Neutral Good",
+	ac : 14,
+	hp : 52,
+	hd : [7, 10],
+	speed : "60 ft",
+	scores : [15, 18, 15, 6, 14, 12],
+	saves : ["Str", "Wis"],
+	skills : {
+		"Perception" : 4,
+		"Stealth" : 6,
+		"Survival" : 4
+	},
+	description : "Also known as the Wolf of the Second Gallop and Wulfrunner."
+};
     senses : "Darkvision 60 ft; keen hearing and smell",
     passivePerception : 14,
     languages : "Understands the languages of its bonded companion but can't speak",

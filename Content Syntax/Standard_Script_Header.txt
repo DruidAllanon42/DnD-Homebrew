@@ -1,0 +1,28 @@
+/*  =========================================================
+    Stormhaven 5e
+    [SCRIPT NAME]
+    MPMB Character Record Sheet Script
+    =========================================================
+
+    Version Information
+
+    Version 1.0.0 :: Initial Release
+
+    Created by :: Daniel Lott
+
+    Published under :: DruidAllanon42
+
+    © Daniel Lott
+    Published under the DruidAllanon42 imprint.
+
+    =========================================================
+    Description
+    =========================================================
+
+    [Brief description of what this script adds.]
+
+    Compatible with:
+    MPMB Character Record Sheet v14.0.5+
+
+    =========================================================
+*/

@@ -1,0 +1,169 @@
+/*  =========================================================
+    Stormhaven 5e
+    Ghostmane - The Wolf of the Second Gallop
+    MPMB Character Record Sheet Script
+    =========================================================
+
+    Version Information
+
+    Version 1.0.0 :: Initial Release
+
+    Created by :: Daniel Lott
+
+    Published under :: DruidAllanon42
+
+    © Daniel Lott
+    Published under the DruidAllanon42 imprint.
+
+    =========================================================
+    Description
+    =========================================================
+
+    Adds Ghostmane as a selectable companion creature
+    and creates the Soulbound Beast (Stormhaven)
+    companion option for MPMB companion pages.
+
+    Compatible with:
+    MPMB Character Record Sheet v14.0.5+
+
+    =========================================================
+*/
+
+var iFileName = "Stormhaven - Ghostmane Companion.js";
+RequiredSheetVersion("14.0.5");
+
+SourceList["STHVN"] = {
+    name : "Stormhaven Homebrew",
+    abbreviation : "STHVN",
+    abbreviationSpellsheet : "S",
+    group : "Homebrew",
+    url : "",
+    date : "2026/06/23"
+};
+
+/*  =========================================================
+    Ghostmane Creature Entry
+    =========================================================
+*/
+
+CreatureList["ghostmane"] = {
+    name : "Ghostmane",
+    nameAlt : ["The Wolf of the Second Gallop", "Wulfrunner"],
+    source : ["STHVN", 0],
+    companion : ["stormhaven soulbound beast"],
+    size : 3,
+    type : "Monstrosity",
+    subtype : "Spirit Beast; Soulbound Beast",
+    alignment : "Neutral Good",
+    ac : 14,
+    hp : 52,
+    hd : [7, 10],
+    speed : "60 ft",
+    scores : [15, 18, 15, 6, 14, 12],
+    saves : ["Str", "Wis"],
+    skills : {
+        "Athletics" : 4,
+        "Perception" : 4,
+        "Survival" : 4
+    },
+    senses : "Darkvision 60 ft; keen hearing and smell",
+    passivePerception : 14,
+    languages : "Understands the languages of its bonded companion but can't speak",
+    challengeRating : "3",
+    proficiencyBonus : 2,
+    attacksAction : 1,
+
+    attacks : [{
+        name : "Bite",
+        ability : 2,
+        damage : [2, 8, "piercing"],
+        range : "Melee (5 ft)",
+        description : "Hunter's Charge: If Ghostmane moved 20 ft straight before this hit, +2d6 damage and target must make DC 14 Str save or fall prone",
+        abilitytodamage : true
+    }, {
+        name : "Hoofing Rush",
+        ability : 2,
+        damage : [2, 6, "bludgeoning"],
+        range : "Melee (5 ft)",
+        description : "Target must succeed on DC 14 Str save or be pushed 10 ft",
+        abilitytodamage : true
+    }, {
+        name : "Grave-Bound Bite",
+        ability : 2,
+        damage : [2, 8, "piercing"],
+        range : "Melee (5 ft)",
+        description : "Recharge 5-6; +2d6 necrotic; target can't regain HP until start of Ghostmane's next turn",
+        abilitytodamage : true
+    }],
+
+    traits : [{
+        name : "Soulbound Beast",
+        description : "Ghostmane is considered both a Beast and a Spirit for spells and magical effects."
+    }, {
+        name : "Galloping Predator",
+        description : "Speed 60 ft. When Ghostmane takes the Dash action, he ignores nonmagical difficult terrain."
+    }, {
+        name : "Pack Stallion",
+        description : "Friendly creatures within 10 ft of Ghostmane have advantage on saving throws against being frightened."
+    }, {
+        name : "Endurance of the Herd (1/Long Rest)",
+        description : "When Ghostmane would be reduced to 0 hit points, he instead drops to 1 hit point."
+    }, {
+        name : "Keen Hearing and Smell",
+        description : "Ghostmane has advantage on Wisdom (Perception) checks that rely on hearing or smell."
+    }, {
+        name : "Sure-Footed",
+        description : "Ghostmane has advantage on Strength and Dexterity saves against effects that would knock him prone."
+    }, {
+        name : "Rider's Companion",
+        description : "A Medium creature proficient with Animal Handling may ride Ghostmane as a mount."
+    }],
+
+    actions : [{
+        name : "Echo of the Veil (1/Long Rest)",
+        description : "Creatures of Ghostmane's choice within 20 ft must make a DC 13 Wis save or be frightened until the end of their next turn. Friendly creatures instead gain 2d6+2 temporary HP and advantage on their next attack roll."
+    }],
+
+    bonus_actions : [{
+        name : "Protective Gallop",
+        description : "Ghostmane moves up to half his speed toward an ally without provoking opportunity attacks. If he ends adjacent to that ally, the ally gains +2 AC until the start of Ghostmane's next turn."
+    }],
+
+    reactions : [{
+        name : "Interpose",
+        description : "When a creature Ghostmane can see attacks an ally within 5 ft of him, Ghostmane may move up to 5 ft and become the target instead."
+    }]
+};
+
+/*  =========================================================
+    Stormhaven Companion Option
+    =========================================================
+*/
+
+CompanionList["stormhaven soulbound beast"] = {
+    name : "Soulbound Beast",
+    nameMenu : "Soulbound Beast (Stormhaven)",
+    nameTooltip : "the Stormhaven Soulbound Beast companion option",
+    nameOrigin : "Stormhaven homebrew companion option",
+    source : ["STHVN", 0],
+
+    includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
+        return sCrea === "ghostmane";
+    },
+
+    attributesAdd : {
+        header : "Soulbound Beast",
+        type : "Monstrosity",
+        subtype : "Spirit Beast; Soulbound Beast"
+    },
+
+    notes : [{
+        name : "Soulbound Nature",
+        description : "Ghostmane is a resurrected wolf whose soul became intertwined with the lingering essence of a horse. Flesh followed spirit, creating a creature that is neither fully wolf nor horse, but both.",
+        joinString : "\\n   "
+    }, {
+        name : "Personality & Instincts",
+        description : "Wolf instincts: hunts, tracks, protects its pack, and remains territorial. Horse instincts: loves open fields, enjoys being brushed, bonds deeply with trusted companions, and becomes anxious when confined for long periods.",
+        joinString : "\\n   "
+    }]
+};

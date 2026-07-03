@@ -1,0 +1,198 @@
+/*  =========================================================
+    Stormhaven 5e
+    Stormhaven Core
+    MPMB Character Record Sheet Script
+    =========================================================
+
+    Version Information
+
+    Version 1.0.0 :: Initial Release
+
+    Created by :: Daniel Lott
+
+    Published under :: DruidAllanon42
+
+    © Daniel Lott
+    Published under the DruidAllanon42 imprint.
+
+    =========================================================
+    Description
+    =========================================================
+
+    Core source and shared utilities for the Stormhaven MPMB
+    Script Library.
+
+    Import this file before importing individual Stormhaven
+    creatures, companions, weapons, items, classes, subclasses,
+    spells, feats, or backgrounds.
+
+    Compatible with:
+    MPMB Character Record Sheet v14.0.5+
+
+    =========================================================
+*/
+
+var iFileName = "Stormhaven Core.js";
+RequiredSheetVersion("14.0.5");
+
+/*  =========================================================
+    Source
+    =========================================================
+*/
+
+SourceList["STHVN"] = {
+    name : "Stormhaven 5e",
+    abbreviation : "STHVN",
+    abbreviationSpellsheet : "S",
+    group : "Homebrew",
+    url : "",
+    date : "2026/06/25"
+};
+
+/*  =========================================================
+    Library Metadata
+    =========================================================
+*/
+
+var Stormhaven = Stormhaven || {};
+
+Stormhaven.Library = {
+    name : "Stormhaven MPMB Script Library",
+    version : "1.0.0",
+    creator : "Daniel Lott",
+    publisher : "DruidAllanon42",
+    copyright : "© Daniel Lott",
+    imprint : "Published under the DruidAllanon42 imprint.",
+    source : "STHVN"
+};
+
+/*  =========================================================
+    Shared Helper Functions
+    =========================================================
+*/
+
+Stormhaven.AddSource = function(obj) {
+    if (!obj || !obj.key || !obj.name) return;
+
+    SourceList[obj.key] = {
+        name : obj.name,
+        abbreviation : obj.abbreviation || obj.key,
+        abbreviationSpellsheet : obj.abbreviationSpellsheet || obj.key.charAt(0),
+        group : obj.group || "Homebrew",
+        url : obj.url || "",
+        date : obj.date || "2026/06/25"
+    };
+};
+
+Stormhaven.RegisterCreature = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    CreatureList[key] = obj;
+};
+
+Stormhaven.RegisterCompanionOption = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    CompanionList[key] = obj;
+};
+
+Stormhaven.RegisterWeapon = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    WeaponsList[key] = obj;
+};
+
+Stormhaven.RegisterMagicItem = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    MagicItemsList[key] = obj;
+};
+
+Stormhaven.RegisterSpell = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    SpellsList[key] = obj;
+};
+
+Stormhaven.RegisterFeat = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    FeatsList[key] = obj;
+};
+
+Stormhaven.RegisterBackground = function(key, obj) {
+    if (!key || !obj) return;
+    obj.source = obj.source || ["STHVN", 0];
+    BackgroundList[key] = obj;
+};
+
+/*  =========================================================
+    Shared Constants
+    =========================================================
+*/
+
+Stormhaven.CompanionTypes = {
+    soulboundBeast : "stormhaven soulbound beast",
+    celestialFamiliar : "stormhaven celestial familiar",
+    grinnerCompanion : "stormhaven grinner companion"
+};
+
+Stormhaven.DamageTypes = {
+    radiant : "radiant",
+    necrotic : "necrotic",
+    cold : "cold",
+    lightning : "lightning",
+    thunder : "thunder",
+    poison : "poison",
+    psychic : "psychic"
+};
+
+/*  =========================================================
+    Shared Companion Options
+    =========================================================
+*/
+
+Stormhaven.RegisterCompanionOption("stormhaven soulbound beast", {
+    name : "Soulbound Beast",
+    nameMenu : "Soulbound Beast (Stormhaven)",
+    nameTooltip : "the Stormhaven Soulbound Beast companion option",
+    nameOrigin : "Stormhaven homebrew companion option",
+
+    includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
+        return objCrea.companion && objCrea.companion.indexOf("stormhaven soulbound beast") !== -1;
+    },
+
+    attributesAdd : {
+        header : "Soulbound Beast",
+        type : "Monstrosity",
+        subtype : "Spirit Beast; Soulbound Beast"
+    },
+
+    notes : [{
+        name : "Soulbound Nature",
+        description : "This creature carries more than one spiritual echo. Resurrection, ritual magic, divine intervention, or ancient forces have bound another soul or memory within it.",
+        joinString : "\n   "
+    }]
+});
+
+Stormhaven.RegisterCompanionOption("stormhaven celestial familiar", {
+    name : "Celestial Familiar",
+    nameMenu : "Celestial Familiar (Stormhaven)",
+    nameTooltip : "the Stormhaven Celestial Familiar companion option",
+    nameOrigin : "Stormhaven constellation familiar option",
+
+    includeCheck : function(sCrea, objCrea, iCreaCR, bIsAL) {
+        return objCrea.companion && objCrea.companion.indexOf("stormhaven celestial familiar") !== -1;
+    },
+
+    attributesAdd : {
+        header : "Celestial Familiar",
+        type : "Celestial"
+    },
+
+    notes : [{
+        name : "Starbound Nature",
+        description : "This familiar carries a faint echo of the heavens. Its form, instincts, and magic are shaped by one of the sacred constellations.",
+        joinString : "\n   "
+    }]
+});

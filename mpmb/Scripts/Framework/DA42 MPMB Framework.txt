@@ -1,0 +1,655 @@
+/*  ==========================================================================
+
+    DA42 MPMB FRAMEWORK
+    Shared Publication and Script Framework
+
+    Designed for:
+    - D&D 5e Revised Rules (2024 / 5.5e)
+    - MorePurpleMoreBetter Character Record Sheet v14.0.6+
+
+    Framework Tag: DA42FW
+    Framework Version: 1.0.0
+    Publication Standard: 2.0.0
+
+    This framework establishes the shared publication metadata, catalogue
+    prefixes, source registration, helper functions, and formatting standards
+    used throughout the DruidAllanon42 MPMB script catalogue.
+
+    Import this framework before importing DA42 scripts that explicitly list
+    DA42 MPMB Framework v1.0.0 as a dependency.
+
+    --------------------------------------------------------------------------
+    VERSION INFORMATION
+    --------------------------------------------------------------------------
+
+    Version 2.0.0 :: First Public Release
+    Created by     :: Daniel Lott
+    Published under:: DruidAllanon42
+
+    © Daniel Lott
+    Published under the DruidAllanon42 imprint.
+
+    --------------------------------------------------------------------------
+    COMMUNITY & SUPPORT
+    --------------------------------------------------------------------------
+
+    Patreon:
+    https://www.patreon.com/cw/DruidAllanon42
+
+    Reddit:
+    https://www.reddit.com/r/DruidAllanon42/
+
+    DMs Guild:
+    Coming Soon
+
+    --------------------------------------------------------------------------
+    USE & REDISTRIBUTION
+    --------------------------------------------------------------------------
+
+    This framework is intended for use with MorePurpleMoreBetter's Character
+    Record Sheet and compatible DA42 scripts.
+
+    Redistribution, republication, sale, or commercial distribution of this
+    framework without permission from Daniel Lott is prohibited.
+
+    Personal modifications for private use are permitted.
+
+    ========================================================================== */
+
+var iFileName = "DA42FW - MPMB Framework v1.0.0.js";
+
+RequiredSheetVersion("14.0.6");
+
+
+/*  ==========================================================================
+    GLOBAL DA42 NAMESPACE
+    ==========================================================================
+
+    All shared DA42 framework data is stored inside DA42MPMB.
+
+    This reduces the risk of collisions with MPMB variables or scripts created
+    by other homebrew authors.
+    ========================================================================== */
+
+if (typeof DA42MPMB === "undefined") {
+    DA42MPMB = {};
+}
+
+
+/*  ==========================================================================
+    FRAMEWORK METADATA
+    ========================================================================== */
+
+DA42MPMB.framework = {
+    name : "DA42 MPMB Framework",
+    tag : "DA42FW",
+    version : "1.0.0",
+    publicationStandard : "2.0.0",
+    releaseName : "First Public Release",
+    requiredSheetVersion : "14.0.6",
+    releaseDate : "2026/07/15"
+};
+
+
+/*  ==========================================================================
+    CREATOR AND IMPRINT INFORMATION
+    ========================================================================== */
+
+DA42MPMB.creator = {
+    name : "Daniel Lott",
+    imprint : "DruidAllanon42",
+    copyright : "\u00A9 Daniel Lott",
+    publicationLine : "Published under the DruidAllanon42 imprint."
+};
+
+
+/*  ==========================================================================
+    COMMUNITY AND PUBLICATION LINKS
+    ========================================================================== */
+
+DA42MPMB.links = {
+    patreon : "https://www.patreon.com/cw/DruidAllanon42",
+    reddit : "https://www.reddit.com/r/DruidAllanon42/",
+    dmsguild : "Coming Soon"
+};
+
+
+/*  ==========================================================================
+    SETTING INFORMATION
+    ========================================================================== */
+
+DA42MPMB.settings = {
+    primary : "Stormhaven",
+    compatibility : [
+        "Stormhaven",
+        "Forgotten Realms",
+        "Homebrew Campaigns"
+    ]
+};
+
+
+/*  ==========================================================================
+    PUBLICATION CATALOGUE PREFIXES
+    ========================================================================== */
+
+DA42MPMB.catalogue = {
+    framework : {
+        prefix : "DA42FW",
+        meaning : "Framework",
+        example : "DA42 MPMB Framework"
+    },
+
+    uniqueBackground : {
+        prefix : "DA42UBG",
+        meaning : "Unique Background",
+        example : "First Antler"
+    },
+
+    background : {
+        prefix : "DA42BG",
+        meaning : "Background",
+        example : "Follower of the Velvet Antler"
+    },
+
+    subclass : {
+        prefix : "DA42SC",
+        meaning : "Subclass",
+        example : "Oath of the Velvet Antler"
+    },
+
+    species : {
+        prefix : "DA42SP",
+        meaning : "Species",
+        example : "Kitsune"
+    },
+
+    feat : {
+        prefix : "DA42FT",
+        meaning : "Feat",
+        example : "Blessing of the Reveler"
+    },
+
+    magicItem : {
+        prefix : "DA42IT",
+        meaning : "Magic Item",
+        example : "Silvermoon's Chalice"
+    },
+
+    monster : {
+        prefix : "DA42MN",
+        meaning : "Monster",
+        example : "Salt-Tainted Horror"
+    },
+
+    classOption : {
+        prefix : "DA42CL",
+        meaning : "Class",
+        example : "Dark Knight"
+    },
+
+    campaignResource : {
+        prefix : "DA42CMP",
+        meaning : "Campaign Resource",
+        example : "Stormhaven Gazetteer"
+    }
+};
+
+
+/*  ==========================================================================
+    SHARED SOURCE REGISTRATION
+    ==========================================================================
+
+    Patreon remains the functional URL used by MPMB's SourceList.
+
+    Reddit and DMs Guild information remain available through DA42MPMB.links
+    and should also appear in each individual script's publication header.
+    ========================================================================== */
+
+if (typeof SourceList !== "undefined" && !SourceList["DA42"]) {
+    SourceList["DA42"] = {
+        name : "DruidAllanon42 Publications",
+        abbreviation : "DA42",
+        abbreviationSpellsheet : "DA42",
+        group : "DruidAllanon42",
+        url : DA42MPMB.links.patreon,
+        date : DA42MPMB.framework.releaseDate
+    };
+}
+
+
+/*  ==========================================================================
+    PUBLICATION REGISTRY
+    ==========================================================================
+
+    Individual scripts may register themselves here.
+
+    Example:
+
+    DA42MPMB.registerPublication({
+        code : "DA42SC-001",
+        tag : "DA42SC",
+        title : "Oath of the Velvet Antler",
+        version : "1.0.0",
+        release : "First Public Release",
+        type : "Subclass",
+        setting : "Stormhaven",
+        date : "2026/07/15"
+    });
+    ========================================================================== */
+
+if (!DA42MPMB.publications) {
+    DA42MPMB.publications = {};
+}
+
+
+/*  ==========================================================================
+    HELPER: REGISTER A PUBLICATION
+    ========================================================================== */
+
+DA42MPMB.registerPublication = function (publication) {
+    if (!publication || typeof publication !== "object") {
+        return false;
+    }
+
+    if (!publication.code || !publication.title) {
+        return false;
+    }
+
+    DA42MPMB.publications[publication.code] = {
+        code : publication.code,
+        tag : publication.tag || "",
+        title : publication.title,
+        version : publication.version || "1.0.0",
+        release : publication.release || "First Public Release",
+        type : publication.type || "Homebrew Content",
+        setting : publication.setting || DA42MPMB.settings.primary,
+        date : publication.date || DA42MPMB.framework.releaseDate,
+        author : DA42MPMB.creator.name,
+        imprint : DA42MPMB.creator.imprint
+    };
+
+    return true;
+};
+
+
+/*  ==========================================================================
+    HELPER: RETURN A STANDARD SOURCE ARRAY
+    ==========================================================================
+
+    Examples:
+
+    source : DA42MPMB.source();
+    source : DA42MPMB.source(3);
+
+    Returns:
+    [["DA42", 0]]
+    [["DA42", 3]]
+    ========================================================================== */
+
+DA42MPMB.source = function (page) {
+    var sourcePage = typeof page === "number" ? page : 0;
+
+    return [["DA42", sourcePage]];
+};
+
+
+/*  ==========================================================================
+    HELPER: RETURN A SIMPLE SOURCE REFERENCE
+    ==========================================================================
+
+    Some MPMB entries use:
+    source : ["DA42", 0]
+
+    rather than:
+    source : [["DA42", 0]]
+
+    Use sourceSingle() for those entries.
+    ========================================================================== */
+
+DA42MPMB.sourceSingle = function (page) {
+    var sourcePage = typeof page === "number" ? page : 0;
+
+    return ["DA42", sourcePage];
+};
+
+
+/*  ==========================================================================
+    HELPER: CREATE A 20-LEVEL ARRAY
+    ==========================================================================
+
+    Useful for attributes such as:
+    - additional
+    - usages
+    - recovery
+    - action scaling
+    - aura range
+    - level-dependent descriptions
+
+    Example:
+
+    additional : DA42MPMB.levelArray(7, function (level) {
+        return level < 18 ? "10-ft aura" : "30-ft aura";
+    });
+    ========================================================================== */
+
+DA42MPMB.levelArray = function (minimumLevel, value) {
+    var result = [];
+    var level;
+
+    for (level = 1; level <= 20; level++) {
+        if (level < minimumLevel) {
+            result.push("");
+        } else if (typeof value === "function") {
+            result.push(value(level));
+        } else {
+            result.push(value);
+        }
+    }
+
+    return result;
+};
+
+
+/*  ==========================================================================
+    HELPER: CREATE A LEVEL-SCALED NUMBER ARRAY
+    ==========================================================================
+
+    Example:
+
+    usages : DA42MPMB.scaledNumberArray(3, function (level) {
+        return level < 10 ? 1 : 2;
+    });
+    ========================================================================== */
+
+DA42MPMB.scaledNumberArray = function (minimumLevel, calculator) {
+    var result = [];
+    var level;
+
+    for (level = 1; level <= 20; level++) {
+        if (level < minimumLevel) {
+            result.push(0);
+        } else if (typeof calculator === "function") {
+            result.push(calculator(level));
+        } else {
+            result.push(Number(calculator) || 0);
+        }
+    }
+
+    return result;
+};
+
+
+/*  ==========================================================================
+    HELPER: CREATE A LEVEL-SCALED RECOVERY ARRAY
+    ========================================================================== */
+
+DA42MPMB.recoveryArray = function (minimumLevel, recoveryMethod) {
+    var result = [];
+    var level;
+
+    for (level = 1; level <= 20; level++) {
+        result.push(level < minimumLevel ? "" : recoveryMethod);
+    }
+
+    return result;
+};
+
+
+/*  ==========================================================================
+    HELPER: CALCULATE ABILITY-MODIFIER USAGES
+    ==========================================================================
+
+    Example:
+
+    usages : 1,
+    recovery : "long rest",
+    usagescalc : DA42MPMB.abilityUsage("Cha", 1);
+
+    This returns MPMB calculation code that uses the selected ability modifier
+    while enforcing the supplied minimum.
+    ========================================================================== */
+
+DA42MPMB.abilityUsage = function (ability, minimum) {
+    var abilityName = ability || "Cha";
+    var minimumValue = typeof minimum === "number" ? minimum : 1;
+
+    return "event.value = Math.max(" +
+        minimumValue +
+        ", What('" +
+        abilityName +
+        " Mod'));";
+};
+
+
+/*  ==========================================================================
+    HELPER: CALCULATE PROFICIENCY BONUS + ABILITY MODIFIER
+    ==========================================================================
+
+    Intended for display calculations or limited-feature reminders.
+
+    Example:
+
+    additional : DA42MPMB.levelArray(3, function () {
+        return "PB + Cha modifier";
+    });
+    ========================================================================== */
+
+DA42MPMB.pbPlusAbilityText = function (ability) {
+    return "PB + " + (ability || "Cha") + " modifier";
+};
+
+
+/*  ==========================================================================
+    HELPER: FORMAT A PUBLICATION CODE
+    ==========================================================================
+
+    Example:
+
+    DA42MPMB.publicationCode("DA42SC", 1);
+    Returns:
+    "DA42SC-001"
+    ========================================================================== */
+
+DA42MPMB.publicationCode = function (prefix, number) {
+    var publicationNumber = parseInt(number, 10);
+    var paddedNumber;
+
+    if (isNaN(publicationNumber) || publicationNumber < 0) {
+        publicationNumber = 0;
+    }
+
+    paddedNumber = String(publicationNumber);
+
+    while (paddedNumber.length < 3) {
+        paddedNumber = "0" + paddedNumber;
+    }
+
+    return prefix + "-" + paddedNumber;
+};
+
+
+/*  ==========================================================================
+    HELPER: VERIFY A CATALOGUE PREFIX
+    ========================================================================== */
+
+DA42MPMB.isKnownPrefix = function (prefix) {
+    var category;
+
+    for (category in DA42MPMB.catalogue) {
+        if (
+            DA42MPMB.catalogue.hasOwnProperty(category) &&
+            DA42MPMB.catalogue[category].prefix === prefix
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
+
+/*  ==========================================================================
+    HELPER: CREATE A STANDARD NOTES-PAGE ENTRY
+    ==========================================================================
+
+    Example:
+
+    toNotesPage : [
+        DA42MPMB.notesEntry(
+            "The Seven Blessings of the Reveler",
+            [
+                "Share a Drink...",
+                "Share a Story..."
+            ],
+            "Oath of the Velvet Antler"
+        )
+    ]
+    ========================================================================== */
+
+DA42MPMB.notesEntry = function (name, notes, origin, page3notes) {
+    return {
+        name : name,
+        note : notes instanceof Array ? notes : [String(notes)],
+        page3notes : page3notes === true,
+        source : DA42MPMB.sourceSingle(0),
+        origin : origin || ""
+    };
+};
+
+
+/*  ==========================================================================
+    HELPER: CREATE A STANDARD ACTION ENTRY
+    ==========================================================================
+
+    Valid action types:
+    - "action"
+    - "bonus action"
+    - "reaction"
+    ========================================================================== */
+
+DA42MPMB.action = function (type, suffix) {
+    return [
+        String(type || "action").toLowerCase(),
+        suffix || ""
+    ];
+};
+
+
+/*  ==========================================================================
+    HELPER: CREATE A LIMITED-FEATURE REMINDER
+    ========================================================================== */
+
+DA42MPMB.limitedFeature = function (
+    name,
+    usages,
+    recovery,
+    additional,
+    usageCalculation
+) {
+    var feature = {
+        name : name,
+        usages : usages,
+        recovery : recovery
+    };
+
+    if (additional) {
+        feature.additional = additional;
+    }
+
+    if (usageCalculation) {
+        feature.usagescalc = usageCalculation;
+    }
+
+    return feature;
+};
+
+
+/*  ==========================================================================
+    HELPER: JOIN DESCRIPTION LINES
+    ==========================================================================
+
+    MPMB already supplies its own desc() helper in supported sheets.
+
+    This wrapper uses desc() when available and falls back to a newline-joined
+    string if the framework is ever inspected outside the sheet.
+    ========================================================================== */
+
+DA42MPMB.description = function (lines) {
+    var descriptionLines = lines instanceof Array ? lines : [String(lines)];
+
+    if (typeof desc === "function") {
+        return desc(descriptionLines);
+    }
+
+    return "\n   " + descriptionLines.join("\n   ");
+};
+
+
+/*  ==========================================================================
+    HELPER: STANDARD PUBLICATION INFORMATION
+    ========================================================================== */
+
+DA42MPMB.publicationInfo = function (publication) {
+    var info = publication || {};
+
+    return [
+        info.title || "Untitled DA42 Publication",
+        info.code || "DA42-000",
+        "Version " + (info.version || "1.0.0"),
+        info.release || "First Public Release",
+        "Created by :: " + DA42MPMB.creator.name,
+        "Published under :: " + DA42MPMB.creator.imprint,
+        DA42MPMB.creator.copyright,
+        DA42MPMB.creator.publicationLine
+    ];
+};
+
+
+/*  ==========================================================================
+    HELPER: STANDARD COMMUNITY INFORMATION
+    ========================================================================== */
+
+DA42MPMB.communityInfo = function () {
+    return [
+        "Patreon: " + DA42MPMB.links.patreon,
+        "Reddit: " + DA42MPMB.links.reddit,
+        "DMs Guild: " + DA42MPMB.links.dmsguild
+    ];
+};
+
+
+/*  ==========================================================================
+    OPTIONAL FRAMEWORK NOTES
+    ========================================================================== */
+
+if (typeof NotesList !== "undefined" && !NotesList["da42 mpmb framework"]) {
+    NotesList["da42 mpmb framework"] = {
+        name : "DA42 MPMB Framework",
+        source : DA42MPMB.sourceSingle(0),
+        description :
+            "Shared publication framework used by scripts published under the DruidAllanon42 imprint."
+    };
+}
+
+
+/*  ==========================================================================
+    REGISTER THE FRAMEWORK AS A DA42 PUBLICATION
+    ========================================================================== */
+
+DA42MPMB.registerPublication({
+    code : "DA42FW-001",
+    tag : "DA42FW",
+    title : "DA42 MPMB Framework",
+    version : DA42MPMB.framework.version,
+    release : DA42MPMB.framework.releaseName,
+    type : "Framework",
+    setting : "Stormhaven and Setting-Agnostic Content",
+    date : DA42MPMB.framework.releaseDate
+});
+
+
+/*  ==========================================================================
+    FRAMEWORK STATUS
+    ========================================================================== */
+
+DA42MPMB.loaded = true;
